@@ -18,7 +18,7 @@
     },
     "homepage": "https://github.com/Solomon-Development/grade-calculator-client#readme",
     "dependencies": {
-        "body-parser": "^1.20.2",
+        "body-parser": "^2.2.0",
         "dotenv": "^16.4.5",
         "ejs": "^3.1.10",
         "express": "^4.19.2",
