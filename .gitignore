@@ -1,0 +1,9 @@
+# Packages
+node_modules
+
+# Configuration Files
+package-lock.json
+.vscode
+
+# Secrets
+*.env

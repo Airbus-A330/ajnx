@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head', { name: "Not Found", overrides: {} }); %>
+</head>
+<body>
+  <%- include('../partials/header', { tagline: tagline }); %>
+  <div class="content" style="justify-content: center;">
+    <h2>Not Found</h2>
+    <p>Venture a bit too far? Exploring uncharted territory? Unfortunately, this
+    is all you will find...</p>
+    <p>Fear not, you'll always be able to make it home... unless of course, you
+    want to keep exploring...</p>
+
+    <button onclick="location.href='/';" style="background-color:#FFCC00; color:#000000">Go Home</button>
+  </div>
+
+  <!-- Import Scripts -->
+  <script src="/assets/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+    "name": "ajnx",
+    "version": "1.0.0",
+    "description": "Frontend client for the grade calculator.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "prettier . --write"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Solomon-Development/grade-calculator-client.git"
+    },
+    "author": "Airbus-A330",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Solomon-Development/grade-calculator-client/issues"
+    },
+    "homepage": "https://github.com/Solomon-Development/grade-calculator-client#readme",
+    "dependencies": {
+        "body-parser": "^1.20.2",
+        "dotenv": "^16.4.5",
+        "ejs": "^3.1.10",
+        "express": "^4.19.2",
+        "g-i-s": "^2.1.7",
+        "humanize-duration": "^3.32.0",
+        "mime": "^3.0.0",
+        "mongoose": "^8.4.0",
+        "node-fetch": "^3.3.2",
+        "picocolors": "^1.0.1",
+        "webp-converter": "^2.3.3",
+        "xss": "^1.0.15"
+    },
+    "devDependencies": {
+        "prettier": "^3.2.5"
+    }
+}
