@@ -18,15 +18,7 @@ router.get("/", async (req, res) => {
     }
 
     res.render("pages/index", {
-        tagline: "Get the information you need about your classes.",
-        course_names: course.join(","),
-        course: req.query["course"]?.toUpperCase(),
-        srcdbs: [
-            { id: "1254", name: "Spring 2025" },
-            { id: "1252", name: "January 2025" },
-            { id: "1248", name: "Fall 2024" },
-        ],
-        srcdb_id: req.query["srcdb"] ?? "1254",
+        tagline: "Welcome to the next generation of banking."
     });
 });
 
