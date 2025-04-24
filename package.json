@@ -26,6 +26,7 @@
         "humanize-duration": "^3.32.0",
         "mime": "^3.0.0",
         "mongoose": "^8.4.0",
+        "mysql2": "^3.14.0",
         "node-fetch": "^3.3.2",
         "picocolors": "^1.0.1",
         "webp-converter": "^2.3.3",

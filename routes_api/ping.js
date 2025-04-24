@@ -8,8 +8,14 @@ router.ratelimit = {
     },
 };
 
-router.get("/", async (req, res) => {
-    res.status(204).end();
+router.get('/', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT NOW() AS current_time');
+        res.json({ message: 'pong', serverTime: rows[0].current_time });
+    } catch (err) {
+        console.error('DB error:', err);
+        res.status(500).json({ error: 'Database error' });
+    }
 });
 
 module.exports = router;

@@ -20,6 +20,8 @@ global.logger = require("./functions/logRoutes.js");
 global.validate = require("./functions/validate.js");
 global.captchaCheck = require("./functions/captchaCheck.js");
 
+global.db = require("./functions/db.js");
+
 const app = express();
 
 global.ratelimits = new Map();
@@ -114,17 +116,24 @@ if (cluster.isMaster) {
 
             console.log(
                 pc.gray("[" + date() + "]") +
-                    pc.blue(pc.bold("[System]:")) +
-                    " Connected to Mongo Database!",
-            );
-
-            console.log(
-                pc.gray("[" + date() + "]") +
                     pc.blue(pc.bold("[System]: ")) +
                     "Client listening on port " +
                     pc.yellow(pc.bold(config.server.port)) +
                     ".",
             );
+
+            // DB Query Test
+            db.query('SELECT 1')
+                .then(() => {
+                    pc.gray("[" + date() + "]") +
+                        pc.yellow(pc.bold("[Database]: ")) +
+                        "✅ Connected to MySQL database successfully.";
+                })
+                .catch((err) => {
+                    pc.gray("[" + date() + "]") +
+                        pc.yellow(pc.bold("[Database]: ")) +
+                        '❌ Failed to connect to MySQL database:', err;
+                });
         }
     });
 
