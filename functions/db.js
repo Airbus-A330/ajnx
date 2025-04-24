@@ -2,11 +2,10 @@ const mysql = require('mysql2');
 const pc = require("picocolors");
 
 const pool = mysql.createPool({
-  host: 'db.aerex.tk',     // e.g., 'localhost' or '127.0.0.1'
-  user: 'webapp_user',
-  password: 'AaplMsft+.15',
+  host: 'localhost',     // e.g., 'localhost' or '127.0.0.1'
+  user: 'root',
+  password: 'dbR!A@9_IpB0iVOH',
   database: 'AJNXBanking',
-  port: 3306,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
