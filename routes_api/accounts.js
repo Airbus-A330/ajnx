@@ -33,7 +33,7 @@ router.get("/", requireAuth, async (req, res) => {
     try {
         // Retrieve userID from the request object
         const [rows] = await db.query(
-            "SELECT * FROM Account WHERE userID = ?",
+            "SELECT * FROM Accounts WHERE userID = ?",
             [req.user.userID],
         );
 
@@ -62,7 +62,7 @@ router.get("/:id", requireAuth, async (req, res) => {
     try {
         // Retrieve accountID from the request parameters
         const [rows] = await db.query(
-            "SELECT * FROM Account WHERE accountID = ?",
+            "SELECT * FROM Accounts WHERE accountID = ?",
             [req.params.id],
         );
 
@@ -143,7 +143,7 @@ router.delete("/:id", requireAuth, async (req, res) => {
     try {
         // Retrieve accountID from the request parameters
         const [rows] = await db.query(
-            "SELECT * FROM Account WHERE accountID = ?",
+            "SELECT * FROM Accounts WHERE accountID = ?",
             [req.params.id],
         );
 
@@ -160,7 +160,7 @@ router.delete("/:id", requireAuth, async (req, res) => {
         }
 
         // Delete the account from the database
-        await db.query("DELETE FROM Account WHERE accountID = ?", [
+        await db.query("DELETE FROM Accounts WHERE accountID = ?", [
             req.params.id,
         ]);
 

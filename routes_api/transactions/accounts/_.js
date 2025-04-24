@@ -26,7 +26,7 @@ router.get("/:id", requireAuth, async (req, res) => {
         // Validate accountID
         const accountID = req.params.id;
         const [accounts] = await db.query(
-            "SELECT * FROM Account WHERE accountID = ?",
+            "SELECT * FROM Accounts WHERE accountID = ?",
             [accountID],
         );
         const account = accounts[0];
