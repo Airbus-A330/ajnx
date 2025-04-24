@@ -11,8 +11,7 @@ router.ratelimit = {
 router.get('/', async (req, res) => {
     try {
         const [rows] = await db.query('SELECT CURRENT_TIMESTAMP AS server_time');
-        console.log(rows)
-        res.json({ message: 'pong', serverTime: rows[0].current_time });
+        res.json({ message: 'pong', serverTime: rows[0].server_time });
     } catch (err) {
         console.error('DB error:', err);
         res.status(500).json({ error: 'Database error' });
