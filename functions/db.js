@@ -11,6 +11,4 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-console.log(process.env.DB_USER, process.env.DB_PASSWORD);
-
 module.exports = pool.promise();  // Use promise wrapper for async/await
