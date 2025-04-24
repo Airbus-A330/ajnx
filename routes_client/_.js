@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     }
 
     res.render("pages/index", {
-        tagline: "Welcome to the next generation of banking."
+        tagline: "Welcome to the next generation of banking.",
     });
 });
 

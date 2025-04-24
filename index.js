@@ -123,7 +123,7 @@ if (cluster.isMaster) {
             );
 
             // DB Query Test
-            db.query('SELECT 1')
+            db.query("SELECT 1")
                 .then(() => {
                     pc.gray("[" + date() + "]") +
                         pc.yellow(pc.bold("[Database]: ")) +
@@ -132,7 +132,8 @@ if (cluster.isMaster) {
                 .catch((err) => {
                     pc.gray("[" + date() + "]") +
                         pc.yellow(pc.bold("[Database]: ")) +
-                        '❌ Failed to connect to MySQL database:', err;
+                        "❌ Failed to connect to MySQL database:",
+                        err;
                 });
         }
     });
