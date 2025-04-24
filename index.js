@@ -16,8 +16,6 @@ global.config = require("./static/config/config.js");
 global.RL = require("./functions/rl.js");
 global.date = require("./functions/date.js");
 global.logger = require("./functions/logRoutes.js");
-global.validate = require("./functions/validate.js");
-global.captchaCheck = require("./functions/captchaCheck.js");
 
 global.db = require("./functions/db.js");
 
