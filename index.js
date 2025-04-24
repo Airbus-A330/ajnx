@@ -7,7 +7,6 @@ const pc = require("picocolors");
 const bodyParser = require("body-parser");
 
 global.hD = require("humanize-duration");
-global.mongoose = require("mongoose");
 global.fetch = (...args) =>
     import("node-fetch").then(({ default: fetch }) => fetch(...args));
 require("dotenv").config();
@@ -135,11 +134,6 @@ if (cluster.isMaster) {
                         '❌ Failed to connect to MySQL database:', err;
                 });
         }
-    });
-
-    mongoose.set("strictQuery", false);
-    mongoose.connect(process.env.MONGO_URI, {
-        autoIndex: false,
     });
 
     require("./functions/loadClientRoutes.js")(app);
