@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 const requireAuth = require("../../functions/requireAuth.js");
+const requireAdmin = require("../../functions/requireAdmin.js");
 
 router.ratelimit = {
     GET: {
