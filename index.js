@@ -7,6 +7,7 @@ const pc = require("picocolors");
 const bodyParser = require("body-parser");
 
 global.hD = require("humanize-duration");
+global.mongoose = require("mongoose");
 global.fetch = (...args) =>
     import("node-fetch").then(({ default: fetch }) => fetch(...args));
 require("dotenv").config();
