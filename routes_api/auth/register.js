@@ -3,9 +3,26 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
+
+router.ratelimit = {
+    POST: {
+        reset: 1 * 1000,
+        limit: 5,
+    },
+};
+
+// Implement hashing and JWT signing
 const SALT_ROUNDS = 10;
 const JWT_SECRET = process.env.JWT_SECRET;
 
+/*
+    Path: /api/auth/register
+    Method: POST
+    Description: Register a new user.
+    Request Body: { username: string, password: string, role: string }
+    Response: { message: string }
+    Error: { error: string }
+*/
 router.post("/", async (req, res) => {
     const { username, password, role } = req.body;
     if (!username || !password || !role) {
