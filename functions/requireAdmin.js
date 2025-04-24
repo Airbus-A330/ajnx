@@ -4,3 +4,5 @@ function requireAdmin(req, res, next) {
     }
     next();
 }
+
+module.exports = requireAdmin;
