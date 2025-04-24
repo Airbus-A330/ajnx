@@ -34,7 +34,7 @@ router.post("/", requireAuth, async (req, res) => {
     try {
         // Check if the account exists
         const [accounts] = await db.query(
-            "SELECT * FROM Accounts WHERE accountID = ?",
+            "SELECT * FROM Account WHERE accountID = ?",
             [accountID],
         );
         const account = accounts[0];

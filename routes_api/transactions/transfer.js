@@ -38,11 +38,11 @@ router.post("/", requireAuth, async (req, res) => {
 
         // Check if the accounts exist
         const [[from]] = await conn.query(
-            "SELECT * FROM Accounts WHERE accountID = ?",
+            "SELECT * FROM Account WHERE accountID = ?",
             [fromAccountID],
         );
         const [[to]] = await conn.query(
-            "SELECT * FROM Accounts WHERE accountID = ?",
+            "SELECT * FROM Account WHERE accountID = ?",
             [toAccountID],
         );
 

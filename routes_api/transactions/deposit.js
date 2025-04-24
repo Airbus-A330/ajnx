@@ -33,7 +33,7 @@ router.post("/", requireAuth, async (req, res) => {
     try {
         // Ensure user owns the account
         const [accounts] = await db.query(
-            "SELECT * FROM Accounts WHERE accountID = ?",
+            "SELECT * FROM Account WHERE accountID = ?",
             [accountID],
         );
 

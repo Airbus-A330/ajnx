@@ -28,7 +28,7 @@ router.get("/", requireAuth, requireAdmin, async (req, res) => {
         const [users] = await db.query(
             "SELECT userID, username, role FROM Users",
         );
-        const [accounts] = await db.query("SELECT * FROM Accounts");
+        const [accounts] = await db.query("SELECT * FROM Account");
         const [transactions] = await db.query("SELECT * FROM Transactions");
 
         // Return the exported data
