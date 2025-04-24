@@ -1,5 +1,6 @@
 require("dotenv").config();
-const fetch = require("node-fetch");
+const fetch = (...args) =>
+    import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 const API = "https://db.aerex.tk/api";
 const ADMIN_USERNAME = "admin";
@@ -166,7 +167,7 @@ async function runTests() {
 
         console.log("\n✅✅ All API tests passed!");
     } catch (err) {
-        console.error("❌ Test failed:", err.message);
+        console.error("❌ Test failed:", err.stack);
         try {
             const details = JSON.parse(err.message);
             console.error("Details:", details);
