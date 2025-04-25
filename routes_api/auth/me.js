@@ -1,12 +1,7 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-
 const router = express.Router();
 
-// Implement hashing and JWT signing
-const SALT_ROUNDS = 10;
-const JWT_SECRET = process.env.JWT_SECRET;
+const requireAuth = require("../../functions/requireAuth.js");
 
 /*
     Path: /api/auth/me
