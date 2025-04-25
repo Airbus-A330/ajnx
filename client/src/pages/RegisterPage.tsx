@@ -36,7 +36,7 @@ const RegisterPage: React.FC = () => {
             history.push("/login");
         } catch (err: any) {
             setError(
-                err.response?.data?.message ||
+                err.response?.message ||
                     "Registration failed. Please try again.",
             );
             console.error("Register error:", err);
