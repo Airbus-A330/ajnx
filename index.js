@@ -29,7 +29,7 @@ app.use(
     }),
 );
 
-app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use(express.static(path.join(__dirname, "client/dist")));
 
 process.on("unhandledRejection", (err) => {
     logger.logErr(err.stack);
@@ -136,13 +136,13 @@ if (cluster.isMaster) {
     require("./functions/loadAPIRoutes.js")(app);
 
     app.all("*", async (req, res, next) => {
-        if (req.path.startsWith('/api/')) {
-            return next(); 
+        if (req.path.startsWith("/api/")) {
+            return next();
         }
 
         logger.routeNotFound(req);
 
-        res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
+        res.sendFile(path.join(__dirname, "client/dist", "index.html"));
     });
 
     app.listen(config.server.port);
