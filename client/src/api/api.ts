@@ -98,5 +98,5 @@ export const exportData = (): Promise<any> => request("/export/json");
 
 export const deleteUser = (userID: number): Promise<void> =>
     request(`/users/${userID}`, {
-      method: 'DELETE'
-    });  
+        method: "DELETE",
+    });
