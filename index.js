@@ -24,7 +24,6 @@ const app = express();
 global.ratelimits = new Map();
 
 app.disable("x-powered-by");
-app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
 app.use(
@@ -135,7 +134,6 @@ if (cluster.isMaster) {
         }
     });
 
-    require("./functions/loadClientRoutes.js")(app);
     require("./functions/loadAPIRoutes.js")(app);
 
     app.all("*", async (req, res) => {
