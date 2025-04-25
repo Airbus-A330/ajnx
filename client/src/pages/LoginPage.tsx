@@ -26,7 +26,7 @@ const LoginPage: React.FC = () => {
 
         try {
             const response = await login(username, password);
-            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("token", response.token);
             history.push("/dashboard");
         } catch (err) {
             setError("Invalid username or password. Please try again.");

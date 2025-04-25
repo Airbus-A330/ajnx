@@ -46,7 +46,7 @@ const TransactionsPage: React.FC = () => {
         const fetchAccounts = async () => {
             try {
                 const response = await getAccounts();
-                setAccounts(response.data);
+                setAccounts(response);
             } catch (err) {
                 setError("Failed to load accounts");
                 console.error("Error fetching accounts:", err);
@@ -71,7 +71,7 @@ const TransactionsPage: React.FC = () => {
 
             // Refresh accounts
             const response = await getAccounts();
-            setAccounts(response.data);
+            setAccounts(response);
         } catch (err) {
             setError("Deposit failed. Please try again.");
             console.error("Deposit error:", err);
@@ -93,7 +93,7 @@ const TransactionsPage: React.FC = () => {
 
             // Refresh accounts
             const response = await getAccounts();
-            setAccounts(response.data);
+            setAccounts(response);
         } catch (err) {
             setError("Withdrawal failed. Please try again.");
             console.error("Withdraw error:", err);
@@ -119,7 +119,7 @@ const TransactionsPage: React.FC = () => {
 
             // Refresh accounts
             const response = await getAccounts();
-            setAccounts(response.data);
+            setAccounts(response);
         } catch (err) {
             setError("Transfer failed. Please try again.");
             console.error("Transfer error:", err);

@@ -17,7 +17,7 @@ const AdminExportPage: React.FC = () => {
             const response = await exportData();
 
             // Create a blob from the response data
-            const blob = new Blob([JSON.stringify(response.data, null, 2)], {
+            const blob = new Blob([JSON.stringify(response, null, 2)], {
                 type: "application/json",
             });
 

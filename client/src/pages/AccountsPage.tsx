@@ -30,7 +30,7 @@ const AccountsPage: React.FC = () => {
         const fetchAccounts = async () => {
             try {
                 const response = await getAccounts();
-                setAccounts(response.data);
+                setAccounts(response);
             } catch (err) {
                 setError("Failed to load accounts");
                 console.error("Error fetching accounts:", err);
@@ -152,7 +152,7 @@ const AccountsPage: React.FC = () => {
                                                 <Chip
                                                     color={
                                                         account.accountType.toLowerCase() ===
-                                                        "checking"
+                                                            "checking"
                                                             ? "primary"
                                                             : "secondary"
                                                     }

@@ -32,7 +32,7 @@ const AdminUsersPage: React.FC = () => {
         const fetchUsers = async () => {
             try {
                 const response = await getUsers();
-                setUsers(response.data);
+                setUsers(response);
             } catch (err) {
                 setError("Failed to load users");
                 console.error("Error fetching users:", err);

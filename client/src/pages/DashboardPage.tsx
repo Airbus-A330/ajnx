@@ -18,7 +18,7 @@ const DashboardPage: React.FC = () => {
         const fetchUserData = async () => {
             try {
                 const response = await getMe();
-                setUserData(response.data);
+                setUserData(response);
             } catch (err) {
                 setError("Failed to load user data");
                 console.error("Error fetching user data:", err);
