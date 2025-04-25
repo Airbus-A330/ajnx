@@ -4,8 +4,10 @@
     "description": "Frontend client for the grade calculator.",
     "main": "index.js",
     "scripts": {
+        "build": "cd client && npm run format && npm run build",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "format": "prettier . --write"
+        "format": "prettier . --write",
+        "start": "npm run build && node index.js"
     },
     "repository": {
         "type": "git",

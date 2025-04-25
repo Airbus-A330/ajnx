@@ -29,7 +29,7 @@ app.use(
     }),
 );
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/dist')));
 
 process.on("unhandledRejection", (err) => {
     logger.logErr(err.stack);
