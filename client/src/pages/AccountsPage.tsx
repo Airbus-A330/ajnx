@@ -123,9 +123,15 @@ const AccountsPage: React.FC = () => {
 
                         <div className="flex items-center gap-4">
                             <Select
-                                label="Account Type"
-                                value={accountType}
-                                onChange={(e) => setAccountType(e.target.value)}
+                                label="Type"
+                                name="accountType"
+                                selectedKeys={[accountType]}
+                                onSelectionChange={(keys) =>
+                                    setAccountType(
+                                        Array.from(keys)[0] as string,
+                                    )
+                                }
+                                className="min-w-[10rem]"
                             >
                                 <SelectItem key="checking" value="checking">
                                     Checking
@@ -140,7 +146,7 @@ const AccountsPage: React.FC = () => {
                                 onClick={handleCreateAccount}
                                 isLoading={creating}
                             >
-                                Create Account
+                                Create
                             </Button>
                         </div>
                     </div>
