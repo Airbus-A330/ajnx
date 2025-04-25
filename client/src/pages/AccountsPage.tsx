@@ -152,7 +152,7 @@ const AccountsPage: React.FC = () => {
                                                 <Chip
                                                     color={
                                                         account.accountType.toLowerCase() ===
-                                                            "checking"
+                                                        "checking"
                                                             ? "primary"
                                                             : "secondary"
                                                     }
