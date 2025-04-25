@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const requireAuth = require("../middleware/requireAuth");
-const requireAdmin = require("../middleware/requireAdmin");
+
+const requireAuth = require("../functions/requireAuth");
+const requireAdmin = require("../functions/requireAdmin");
 
 /*
     Path: /api/users

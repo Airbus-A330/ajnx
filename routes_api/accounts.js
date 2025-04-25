@@ -4,21 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const requireAuth = require("../functions/requireAuth.js");
 
-router.ratelimit = {
-    POST: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-    GET: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-    DELETE: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-};
-
 /*
     Path: /api/accounts
     Method: GET

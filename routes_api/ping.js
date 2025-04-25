@@ -1,13 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-router.ratelimit = {
-    GET: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-};
-
 /*
     Path: /api/ping
     Method: GET

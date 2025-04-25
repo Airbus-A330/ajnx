@@ -4,13 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const requireAuth = require("../../functions/requireAuth.js");
 
-router.ratelimit = {
-    POST: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-};
-
 /*
     Path: /api/transactions/withdraw
     Method: POST

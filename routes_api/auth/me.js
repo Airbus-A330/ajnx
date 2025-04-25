@@ -4,13 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
-router.ratelimit = {
-    GET: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-};
-
 // Implement hashing and JWT signing
 const SALT_ROUNDS = 10;
 const JWT_SECRET = process.env.JWT_SECRET;
