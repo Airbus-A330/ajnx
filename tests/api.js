@@ -22,6 +22,7 @@ async function fetchJson(url, options = {}) {
 async function runTests() {
     try {
         console.log("\n🔐 Registering and logging in admin...");
+
         await fetchJson(`${API}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
