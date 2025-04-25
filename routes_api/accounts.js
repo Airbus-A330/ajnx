@@ -79,36 +79,25 @@ router.get("/:id", requireAuth, async (req, res) => {
     Method: POST
     Description: Create a new account for the authenticated user.
     Headers: { Authorization }
-    Request Body: { accountType: string }
+    Request Body: { accountType: string, branchID: number }
     Response: { message: string, accountID: number }
     Error: { error: string }
 */
 router.post("/", requireAuth, async (req, res) => {
-    // Destructure accountType from request body
-    const { accountType } = req.body;
+    // Destructure the request body
+    const { accountType, branchID } = req.body;
 
-    // Check if valid accountType is provided
-    if (!["checking", "savings"].includes(accountType)) {
-        return res.status(400).json({ error: "Invalid account type" });
-    }
-
-    // Check if user is authenticated
     try {
-        // Insert new account into the database
-        const [result] = await db.query(
-            "INSERT INTO Accounts (userID, accountType) VALUES (?, ?)",
-            [req.user.userID, accountType],
+        // Check if the user is authenticated
+        // Validate input
+        await db.query(
+            "INSERT INTO Accounts (userID, accountType, balance, branch_id) VALUES (?, ?, 0.00, ?)",
+            [req.user.userID, accountType, branchID],
         );
 
-        // Check if account was created successfully
-        res.status(201).json({
-            message: "Account created",
-            accountID: result.insertId,
-        });
+        // Retrieve the newly created accountID
+        res.sendStatus(201);
     } catch (err) {
-        // Handle errors
-        // Log the error for debugging
-        // Return 500 Internal Server Error
         console.error("Create account error:", err);
         res.status(500).json({ error: "Could not create account" });
     }

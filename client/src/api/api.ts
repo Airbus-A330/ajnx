@@ -62,10 +62,13 @@ export const getMe = (): Promise<User> => request("/auth/me");
 export const getAccounts = (): Promise<Account[]> => request("/accounts");
 
 // Create account API calls
-export const createAccount = (accountType: string): Promise<void> =>
+export const createAccount = (
+    accountType: string,
+    branchID: number,
+): Promise<void> =>
     request("/accounts", {
         method: "POST",
-        body: { accountType },
+        body: { accountType, branchID },
     });
 
 // Transactions API calls

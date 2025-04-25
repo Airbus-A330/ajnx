@@ -16,20 +16,28 @@ import {
     Button,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getAccounts, createAccount } from "../api/api"; // We'll add createAccount in API file!
+import { getAccounts, getBranches, createAccount } from "../api/api"; // ⬅️ Make sure you have these
 
 interface Account {
     accountID: number;
     accountType: string;
     balance: number;
+    branchName: string;
+}
+
+interface Branch {
+    branchId: number;
+    branchName: string;
 }
 
 const AccountsPage: React.FC = () => {
     const [accounts, setAccounts] = React.useState<Account[]>([]);
+    const [branches, setBranches] = React.useState<Branch[]>([]);
+    const [accountType, setAccountType] = React.useState<string>("checking");
+    const [branchId, setBranchId] = React.useState<string | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [error, setError] = React.useState("");
-    const [accountType, setAccountType] = React.useState<string>("checking"); // Default
     const [creating, setCreating] = React.useState(false);
+    const [error, setError] = React.useState("");
 
     const fetchAccounts = async () => {
         try {
@@ -43,15 +51,29 @@ const AccountsPage: React.FC = () => {
         }
     };
 
+    const fetchBranches = async () => {
+        try {
+            const response = await getBranches();
+            setBranches(response);
+            if (response.length > 0) {
+                setBranchId(response[0].branchId.toString());
+            }
+        } catch (err) {
+            console.error("Error fetching branches:", err);
+        }
+    };
+
     React.useEffect(() => {
+        fetchBranches();
         fetchAccounts();
     }, []);
 
     const handleCreateAccount = async () => {
+        if (!branchId) return alert("Please select a branch");
         setCreating(true);
         try {
-            await createAccount(accountType);
-            await fetchAccounts(); // Refresh list after creation
+            await createAccount(accountType, parseInt(branchId));
+            await fetchAccounts();
         } catch (err) {
             console.error("Error creating account:", err);
             alert("Failed to create account.");
@@ -123,7 +145,7 @@ const AccountsPage: React.FC = () => {
 
                         <div className="flex items-center gap-4">
                             <Select
-                                label="Type"
+                                label="Account Type"
                                 name="accountType"
                                 selectedKeys={[accountType]}
                                 onSelectionChange={(keys) =>
@@ -139,6 +161,25 @@ const AccountsPage: React.FC = () => {
                                 <SelectItem key="savings" value="savings">
                                     Savings
                                 </SelectItem>
+                            </Select>
+
+                            <Select
+                                label="Branch"
+                                name="branch"
+                                selectedKeys={[branchId || ""]}
+                                onSelectionChange={(keys) =>
+                                    setBranchId(Array.from(keys)[0] as string)
+                                }
+                                className="min-w-[10rem]"
+                            >
+                                {branches.map((branch) => (
+                                    <SelectItem
+                                        key={branch.branchId}
+                                        value={branch.branchId.toString()}
+                                    >
+                                        {branch.branchName}
+                                    </SelectItem>
+                                ))}
                             </Select>
 
                             <Button
@@ -176,6 +217,7 @@ const AccountsPage: React.FC = () => {
                                 <TableColumn>ACCOUNT ID</TableColumn>
                                 <TableColumn>TYPE</TableColumn>
                                 <TableColumn>BALANCE</TableColumn>
+                                <TableColumn>BRANCH</TableColumn>
                             </TableHeader>
                             <TableBody>
                                 {accounts.map((account) => (
@@ -204,6 +246,9 @@ const AccountsPage: React.FC = () => {
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             {formatCurrency(account.balance)}
+                                        </TableCell>
+                                        <TableCell>
+                                            {account.branchName}
                                         </TableCell>
                                     </TableRow>
                                 ))}
