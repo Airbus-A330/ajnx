@@ -96,7 +96,26 @@ export const getUsers = (): Promise<User[]> => request("/users");
 
 export const exportData = (): Promise<any> => request("/export/json");
 
-export const deleteUser = (userID: number): Promise<void> =>
-    request(`/users/${userID}`, {
+export const deleteUser = async (userID: number): Promise<void> => {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`https://db.aerex.tk/api/users/${userID}`, {
         method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+        },
     });
+
+    if (!res.ok) {
+        const contentType = res.headers.get("content-type");
+        const errorMessage = contentType?.includes("application/json")
+            ? (await res.json())?.error || "API error"
+            : res.statusText;
+
+        throw new Error(errorMessage);
+    }
+
+    // ✅ no res.json() if 204
+    return;
+};

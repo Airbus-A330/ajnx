@@ -47,7 +47,9 @@ router.delete("/:userID", requireAuth, requireAdmin, async (req, res) => {
     try {
         // Prevent deleting self or admin accounts
         if (Number(userID) === req.user.userID) {
-            return res.status(403).json({ error: "You cannot delete yourself." });
+            return res
+                .status(403)
+                .json({ error: "You cannot delete yourself." });
         }
 
         // Delete the user from the Users table
