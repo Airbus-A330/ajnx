@@ -16,7 +16,7 @@ import { Icon } from "@iconify/react";
 import { getUsers } from "../api/api";
 
 interface User {
-    id: number;
+    userID: number;
     username: string;
     role: string;
     createdAt: string;
