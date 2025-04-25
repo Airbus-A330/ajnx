@@ -22,7 +22,7 @@ interface Account {
     accountID: number;
     accountType: string;
     balance: number;
-    branch_name: string; // ✅ fixed
+    branch_name: string;
 }
 
 interface Branch {

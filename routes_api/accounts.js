@@ -14,15 +14,22 @@ const requireAuth = require("../functions/requireAuth.js");
 */
 
 router.get("/", requireAuth, async (req, res) => {
-    // Check if user is authenticated
     try {
+        // Check if user is authenticated
         // Retrieve userID from the request object
         const [rows] = await db.query(
-            "SELECT * FROM Accounts WHERE userID = ?",
+            `SELECT 
+            a.accountID, 
+            a.accountType, 
+            a.balance, 
+            b.branch_name
+         FROM Accounts a
+         JOIN Branches b ON a.branch_id = b.branch_id
+         WHERE a.userID = ?`,
             [req.user.userID],
         );
 
-        // Return the list of accounts
+        // Check if accounts exist
         res.json(rows);
     } catch (err) {
         // Handle errors
