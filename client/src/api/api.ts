@@ -71,6 +71,11 @@ export const createAccount = (
         body: { accountType, branchID },
     });
 
+// Branch API calls
+export const getBranches = (): Promise<
+    { branchId: number; branchName: string; location: string }[]
+> => request("/branches", { method: "GET" });
+
 // Transactions API calls
 export const deposit = (accountID: number, amount: number): Promise<void> =>
     request("/transactions/deposit", {

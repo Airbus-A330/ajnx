@@ -16,7 +16,7 @@ import {
     Button,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getAccounts, getBranches, createAccount } from "../api/api"; // ⬅️ Make sure you have these
+import { getAccounts, getBranches, createAccount } from "../api/api";
 
 interface Account {
     accountID: number;
