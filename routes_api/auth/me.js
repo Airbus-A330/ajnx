@@ -15,30 +15,28 @@ const JWT_SECRET = process.env.JWT_SECRET;
     Headers: { Authorization }
     Response: { user }
 */
-router.get("/", async (req, res) => {
-    // Retrieve authorization header from request
-    const authHeader = req.headers.authorization;
-
-    // Check if authorization header is provided
-    // If not, return 401 Unauthorized
-    // If provided, split the header to get the token
-    if (!authHeader)
-        return res.status(401).json({ error: "Missing Authorization header" });
-
-    // Split the header to get the token
-    const token = authHeader.split(" ")[1];
-
-    // Verify the token using JWT secret
+router.get("/", requireAuth, async (req, res) => {
     try {
-        // Verify the token and extract user information
-        const user = jwt.verify(token, JWT_SECRET);
+        // Check if user is authenticated
+        // Retrieve userID from the request object
+        const [rows] = await db.query(
+            "SELECT username, role FROM Users WHERE userID = ?",
+            [req.user.userID],
+        );
 
-        // Check if user exists in the database
-        res.json({ user });
+        // Check if user exists
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Return the user info
+        res.json(rows[0]);
     } catch (err) {
         // Handle errors
-        // Return 403 Forbidden if token is invalid
-        res.status(403).json({ error: "Invalid token" });
+        // Log the error for debugging
+        // Return 500 Internal Server Error
+        console.error("Get user info error:", err);
+        res.status(500).json({ error: "Could not retrieve user info" });
     }
 });
 
