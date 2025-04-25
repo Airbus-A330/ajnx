@@ -29,7 +29,7 @@ app.use(
     }),
 );
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/dist')));
 
 process.on("unhandledRejection", (err) => {
     logger.logErr(err.stack);
@@ -142,7 +142,7 @@ if (cluster.isMaster) {
 
         logger.routeNotFound(req);
 
-        res.status(404).sendFile(path.join(__dirname, 'client/build', '404.html'));
+        res.status(404).sendFile(path.join(__dirname, 'client/dist', '404.html'));
     });
 
     app.listen(config.server.port);
