@@ -41,7 +41,7 @@ const AdminExportPage: React.FC = () => {
 
             setSuccess("Data exported successfully!");
         } catch (err) {
-            setError("Failed to export data. Please try again.");
+            setError("You do not have access to this feature.");
             console.error("Export error:", err);
         } finally {
             setIsLoading(false);

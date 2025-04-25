@@ -34,7 +34,7 @@ const AdminUsersPage: React.FC = () => {
       const response = await getUsers();
       setUsers(response);
     } catch (err) {
-      setError("Failed to load users");
+      setError("You do not have access to this feature.");
       console.error("Error fetching users:", err);
     } finally {
       setIsLoading(false);
