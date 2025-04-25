@@ -79,20 +79,20 @@ router.get("/:id", requireAuth, async (req, res) => {
     Method: POST
     Description: Create a new account for the authenticated user.
     Headers: { Authorization }
-    Request Body: { accountType: string, branchID: number }
+    Request Body: { accountType: string, branch_id: number }
     Response: { message: string, accountID: number }
     Error: { error: string }
 */
 router.post("/", requireAuth, async (req, res) => {
     // Destructure the request body
-    const { accountType, branchID } = req.body;
+    const { accountType, branch_id } = req.body;
 
     try {
         // Check if the user is authenticated
         // Validate input
         await db.query(
             "INSERT INTO Accounts (userID, accountType, balance, branch_id) VALUES (?, ?, 0.00, ?)",
-            [req.user.userID, accountType, branchID],
+            [req.user.userID, accountType, branch_id],
         );
 
         // Retrieve the newly created accountID

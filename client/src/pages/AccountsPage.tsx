@@ -22,19 +22,19 @@ interface Account {
     accountID: number;
     accountType: string;
     balance: number;
-    branchName: string;
+    branch_name: string;
 }
 
 interface Branch {
-    branchId: number;
-    branchName: string;
+    branch_id: number;
+    branch_name: string;
 }
 
 const AccountsPage: React.FC = () => {
     const [accounts, setAccounts] = React.useState<Account[]>([]);
     const [branches, setBranches] = React.useState<Branch[]>([]);
     const [accountType, setAccountType] = React.useState<string>("checking");
-    const [branchId, setBranchId] = React.useState<string | null>(null);
+    const [branch_id, setBranchId] = React.useState<string | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
     const [creating, setCreating] = React.useState(false);
     const [error, setError] = React.useState("");
@@ -56,7 +56,7 @@ const AccountsPage: React.FC = () => {
             const response = await getBranches();
             setBranches(response);
             if (response.length > 0) {
-                setBranchId(response[0].branchId.toString());
+                setBranchId(response[0].branch_id.toString());
             }
         } catch (err) {
             console.error("Error fetching branches:", err);
@@ -69,10 +69,10 @@ const AccountsPage: React.FC = () => {
     }, []);
 
     const handleCreateAccount = async () => {
-        if (!branchId) return alert("Please select a branch");
+        if (!branch_id) return alert("Please select a branch");
         setCreating(true);
         try {
-            await createAccount(accountType, parseInt(branchId));
+            await createAccount(accountType, parseInt(branch_id));
             await fetchAccounts();
         } catch (err) {
             console.error("Error creating account:", err);
@@ -166,7 +166,7 @@ const AccountsPage: React.FC = () => {
                             <Select
                                 label="Branch"
                                 name="branch"
-                                selectedKeys={[branchId || ""]}
+                                selectedKeys={[branch_id || ""]}
                                 onSelectionChange={(keys) =>
                                     setBranchId(Array.from(keys)[0] as string)
                                 }
@@ -174,10 +174,10 @@ const AccountsPage: React.FC = () => {
                             >
                                 {branches.map((branch) => (
                                     <SelectItem
-                                        key={branch.branchId}
-                                        value={branch.branchId.toString()}
+                                        key={branch.branch_id}
+                                        value={branch.branch_id.toString()}
                                     >
-                                        {branch.branchName}
+                                        {branch.branch_name}
                                     </SelectItem>
                                 ))}
                             </Select>
@@ -248,7 +248,7 @@ const AccountsPage: React.FC = () => {
                                             {formatCurrency(account.balance)}
                                         </TableCell>
                                         <TableCell>
-                                            {account.branchName}
+                                            {account.branch_name}
                                         </TableCell>
                                     </TableRow>
                                 ))}

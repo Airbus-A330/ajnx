@@ -64,16 +64,16 @@ export const getAccounts = (): Promise<Account[]> => request("/accounts");
 // Create account API calls
 export const createAccount = (
     accountType: string,
-    branchID: number,
+    branch_id: number,
 ): Promise<void> =>
     request("/accounts", {
         method: "POST",
-        body: { accountType, branchID },
+        body: { accountType, branch_id },
     });
 
 // Branch API calls
 export const getBranches = (): Promise<
-    { branchId: number; branchName: string; location: string }[]
+    { branch_id: number; branch_name: string; location: string }[]
 > => request("/branches", { method: "GET" });
 
 // Transactions API calls
