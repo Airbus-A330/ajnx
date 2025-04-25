@@ -103,9 +103,9 @@ const AccountsPage: React.FC = () => {
     }
 
     const totalBalance = accounts.reduce(
-        (sum, account) => sum + account.balance,
-        0,
-    );
+        (sum, account) => sum + Number(account.balance || 0),
+        0
+      );      
 
     return (
         <div className="container mx-auto max-w-5xl">
