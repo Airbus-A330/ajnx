@@ -26,7 +26,6 @@
         "humanize-duration": "^3.32.0",
         "jsonwebtoken": "^9.0.2",
         "mime": "^3.0.0",
-        "mongoose": "^8.13.2",
         "mysql2": "^3.14.0",
         "node-fetch": "^3.3.2",
         "picocolors": "^1.0.1",

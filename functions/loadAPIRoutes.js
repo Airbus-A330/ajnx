@@ -4,6 +4,8 @@ const path = require("node:path");
 const date = require("./date");
 const getFiles = require("./getFiles");
 
+let routeCounter = 0;
+
 module.exports = (app) => {
     for (let f of getFiles("./routes_api/")) {
         if (!f.endsWith(`.js`)) return;
@@ -33,10 +35,9 @@ module.exports = (app) => {
         for (let r of mod.stack) {
             r = r.route;
 
-            ratelimits.set(
-                `[${Object.keys(r.methods)[0].toUpperCase()}] ${(route + r.path).replaceAll("//", "/")}`,
-                new RL(mod.ratelimit[Object.keys(r.methods)[0].toUpperCase()]),
-            );
+            if (r.path) {
+                routeCounter++;
+            }
         }
 
         let req_path = path
@@ -47,44 +48,7 @@ module.exports = (app) => {
         app.use(
             req_path,
             async (req, res, next) => {
-                const identifier =
-                    req.headers["cf-connecting-ip"] ??
-                    req.headers["x-forwarded-for"] ??
-                    req.ip;
-                const rl = ratelimits.get(
-                    `[${req.method}] ${route}${route.endsWith("/") ? "" : "/"}`,
-                );
-
                 logger.reqLog(req);
-
-                if (rl) {
-                    if (!(await rl.canUse(identifier))) {
-                        const { next_reset, count } = rl.getData(identifier);
-
-                        const remainingTime = next_reset - Date.now();
-
-                        res.set({
-                            "X-Retry-After": Math.ceil(remainingTime / 1000),
-                            "X-Ratelimit-Limit": count,
-                            "X-Ratelimit-Remaining": 0,
-                            "X-Ratelimit-Reset": Math.ceil(next_reset / 1000),
-                            "X-Ratelimit-Reset-After": Math.ceil(
-                                remainingTime / 1000,
-                            ),
-                        });
-
-                        res.status(429).send({
-                            status: 429,
-                            message:
-                                "You are being ratelimited. Please try again later.",
-                        });
-
-                        return;
-                    } else {
-                        rl.increment(identifier);
-                    }
-                }
-
                 next();
             },
             mod,
@@ -96,7 +60,7 @@ module.exports = (app) => {
             console.log(
                 pc.gray("[" + date() + "]") +
                     pc.blue(pc.bold("[System]: ")) +
-                    pc.bold(ratelimits.size.toLocaleString()) +
+                    pc.bold(routeCounter.toLocaleString()) +
                     " routes successfully loaded!\n",
             );
         }

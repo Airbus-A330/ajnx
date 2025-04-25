@@ -1,27 +1,24 @@
 const fs = require("node:fs");
 const os = require("node:os");
 const cluster = require("node:cluster");
+const path = require("node:path");
 
 const express = require("express");
 const pc = require("picocolors");
 const bodyParser = require("body-parser");
 
 global.hD = require("humanize-duration");
-global.mongoose = require("mongoose");
 global.fetch = (...args) =>
     import("node-fetch").then(({ default: fetch }) => fetch(...args));
 require("dotenv").config();
 
 global.config = require("./static/config/config.js");
-global.RL = require("./functions/rl.js");
 global.date = require("./functions/date.js");
 global.logger = require("./functions/logRoutes.js");
 
 global.db = require("./functions/db.js");
 
 const app = express();
-
-global.ratelimits = new Map();
 
 app.disable("x-powered-by");
 
@@ -31,6 +28,8 @@ app.use(
         extended: true,
     }),
 );
+
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 process.on("unhandledRejection", (err) => {
     logger.logErr(err.stack);
@@ -136,12 +135,14 @@ if (cluster.isMaster) {
 
     require("./functions/loadAPIRoutes.js")(app);
 
-    app.all("*", async (req, res) => {
+    app.all("*", async (req, res, next) => {
+        if (req.path.startsWith('/api/')) {
+            return next(); 
+        }
+
         logger.routeNotFound(req);
 
-        res.status(404).render("pages/404", {
-            tagline: "Looks like someone's lost...",
-        });
+        res.status(404).sendFile(path.join(__dirname, 'client/build', '404.html'));
     });
 
     app.listen(config.server.port);
