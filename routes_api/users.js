@@ -1,39 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
-
-const requireAuth = require("../functions/requireAuth.js");
-const requireAdmin = require("../functions/requireAdmin.js");
-
-router.ratelimit = {
-    GET: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-    DELETE: {
-        reset: 1 * 1000,
-        limit: 5,
-    },
-};
+const requireAuth = require("../middleware/requireAuth");
+const requireAdmin = require("../middleware/requireAdmin");
 
 /*
     Path: /api/users
     Method: GET
-    Description: List all users.
-    Headers: { Authorization }
-    Response: { users: Array }
-    Error: { error: string }
-    Notes: Only admins can view the list of users.
+    Description: User management routes
+    Response: { userID: number, username: string, role: string, accountCount: number }[]
+    Notes: This route is for admin users to manage other users.
 */
 router.get("/", requireAuth, requireAdmin, async (req, res) => {
-    // Check if user is authenticated
     try {
-        // Retrieve userID from the request object
-        const [rows] = await db.query(
-            "SELECT userID, username, role FROM Users",
-        );
+        // Select all users with their account count
+        const [rows] = await db.query(`
+            SELECT u.userID, u.username, u.role, COUNT(a.accountID) AS accountCount
+            FROM Users u
+            LEFT JOIN Accounts a ON u.userID = a.userID
+            GROUP BY u.userID, u.username, u.role
+        `);
 
-        // Return the list of users
+        // Check if the users are retrieved successfully
         res.json(rows);
     } catch (err) {
         // Handle errors
@@ -45,65 +32,28 @@ router.get("/", requireAuth, requireAdmin, async (req, res) => {
 });
 
 /*
-    Path: /api/users/:id
+    Path: /api/users/:userID
     Method: GET
-    Description: Get user details by userID.
-    Headers: { Authorization }
-    Response: { user: Object }
-    Error: { error: string }
-    Notes: Only admins can view user details.
+    Description: Get user details by userID
+    Response: N/A
+    Notes: This route is for admin users to view details of a specific user.
 */
-router.get("/:id", requireAuth, requireAdmin, async (req, res) => {
-    // Check if user is authenticated
+router.delete("/:userID", requireAuth, requireAdmin, async (req, res) => {
+    // Destructure userID from request parameters
+    const { userID } = req.params;
+
+    // Validate userID
     try {
-        // Retrieve userID from the request object
-        // Check if the userID is valid
-        const [rows] = await db.query(
-            "SELECT userID, username, role FROM Users WHERE userID = ?",
-            [req.params.id],
-        );
+        // Prevent deleting self or admin accounts
+        if (Number(userID) === req.user.userID) {
+            return res.status(403).json({ error: "You cannot delete yourself." });
+        }
 
-        // Check if the user exists
-        if (rows.length === 0)
-            return res.status(404).json({ error: "User not found" });
+        // Delete the user from the Users table
+        await db.query("DELETE FROM Users WHERE userID = ?", [userID]);
 
-        // Return the user details
-        res.json(rows[0]);
-    } catch (err) {
-        // Handle errors
-        // Log the error for debugging
-        // Return 500 Internal Server Error
-        console.error("Get user error:", err);
-        res.status(500).json({ error: "Could not retrieve user" });
-    }
-});
-
-/*
-    Path: /api/users/:id
-    Method: DELETE
-    Description: Delete a user by userID.
-    Headers: { Authorization }
-    Response: { message: string }
-    Error: { error: string }
-    Notes: Only admins can delete users.
-*/
-router.delete("/:id", requireAuth, requireAdmin, async (req, res) => {
-    // Check if user is authenticated
-    try {
-        // Check if the userID is valid
-        const [result] = await db.query("DELETE FROM Users WHERE userID = ?", [
-            req.params.id,
-        ]);
-
-        // Check if the user exists
-        // If no rows were affected, the user was not found
-        if (result.affectedRows === 0)
-            return res
-                .status(404)
-                .json({ error: "User not found or already deleted" });
-
-        // Return success message
-        res.json({ message: "User deleted successfully" });
+        // User was deleted successfully
+        res.sendStatus(204); // No Content
     } catch (err) {
         // Handle errors
         // Log the error for debugging
