@@ -112,8 +112,8 @@ const AdminUsersPage: React.FC = () => {
                             </TableHeader>
                             <TableBody>
                                 {users.map((user) => (
-                                    <TableRow key={user.id}>
-                                        <TableCell>{user.id}</TableCell>
+                                    <TableRow key={user.userID}>
+                                        <TableCell>{user.userID}</TableCell>
                                         <TableCell>{user.username}</TableCell>
                                         <TableCell>
                                             <Chip
