@@ -6,29 +6,46 @@ type RequestOptions = {
     token?: string;
 };
 
-const request = async <T>(
+const request = async <T = any>(
     endpoint: string,
-    options: RequestOptions = {},
+    options: {
+        method?: "GET" | "POST" | "PUT" | "DELETE";
+        body?: any;
+        expectJson?: boolean; // ✅ new
+    } = {},
 ): Promise<T> => {
     const token = localStorage.getItem("token");
+
     const headers: HeadersInit = {
         "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
     };
 
-    const res = await fetch(`${API_URL}${endpoint}`, {
+    const res = await fetch(`https://db.aerex.tk/api${endpoint}`, {
         method: options.method || "GET",
         headers,
         body: options.body ? JSON.stringify(options.body) : undefined,
     });
 
-    const data = await res.json();
-
     if (!res.ok) {
-        throw new Error(data.error || "API error");
+        const contentType = res.headers.get("content-type");
+        const errorMessage = contentType?.includes("application/json")
+            ? (await res.json())?.error || "API error"
+            : res.statusText;
+
+        throw new Error(errorMessage);
     }
 
-    return data as T;
+    if (
+        options.expectJson === false ||
+        res.status === 204 ||
+        res.status === 201
+    ) {
+        // ✅ Don't try to parse JSON if it's a 204/201 or caller says no JSON expected
+        return undefined as T;
+    }
+
+    return res.json() as Promise<T>;
 };
 
 // Response Types
@@ -69,6 +86,7 @@ export const createAccount = (
     request("/accounts", {
         method: "POST",
         body: { accountType, branch_id },
+        expectJson: false, // ✅ optional hint to request()
     });
 
 // Branch API calls
