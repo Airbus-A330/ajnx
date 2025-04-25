@@ -1,11 +1,11 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Card, CardBody, Button, Image } from "@heroui/react";
+import { Card, CardBody, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 const HomePage: React.FC = () => {
     return (
-        <div className="container mx-auto max-w-5xl">
+        <div className="container mx-auto max-w-3xl">
             <div className="text-center mb-10">
                 <h1 className="text-4xl font-bold mb-4">
                     Welcome to AJNX Banking
@@ -15,19 +15,8 @@ const HomePage: React.FC = () => {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <Card className="border-none">
-                    <CardBody className="p-0">
-                        <Image
-                            removeWrapper
-                            alt="Banking app"
-                            className="object-cover w-full h-64 rounded-lg"
-                            src="https://img.heroui.chat/image/finance?w=600&h=400&u=ajnx1"
-                        />
-                    </CardBody>
-                </Card>
-
-                <div className="flex flex-col justify-center">
+            <Card className="mb-12">
+                <CardBody className="text-center p-8">
                     <h2 className="text-2xl font-bold mb-4">
                         Your Money, Your Control
                     </h2>
@@ -36,7 +25,7 @@ const HomePage: React.FC = () => {
                         finances with ease. Check balances, transfer funds, and
                         track your spending all in one place.
                     </p>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex justify-center flex-wrap gap-4">
                         <Button
                             as={RouterLink}
                             to="/login"
@@ -56,8 +45,8 @@ const HomePage: React.FC = () => {
                             Register
                         </Button>
                     </div>
-                </div>
-            </div>
+                </CardBody>
+            </Card>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
                 <Card>

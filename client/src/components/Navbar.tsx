@@ -92,56 +92,61 @@ const NavbarComponent: React.FC = () => {
 
             <NavbarContent justify="end">
                 {isAuthenticated ? (
-                    <>
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button
-                                    variant="light"
-                                    startContent={<Icon icon="lucide:user" />}
-                                >
-                                    Account
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu aria-label="Account actions">
-                                <DropdownItem
-                                    key="admin-users"
-                                    as={RouterLink}
-                                    to="/admin/users"
-                                >
-                                    Admin: Users
-                                </DropdownItem>
-                                <DropdownItem
-                                    key="admin-export"
-                                    as={RouterLink}
-                                    to="/admin/export"
-                                >
-                                    Admin: Export
-                                </DropdownItem>
-                                <DropdownItem
-                                    key="logout"
-                                    onPress={handleLogout}
-                                    className="text-danger"
-                                >
-                                    Logout
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </>
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="light"
+                                startContent={<Icon icon="lucide:user" />}
+                            >
+                                Account
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu aria-label="Account actions">
+                            <DropdownItem
+                                key="admin-users"
+                                as={RouterLink}
+                                to="/admin/users"
+                            >
+                                Admin: Users
+                            </DropdownItem>
+                            <DropdownItem
+                                key="admin-export"
+                                as={RouterLink}
+                                to="/admin/export"
+                            >
+                                Admin: Export
+                            </DropdownItem>
+                            <DropdownItem
+                                key="logout"
+                                onPress={handleLogout}
+                                className="text-danger"
+                            >
+                                Logout
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 ) : (
                     <>
-                        <NavbarItem>
-                            <Link as={RouterLink} to="/login">
-                                Login
-                            </Link>
-                        </NavbarItem>
                         <NavbarItem>
                             <Button
                                 as={RouterLink}
                                 to="/register"
-                                color="primary"
+                                color="secondary"
                                 variant="flat"
+                                startContent={<Icon icon="lucide:user-plus" />}
                             >
                                 Register
+                            </Button>
+                        </NavbarItem>
+                        <NavbarItem>
+                            <Button
+                                as={RouterLink}
+                                to="/login"
+                                color="primary"
+                                variant="solid"
+                                startContent={<Icon icon="lucide:log-in" />}
+                            >
+                                Login
                             </Button>
                         </NavbarItem>
                     </>
