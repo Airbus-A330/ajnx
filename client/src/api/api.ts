@@ -61,6 +61,13 @@ export const getMe = (): Promise<User> => request("/auth/me");
 // Accounts API calls
 export const getAccounts = (): Promise<Account[]> => request("/accounts");
 
+// Create account API calls
+export const createAccount = (accountType: string): Promise<void> =>
+    request("/accounts", {
+        method: "POST",
+        body: { accountType },
+    });
+
 // Transactions API calls
 export const deposit = (accountID: number, amount: number): Promise<void> =>
     request("/transactions/deposit", {

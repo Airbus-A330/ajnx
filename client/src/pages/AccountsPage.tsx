@@ -11,9 +11,12 @@ import {
     TableCell,
     Chip,
     Divider,
+    Select,
+    SelectItem,
+    Button,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getAccounts } from "../api/api";
+import { getAccounts, createAccount } from "../api/api"; // We'll add createAccount in API file!
 
 interface Account {
     accountID: number;
@@ -25,22 +28,37 @@ const AccountsPage: React.FC = () => {
     const [accounts, setAccounts] = React.useState<Account[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
+    const [accountType, setAccountType] = React.useState<string>("checking"); // Default
+    const [creating, setCreating] = React.useState(false);
+
+    const fetchAccounts = async () => {
+        try {
+            const response = await getAccounts();
+            setAccounts(response);
+        } catch (err) {
+            setError("Failed to load accounts");
+            console.error("Error fetching accounts:", err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     React.useEffect(() => {
-        const fetchAccounts = async () => {
-            try {
-                const response = await getAccounts();
-                setAccounts(response);
-            } catch (err) {
-                setError("Failed to load accounts");
-                console.error("Error fetching accounts:", err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         fetchAccounts();
     }, []);
+
+    const handleCreateAccount = async () => {
+        setCreating(true);
+        try {
+            await createAccount(accountType);
+            await fetchAccounts(); // Refresh list after creation
+        } catch (err) {
+            console.error("Error creating account:", err);
+            alert("Failed to create account.");
+        } finally {
+            setCreating(false);
+        }
+    };
 
     const getAccountTypeIcon = (type: string) => {
         switch (type.toLowerCase()) {
@@ -95,20 +113,35 @@ const AccountsPage: React.FC = () => {
 
             <Card className="mb-6">
                 <CardBody>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         <div>
                             <p className="text-default-500">Total Balance</p>
                             <p className="text-3xl font-bold">
                                 {formatCurrency(totalBalance)}
                             </p>
                         </div>
-                        <div className="p-3 bg-primary-100 rounded-full">
-                            <Icon
-                                icon="lucide:wallet"
-                                width={32}
-                                height={32}
-                                className="text-primary"
-                            />
+
+                        <div className="flex items-center gap-4">
+                            <Select
+                                label="Account Type"
+                                value={accountType}
+                                onChange={(e) => setAccountType(e.target.value)}
+                            >
+                                <SelectItem key="checking" value="checking">
+                                    Checking
+                                </SelectItem>
+                                <SelectItem key="savings" value="savings">
+                                    Savings
+                                </SelectItem>
+                            </Select>
+
+                            <Button
+                                color="primary"
+                                onClick={handleCreateAccount}
+                                isLoading={creating}
+                            >
+                                Create Account
+                            </Button>
                         </div>
                     </div>
                 </CardBody>
