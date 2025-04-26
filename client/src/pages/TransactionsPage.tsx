@@ -13,7 +13,13 @@ import {
     Divider,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getAccounts, deposit, withdraw, transfer, getTransactionHistory } from "../api/api";
+import {
+    getAccounts,
+    deposit,
+    withdraw,
+    transfer,
+    getTransactionHistory,
+} from "../api/api";
 
 interface Account {
     accountID: number;
@@ -214,7 +220,9 @@ const TransactionsPage: React.FC = () => {
                                     }
                                     renderValue={(selected) => {
                                         const selectedAccount = accounts.find(
-                                            (acc) => acc.accountID.toString() === selected
+                                            (acc) =>
+                                                acc.accountID.toString() ===
+                                                selected,
                                         );
                                         return selectedAccount
                                             ? `${selectedAccount.accountType} (ID: ${selectedAccount.accountID})`
@@ -504,8 +512,12 @@ const TransactionsPage: React.FC = () => {
                                             ${Number(txn.amount).toFixed(2)}
                                         </td>
                                         <td className="py-2 pr-4">
-                                            {new Date(txn.deposit_date).toLocaleDateString() ||
-                                                new Date(txn.withdrawal_date).toLocaleDateString() ||
+                                            {new Date(
+                                                txn.deposit_date,
+                                            ).toLocaleDateString() ||
+                                                new Date(
+                                                    txn.withdrawal_date,
+                                                ).toLocaleDateString() ||
                                                 "-"}
                                         </td>
                                     </tr>
