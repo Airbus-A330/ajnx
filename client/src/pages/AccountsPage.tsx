@@ -331,9 +331,7 @@ const AccountsPage: React.FC = () => {
                                             {account.branch_name}
                                         </TableCell>
                                         <TableCell>
-                                            {"first_name" in account && "last_name" in account
-                                                ? `${account.first_name} ${account.last_name}`
-                                                : "AJNX Card Services"}
+                                            `${account.first_name} ${account.last_name}`
                                         </TableCell>
                                     </TableRow>
                                 ))}
