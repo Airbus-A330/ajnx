@@ -31,7 +31,7 @@ router.post("/", requireAuth, async (req, res) => {
 
         // Insert the new credit card
         await db.query(
-            `INSERT INTO Credit_Card (account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
+            `INSERT INTO Credit_Cardss (account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
              VALUES (?, ?, ?, 'MasterCard', 5000.00, 0.00, ?, ?)`,
             [
                 accountID,
@@ -70,7 +70,7 @@ router.get("/", requireAuth, async (req, res) => {
             `SELECT 
            card_number, card_type, credit_limit, balance, 
            issue_date, expiration_date, account_id 
-         FROM Credit_Card 
+         FROM Credit_Cards 
          WHERE customer_id = ?`,
             [req.user.userID],
         );
@@ -102,7 +102,7 @@ router.delete("/:card_number", requireAuth, async (req, res) => {
     try {
         // Validate input
         const [result] = await db.query(
-            "DELETE FROM Credit_Card WHERE card_number = ? AND customer_id = ?",
+            "DELETE FROM Credit_Cards WHERE card_number = ? AND customer_id = ?",
             [card_number, req.user.userID],
         );
 
@@ -144,7 +144,7 @@ router.put("/:card_number", requireAuth, async (req, res) => {
     try {
         // Check if the card exists and belongs to the user
         const [result] = await db.query(
-            "UPDATE Credit_Card SET balance = balance - ? WHERE card_number = ? AND customer_id = ?",
+            "UPDATE Credit_Cards SET balance = balance - ? WHERE card_number = ? AND customer_id = ?",
             [amount, card_number, req.user.userID],
         );
 
