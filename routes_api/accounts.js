@@ -26,7 +26,7 @@ router.get("/", requireAuth, async (req, res) => {
                 bk.last_name
             FROM Accounts a
             JOIN Branches b ON a.branch_id = b.branch_id
-            LEFT JOIN Bankers bk ON a.branch_id = bk.branch_id
+            JOIN Bankers bk ON a.branch_id = bk.branch_id
             WHERE a.userID = ?`,
             [req.user.userID],
         );
