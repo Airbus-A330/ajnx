@@ -59,7 +59,16 @@ const AccountsPage: React.FC = () => {
     const fetchAccounts = async () => {
         try {
             const response = await getAccounts();
-            setAccounts(response);
+            setAccounts(
+                response.map((account: any) => ({
+                    accountID: account.accountID,
+                    accountType: account.accountType,
+                    balance: account.balance,
+                    branch_name: account.branch_name,
+                    first_name: account.first_name,
+                    last_name: account.last_name,
+                }))
+            );
         } catch (err) {
             setError("Failed to load accounts");
             console.error("Error fetching accounts:", err);
@@ -181,10 +190,10 @@ const AccountsPage: React.FC = () => {
                                 }
                                 className="min-w-[10rem]"
                             >
-                                <SelectItem key="checking" value="checking">
+                                <SelectItem key="checking">
                                     Checking
                                 </SelectItem>
-                                <SelectItem key="savings" value="savings">
+                                <SelectItem key="savings">
                                     Savings
                                 </SelectItem>
                             </Select>
@@ -201,7 +210,6 @@ const AccountsPage: React.FC = () => {
                                 {branches.map((branch) => (
                                     <SelectItem
                                         key={branch.branch_id}
-                                        value={branch.branch_id.toString()}
                                     >
                                         {branch.branch_name}
                                     </SelectItem>
