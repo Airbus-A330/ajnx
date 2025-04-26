@@ -31,9 +31,10 @@ router.post("/", requireAuth, async (req, res) => {
 
         // Insert the new credit card
         await db.query(
-            `INSERT INTO Credit_Cards (account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
-             VALUES (?, ?, ?, 'MasterCard', 5000.00, 0.00, ?, ?)`,
+            `INSERT INTO Credit_Cards (card_number, account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
+             VALUES (?, ?, ?, ?, 'MasterCard', 5000.00, 0.00, ?, ?)`,
             [
+                `5${Math.floor(1000000000000000 + Math.random() * 9000000000000000)}`, // Random 16-digit card number
                 accountID,
                 req.user.userID,
                 Math.floor(100 + Math.random() * 900), // Random 3-digit CVC
