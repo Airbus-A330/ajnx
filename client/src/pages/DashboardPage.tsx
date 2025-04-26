@@ -1,326 +1,246 @@
 import React from "react";
 import {
-    Card,
-    CardBody,
-    CardHeader,
-    Divider,
-    Input,
-    Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Input,
+  Button,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import {
-    getMe,
-    getCustomerProfile,
-    createCustomerProfile,
-    updateCustomerProfile,
+  getCreditCards,
+  createCreditCard,
+  createCustomerProfile,
 } from "../api/api";
 
-interface UserData {
-    username: string;
-    role: string;
-    lastLogin: string;
+interface CreditCard {
+  card_number: string;
+  card_type: string;
+  credit_limit: number;
+  balance: number;
+  issue_date: string;
+  expiration_date: string;
+  account_id: number;
 }
 
 interface CustomerProfile {
-    first_name: string;
-    last_name: string;
-    address: string;
-    phone: string;
-    email: string;
+  first_name: string;
+  last_name: string;
+  address: string;
+  phone: string;
+  email: string;
 }
 
-const DashboardPage: React.FC = () => {
-    const [userData, setUserData] = React.useState<UserData | null>(null);
-    const [customerProfile, setCustomerProfile] =
-        React.useState<CustomerProfile | null>(null);
-    const [formData, setFormData] = React.useState<CustomerProfile>({
-        first_name: "",
-        last_name: "",
-        address: "",
-        phone: "",
-        email: "",
-    });
-    const [editing, setEditing] = React.useState(false);
-    const [isLoading, setIsLoading] = React.useState(true);
-    const [error, setError] = React.useState("");
+const CreditCardsPage: React.FC = () => {
+  const [cards, setCards] = React.useState<CreditCard[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [creating, setCreating] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const [showProfileForm, setShowProfileForm] = React.useState(false);
+  const [profileForm, setProfileForm] = React.useState<CustomerProfile>({
+    first_name: "",
+    last_name: "",
+    address: "",
+    phone: "",
+    email: "",
+  });
 
-    React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const user = await getMe();
-                setUserData({
-                    username: user.username,
-                    role: user.role,
-                    lastLogin: user?.lastLogin || "Now",
-                });
-                const profile = await getCustomerProfile();
-                if (profile) {
-                    setCustomerProfile(profile);
-                    setFormData(profile);
-                }
-            } catch (err) {
-                console.error("Error loading dashboard data:", err);
-                setError("Failed to load user data");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const handleChange = (field: keyof CustomerProfile, value: string) => {
-        setFormData({ ...formData, [field]: value });
-    };
-
-    const handleSubmit = async () => {
-        try {
-            if (customerProfile) {
-                await updateCustomerProfile(formData);
-            } else {
-                await createCustomerProfile(formData);
-            }
-            setCustomerProfile(formData);
-            setEditing(false);
-        } catch (err) {
-            alert("Failed to save profile");
-            console.error("Save error:", err);
-        }
-    };
-
-    if (isLoading) {
-        return (
-            <div className="container mx-auto max-w-5xl flex justify-center items-center h-64">
-                <p>Loading...</p>
-            </div>
-        );
+  const fetchCards = async () => {
+    try {
+      const response = await getCreditCards();
+      setCards(response);
+    } catch (err: any) {
+      if (err.message.includes("404")) {
+        setShowProfileForm(true);
+      } else {
+        setError("Failed to load credit cards");
+      }
+      console.error("Error fetching cards:", err);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (error) {
-        return (
-            <div className="container mx-auto max-w-5xl">
-                <div className="bg-danger-50 text-danger p-4 rounded-lg">
-                    {error}
+  React.useEffect(() => {
+    fetchCards();
+  }, []);
+
+  const handleApplyCard = async () => {
+    setCreating(true);
+    try {
+      await createCreditCard();
+      await fetchCards();
+    } catch (err) {
+      console.error("Error creating card:", err);
+      alert("Failed to create credit card");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const handleProfileSubmit = async () => {
+    try {
+      await createCustomerProfile(profileForm);
+      setShowProfileForm(false);
+      await fetchCards();
+    } catch (err) {
+      alert("Failed to create customer profile.");
+      console.error("Profile creation error:", err);
+    }
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+  };
+
+  const totalLimit = cards.reduce((sum, c) => sum + c.credit_limit, 0);
+  const totalBalance = cards.reduce((sum, c) => sum + c.balance, 0);
+  const utilization = totalLimit > 0 ? (totalBalance / totalLimit) * 100 : 0;
+
+  return (
+    <div className="container mx-auto max-w-5xl">
+      <h1 className="text-3xl font-bold mb-6">Your Credit Cards</h1>
+
+      {showProfileForm ? (
+        <Card className="mb-6">
+          <CardHeader className="flex gap-3">
+            <Icon icon="lucide:user" className="text-primary" />
+            <div className="flex flex-col">
+              <p className="text-md font-bold">Complete Your Profile</p>
+              <p className="text-small text-default-500">
+                Before applying for a card, we need your information.
+              </p>
+            </div>
+          </CardHeader>
+          <Divider />
+          <CardBody>
+            <form className="space-y-4">
+              <Input
+                label="First Name"
+                value={profileForm.first_name}
+                onChange={(e) => setProfileForm({ ...profileForm, first_name: e.target.value })}
+                required
+              />
+              <Input
+                label="Last Name"
+                value={profileForm.last_name}
+                onChange={(e) => setProfileForm({ ...profileForm, last_name: e.target.value })}
+                required
+              />
+              <Input
+                label="Email"
+                value={profileForm.email}
+                onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                required
+              />
+              <Input
+                label="Phone"
+                value={profileForm.phone}
+                onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+                required
+              />
+              <Input
+                label="Address"
+                value={profileForm.address}
+                onChange={(e) => setProfileForm({ ...profileForm, address: e.target.value })}
+                required
+              />
+              <Button color="primary" onClick={handleProfileSubmit}>
+                Submit
+              </Button>
+            </form>
+          </CardBody>
+        </Card>
+      ) : (
+        <>
+          <Card className="mb-6 bg-primary-50">
+            <CardBody className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div>
+                <p className="text-default-600">
+                  Enjoy simplified purchasing power with AJNXBanking credit cards.
+                  No annual fees. Competitive interest. Pure convenience.
+                </p>
+              </div>
+              {cards.length === 0 && (
+                <Button color="primary" onClick={handleApplyCard} isLoading={creating}>
+                  Apply Now
+                </Button>
+              )}
+            </CardBody>
+          </Card>
+
+          <Card className="mb-6">
+            <CardBody>
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                  <p className="text-default-500">Total Credit Limit</p>
+                  <p className="text-xl font-bold">{formatCurrency(totalLimit)}</p>
                 </div>
-            </div>
-        );
-    }
+                <div>
+                  <p className="text-default-500">Total Balance</p>
+                  <p className="text-xl font-bold">{formatCurrency(totalBalance)}</p>
+                </div>
+                <div>
+                  <p className="text-default-500">Utilization</p>
+                  <p className="text-xl font-bold">{utilization.toFixed(1)}%</p>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
 
-    return (
-        <div className="container mx-auto max-w-5xl">
-            <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <Card>
-                    <CardBody className="p-6">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-primary-100 rounded-full">
-                                <Icon
-                                    icon="lucide:user"
-                                    width={24}
-                                    height={24}
-                                    className="text-primary"
-                                />
-                            </div>
-                            <div>
-                                <p className="text-default-500 text-sm">
-                                    Welcome
-                                </p>
-                                <p className="font-bold text-xl">
-                                    {userData?.username}
-                                </p>
-                            </div>
-                        </div>
-                    </CardBody>
-                </Card>
-
-                <Card>
-                    <CardBody className="p-6">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-secondary-100 rounded-full">
-                                <Icon
-                                    icon="lucide:shield"
-                                    width={24}
-                                    height={24}
-                                    className="text-secondary"
-                                />
-                            </div>
-                            <div>
-                                <p className="text-default-500 text-sm">Role</p>
-                                <p className="font-bold text-xl">
-                                    {userData?.role || "Customer"}
-                                </p>
-                            </div>
-                        </div>
-                    </CardBody>
-                </Card>
-
-                <Card>
-                    <CardBody className="p-6">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-primary-100 rounded-full">
-                                <Icon
-                                    icon="lucide:clock"
-                                    width={24}
-                                    height={24}
-                                    className="text-primary"
-                                />
-                            </div>
-                            <div>
-                                <p className="text-default-500 text-sm">
-                                    Last Login
-                                </p>
-                                <p className="font-bold text-xl">
-                                    {userData?.lastLogin || "Now"}
-                                </p>
-                            </div>
-                        </div>
-                    </CardBody>
-                </Card>
-            </div>
-
-            <Card className="mb-8">
-                <CardHeader className="flex gap-3">
-                    <Icon icon="lucide:user-circle" className="text-primary" />
-                    <div className="flex flex-col">
-                        <p className="text-md font-bold">Customer Profile</p>
-                        <p className="text-small text-default-500">
-                            Manage your personal details
-                        </p>
-                    </div>
-                </CardHeader>
-                <Divider />
-                <CardBody>
-                    {editing || !customerProfile ? (
-                        <form className="space-y-4">
-                            <Input
-                                label="First Name"
-                                value={formData.first_name}
-                                onChange={(e) =>
-                                    handleChange("first_name", e.target.value)
-                                }
-                                required
-                            />
-                            <Input
-                                label="Last Name"
-                                value={formData.last_name}
-                                onChange={(e) =>
-                                    handleChange("last_name", e.target.value)
-                                }
-                                required
-                            />
-                            <Input
-                                label="Address"
-                                value={formData.address}
-                                onChange={(e) =>
-                                    handleChange("address", e.target.value)
-                                }
-                                required
-                            />
-                            <Input
-                                label="Phone"
-                                value={formData.phone}
-                                onChange={(e) =>
-                                    handleChange("phone", e.target.value)
-                                }
-                                required
-                            />
-                            <Input
-                                label="Email"
-                                value={formData.email}
-                                onChange={(e) =>
-                                    handleChange("email", e.target.value)
-                                }
-                                required
-                            />
-                            <div className="flex gap-4">
-                                <Button color="primary" onClick={handleSubmit}>
-                                    Save
-                                </Button>
-                                <Button
-                                    variant="light"
-                                    onClick={() => setEditing(false)}
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                        </form>
-                    ) : (
-                        <div className="space-y-2">
-                            <p>
-                                <strong>Name:</strong>{" "}
-                                {customerProfile.first_name}{" "}
-                                {customerProfile.last_name}
-                            </p>
-                            <p>
-                                <strong>Address:</strong>{" "}
-                                {customerProfile.address}
-                            </p>
-                            <p>
-                                <strong>Phone:</strong> {customerProfile.phone}
-                            </p>
-                            <p>
-                                <strong>Email:</strong> {customerProfile.email}
-                            </p>
-                            <Button
-                                className="mt-4"
-                                onClick={() => setEditing(true)}
-                            >
-                                Edit Profile
-                            </Button>
-                        </div>
-                    )}
-                </CardBody>
-            </Card>
-
-            <Card className="mb-8">
-                <CardHeader className="flex gap-3">
-                    <Icon icon="lucide:info" className="text-primary" />
-                    <div className="flex flex-col">
-                        <p className="text-md font-bold">Quick Start Guide</p>
-                        <p className="text-small text-default-500">
-                            How to use AJNX Banking
-                        </p>
-                    </div>
-                </CardHeader>
-                <Divider />
-                <CardBody>
-                    <ul className="space-y-4">
-                        <li className="flex items-start gap-2">
-                            <Icon
-                                icon="lucide:check-circle"
-                                className="text-primary mt-1"
-                            />
-                            <span>
-                                View your accounts and balances on the Accounts
-                                page
-                            </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <Icon
-                                icon="lucide:check-circle"
-                                className="text-primary mt-1"
-                            />
-                            <span>
-                                Make deposits, withdrawals, and transfers on the
-                                Transactions page
-                            </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                            <Icon
-                                icon="lucide:check-circle"
-                                className="text-primary mt-1"
-                            />
-                            <span>
-                                Access admin features through the Account
-                                dropdown in the navigation bar
-                            </span>
-                        </li>
-                    </ul>
-                </CardBody>
-            </Card>
-        </div>
-    );
+          <Card>
+            <CardHeader className="flex gap-3">
+              <div className="flex flex-col">
+                <p className="text-md font-bold">Card Details</p>
+                <p className="text-small text-default-500">
+                  View your card information and balances
+                </p>
+              </div>
+            </CardHeader>
+            <Divider />
+            <CardBody>
+              {loading ? (
+                <div className="text-center">Loading...</div>
+              ) : cards.length === 0 ? (
+                <div className="text-center py-6">
+                  <p className="text-default-500">No credit card found.</p>
+                </div>
+              ) : (
+                <Table aria-label="Credit Card Table">
+                  <TableHeader>
+                    <TableColumn>CARD NUMBER</TableColumn>
+                    <TableColumn>TYPE</TableColumn>
+                    <TableColumn>LIMIT</TableColumn>
+                    <TableColumn>BALANCE</TableColumn>
+                    <TableColumn>ISSUED</TableColumn>
+                    <TableColumn>EXPIRES</TableColumn>
+                    <TableColumn>ACCOUNT</TableColumn>
+                  </TableHeader>
+                  <TableBody>
+                    {cards.map((card) => (
+                      <TableRow key={card.card_number}>
+                        <TableCell>{"•••• " + card.card_number.slice(-4)}</TableCell>
+                        <TableCell>{card.card_type}</TableCell>
+                        <TableCell>{formatCurrency(card.credit_limit)}</TableCell>
+                        <TableCell>{formatCurrency(card.balance)}</TableCell>
+                        <TableCell>{card.issue_date}</TableCell>
+                        <TableCell>{card.expiration_date}</TableCell>
+                        <TableCell>{card.account_id}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </CardBody>
+          </Card>
+        </>
+      )}
+    </div>
+  );
 };
 
-export default DashboardPage;
+export default CreditCardsPage;
