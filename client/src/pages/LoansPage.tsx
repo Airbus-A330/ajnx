@@ -216,7 +216,7 @@ const LoansPage: React.FC = () => {
                                 <TableColumn>Loan ID</TableColumn>
                                 <TableColumn>Account ID</TableColumn>
                                 <TableColumn>Loan Amount</TableColumn>
-                                <TableColumn>Interest Rate (%)</TableColumn>
+                                <TableColumn>Interest Rate</TableColumn>
                                 <TableColumn>Start Date</TableColumn>
                                 <TableColumn>Due Date</TableColumn>
                                 <TableColumn>Status</TableColumn>
@@ -240,7 +240,7 @@ const LoansPage: React.FC = () => {
                                             >
                                                 {Number(
                                                     loan.interest_rate,
-                                                ).toFixed(2)}
+                                                ).toFixed(2)}%
                                             </Chip>
                                         </TableCell>
                                         <TableCell>
