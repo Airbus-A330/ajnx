@@ -14,6 +14,7 @@ import DashboardPage from "./pages/DashboardPage";
 import AccountsPage from "./pages/AccountsPage";
 import TransactionsPage from "./pages/TransactionsPage";
 import CardsPage from "./pages/CardsPage";
+import LoansPage from "./pages/LoansPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminExportPage from "./pages/AdminExportPage";
 
@@ -57,6 +58,7 @@ const App: React.FC = () => {
                             component={TransactionsPage}
                         />
                         <PrivateRoute path="/card" component={CardsPage} />
+                        <PrivateRoute path="/loans" component={LoansPage} />
                         <PrivateRoute
                             path="/admin/users"
                             component={AdminUsersPage}

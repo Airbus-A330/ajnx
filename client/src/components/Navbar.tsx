@@ -99,6 +99,19 @@ const NavbarComponent: React.FC = () => {
                                 Card
                             </Link>
                         </NavbarItem>
+                        <NavbarItem isActive={location.pathname === "/loans"}>
+                            <Link
+                                as={RouterLink}
+                                to="/loans"
+                                color={
+                                    location.pathname === "/loans"
+                                        ? "primary"
+                                        : "foreground"
+                                }
+                            >
+                                Loans
+                            </Link>
+                        </NavbarItem>
                     </>
                 )}
             </NavbarContent>
