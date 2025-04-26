@@ -164,6 +164,33 @@ export const createCreditCard = (): Promise<void> =>
         body: {}, // no body needed
     });
 
+// LOANS API
+export const createLoan = (
+    accountId: number,
+    loanAmount: number,
+): Promise<void> =>
+    request("/loans", {
+        method: "POST",
+        body: { accountID: accountId, loanAmount },
+    });
+
+export const getLoans = (): Promise<any[]> =>
+    request("/loans", {
+        method: "GET",
+    });
+
+// PAYMENTS API
+export const makePayment = (loanId: number, amount: number): Promise<void> =>
+    request(`/payments/${loanId}`, {
+        method: "POST",
+        body: { amount },
+    });
+
+export const getPayments = (loanId: number): Promise<any[]> =>
+    request(`/payments/${loanId}`, {
+        method: "GET",
+    });
+
 // Admin API calls
 export const getUsers = (): Promise<User[]> => request("/users");
 
