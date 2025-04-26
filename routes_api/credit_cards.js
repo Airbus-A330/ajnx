@@ -14,14 +14,6 @@ const requireAuth = require("../functions/requireAuth.js");
 */
 
 router.post("/", requireAuth, async (req, res) => {
-    // Destructure the request body
-    const { account_id } = req.body;
-
-    // Validate input
-    if (!account_id) {
-        return res.status(400).json({ error: "account_id is required" });
-    }
-
     try {
         // Create a new credit card account
         const [accountResult] = await db.query(
