@@ -233,9 +233,15 @@ const LoansPage: React.FC = () => {
                                             )}
                                         </TableCell>
                                         <TableCell>
-                                            {Number(loan.interest_rate).toFixed(
-                                                2,
-                                            )}
+                                            <Chip
+                                                color="warning"
+                                                variant="flat"
+                                                size="sm"
+                                            >
+                                                {Number(
+                                                    loan.interest_rate,
+                                                ).toFixed(2)}
+                                            </Chip>
                                         </TableCell>
                                         <TableCell>
                                             {new Date(
