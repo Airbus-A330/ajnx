@@ -31,7 +31,7 @@ router.post("/", requireAuth, async (req, res) => {
 
         // Insert the new credit card
         await db.query(
-            `INSERT INTO Credit_Cardss (account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
+            `INSERT INTO Credit_Cards (account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
              VALUES (?, ?, ?, 'MasterCard', 5000.00, 0.00, ?, ?)`,
             [
                 accountID,
