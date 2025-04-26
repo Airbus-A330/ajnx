@@ -38,7 +38,7 @@ router.post("/", requireAuth, async (req, res) => {
             `INSERT INTO Credit_Cards (
         card_number, customer_id, cvc, card_type, 
         credit_limit, balance, issue_date, expiration_date
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 card_number,
                 req.user.userID,
