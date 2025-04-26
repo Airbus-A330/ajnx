@@ -3,6 +3,7 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Chip,
     Tabs,
     Tab,
     Input,
