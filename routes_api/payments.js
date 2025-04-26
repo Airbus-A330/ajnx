@@ -22,6 +22,30 @@ router.post("/:loanId", requireAuth, async (req, res) => {
     }
 
     try {
+        // Get loan info first
+        const [loans] = await db.query(
+            "SELECT * FROM Loans WHERE loan_id = ?",
+            [loanId],
+        );
+
+        const loan = loans[0];
+
+        if (!loan) {
+            return res.status(404).json({ error: "Loan not found" });
+        }
+
+        // Prevent paying a loan that's already paid
+        if (loan.status === "Paid") {
+            return res.status(400).json({ error: "Loan is already paid off" });
+        }
+
+        // Prevent paying more than the amount left
+        if (amount > loan.loan_amount) {
+            return res
+                .status(400)
+                .json({ error: "Payment exceeds remaining loan balance" });
+        }
+
         // Call the stored procedure 'paybackloan'
         await db.query("CALL paybackloan(?, ?)", [loanId, amount]);
 
