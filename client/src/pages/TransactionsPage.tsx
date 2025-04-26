@@ -180,7 +180,7 @@ const TransactionsPage: React.FC = () => {
                 </div>
             )}
 
-            <Card>
+            <Card className="mt-6">
                 <CardHeader>
                     <h2 className="text-xl font-bold">Manage Your Money</h2>
                 </CardHeader>
@@ -408,7 +408,7 @@ const TransactionsPage: React.FC = () => {
                 </CardBody>
             </Card>
 
-            <Card>
+            <Card className="mt-6">
                 <CardHeader className="flex items-center justify-between">
                     <h2 className="text-xl font-bold">Transaction History</h2>
                     <Select
