@@ -178,7 +178,7 @@ const DashboardPage: React.FC = () => {
                 <CardHeader className="flex gap-3">
                     <Icon icon="lucide:user-circle" className="text-primary" />
                     <div className="flex flex-col">
-                        <p className="text-md font-bold">Customer Profile</p>
+                        <p className="text-md font-bold">Profile</p>
                         <p className="text-small text-default-500">
                             Manage your personal details
                         </p>
@@ -245,7 +245,7 @@ const DashboardPage: React.FC = () => {
                 <CardHeader className="flex gap-3">
                     <Icon icon="lucide:info" className="text-primary" />
                     <div className="flex flex-col">
-                        <p className="text-md font-bold">Quick Start Guide</p>
+                        <p className="text-md font-bold">Quick Start</p>
                         <p className="text-small text-default-500">
                             How to use AJNX Banking
                         </p>
