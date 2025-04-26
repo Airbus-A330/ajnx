@@ -497,7 +497,7 @@ const TransactionsPage: React.FC = () => {
                                         </td>
                                         <td className="py-2 pr-4">
                                             {txn.deposit_date ||
-                                                txn.withdrawal_date ||
+                                                new Date(txn.withdrawal_date).toLocaleDateString() ||
                                                 "-"}
                                         </td>
                                     </tr>
