@@ -147,34 +147,18 @@ const CreditCardsPage: React.FC = () => {
                     ) : (
                         <Table aria-label="Credit Card Table">
                             <TableHeader>
-                                <TableColumn>CARD NUMBER</TableColumn>
+                                <TableColumn>ACCOUNT</TableColumn>
                                 <TableColumn>TYPE</TableColumn>
                                 <TableColumn>LIMIT</TableColumn>
                                 <TableColumn>BALANCE</TableColumn>
                                 <TableColumn>ISSUED</TableColumn>
                                 <TableColumn>EXPIRES</TableColumn>
-                                <TableColumn>ACCOUNT</TableColumn>
+                                <TableColumn>CARD NUMBER</TableColumn>
                             </TableHeader>
                             <TableBody>
                                 {cards.map((card) => (
                                     <TableRow key={card.card_number}>
-                                        <TableCell>
-                                            {showNumber
-                                                ? card.card_number.toString()
-                                                : `•••• ${card.card_number.toString().slice(-4)}`}
-                                            <Button
-                                                size="sm"
-                                                variant="light"
-                                                className="ml-2 text-xs"
-                                                onClick={() =>
-                                                    setShowNumber(
-                                                        (prev) => !prev,
-                                                    )
-                                                }
-                                            >
-                                                {showNumber ? "Hide" : "Show"}
-                                            </Button>
-                                        </TableCell>
+                                        <TableCell>{card.account_id}</TableCell>
                                         <TableCell>{card.card_type}</TableCell>
                                         <TableCell>
                                             {formatCurrency(card.credit_limit)}
@@ -192,7 +176,23 @@ const CreditCardsPage: React.FC = () => {
                                                 card.expiration_date,
                                             ).toLocaleDateString()}
                                         </TableCell>
-                                        <TableCell>{card.account_id}</TableCell>
+                                        <TableCell>
+                                            {showNumber
+                                                ? card.card_number.toString().match(/.{4}/g)?.join(" ")
+                                                : `•••• ${card.card_number.toString().slice(-4)}`}
+                                            <Button
+                                                size="sm"
+                                                variant="light"
+                                                className="ml-2 text-xs"
+                                                onClick={() =>
+                                                    setShowNumber(
+                                                        (prev) => !prev,
+                                                    )
+                                                }
+                                            >
+                                                {showNumber ? "Hide" : "Show"}
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
