@@ -10,16 +10,9 @@ import {
     Select,
     SelectItem,
     Divider,
-    Chip,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import {
-    getAccounts,
-    deposit,
-    withdraw,
-    transfer,
-    getTransactionHistory,
-} from "../api/api";
+import { getAccounts, deposit, withdraw, transfer } from "../api/api";
 
 interface Account {
     accountID: number;
@@ -32,15 +25,6 @@ const TransactionsPage: React.FC = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
     const [success, setSuccess] = React.useState("");
-
-    const [historyTab, setHistoryTab] = React.useState("all");
-    const [transactionHistory, setTransactionHistory] = React.useState<{
-        deposits: any[];
-        withdrawals: any[];
-    }>({
-        deposits: [],
-        withdrawals: [],
-    });
 
     // Deposit state
     const [depositAccountId, setDepositAccountId] = React.useState("");
@@ -58,30 +42,20 @@ const TransactionsPage: React.FC = () => {
     const [transferAmount, setTransferAmount] = React.useState("");
     const [isTransferLoading, setIsTransferLoading] = React.useState(false);
 
-    const fetchAccounts = async () => {
-        try {
-            const response = await getAccounts();
-            setAccounts(response);
-        } catch (err) {
-            setError("Failed to load accounts");
-            console.error("Error fetching accounts:", err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const fetchHistory = async (type: string) => {
-        try {
-            const response = await getTransactionHistory(type);
-            setTransactionHistory(response);
-        } catch (err) {
-            console.error("Error loading transaction history:", err);
-        }
-    };
-
     React.useEffect(() => {
+        const fetchAccounts = async () => {
+            try {
+                const response = await getAccounts();
+                setAccounts(response);
+            } catch (err) {
+                setError("Failed to load accounts");
+                console.error("Error fetching accounts:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
         fetchAccounts();
-        fetchHistory("all");
     }, []);
 
     const handleDeposit = async (e: React.FormEvent) => {
@@ -94,14 +68,18 @@ const TransactionsPage: React.FC = () => {
             await deposit(Number(depositAccountId), Number(depositAmount));
             setSuccess("Deposit successful!");
             setDepositAmount("");
-            await fetchAccounts();
-            await fetchHistory(historyTab);
+
+            // Refresh accounts
+            const response = await getAccounts();
+            setAccounts(response);
         } catch (err) {
             setError("Deposit failed. Please try again.");
             console.error("Deposit error:", err);
         } finally {
             setIsDepositLoading(false);
         }
+
+        await fetchHistory(historyTab);
     };
 
     const handleWithdraw = async (e: React.FormEvent) => {
@@ -114,14 +92,18 @@ const TransactionsPage: React.FC = () => {
             await withdraw(Number(withdrawAccountId), Number(withdrawAmount));
             setSuccess("Withdrawal successful!");
             setWithdrawAmount("");
-            await fetchAccounts();
-            await fetchHistory(historyTab);
+
+            // Refresh accounts
+            const response = await getAccounts();
+            setAccounts(response);
         } catch (err) {
             setError("Withdrawal failed. Please try again.");
             console.error("Withdraw error:", err);
         } finally {
             setIsWithdrawLoading(false);
         }
+
+        await fetchHistory(historyTab);
     };
 
     const handleTransfer = async (e: React.FormEvent) => {
@@ -138,7 +120,10 @@ const TransactionsPage: React.FC = () => {
             );
             setSuccess("Transfer successful!");
             setTransferAmount("");
-            await fetchAccounts();
+
+            // Refresh accounts
+            const response = await getAccounts();
+            setAccounts(response);
         } catch (err) {
             setError("Transfer failed. Please try again.");
             console.error("Transfer error:", err);
@@ -147,12 +132,37 @@ const TransactionsPage: React.FC = () => {
         }
     };
 
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-        }).format(amount);
+    if (isLoading) {
+        return (
+            <div className="container mx-auto max-w-5xl flex justify-center items-center h-64">
+                <p>Loading...</p>
+            </div>
+        );
+    }
+
+    const [historyTab, setHistoryTab] = React.useState<
+        "all" | "deposits" | "withdrawals"
+    >("all");
+    const [transactionHistory, setTransactionHistory] = React.useState<{
+        deposits: any[];
+        withdrawals: any[];
+    }>({
+        deposits: [],
+        withdrawals: [],
+    });
+
+    const fetchHistory = async (type: "all" | "deposits" | "withdrawals") => {
+        try {
+            const response = await getTransactionHistory(type);
+            setTransactionHistory(response);
+        } catch (err) {
+            console.error("Error loading transaction history:", err);
+        }
     };
+
+    React.useEffect(() => {
+        fetchHistory("all");
+    }, []);
 
     return (
         <div className="container mx-auto max-w-5xl">
@@ -170,7 +180,7 @@ const TransactionsPage: React.FC = () => {
                 </div>
             )}
 
-            <Card className="mb-6">
+            <Card>
                 <CardHeader>
                     <h2 className="text-xl font-bold">Manage Your Money</h2>
                 </CardHeader>
@@ -186,8 +196,61 @@ const TransactionsPage: React.FC = () => {
                                 </div>
                             }
                         >
-                            {/* Deposit form here */}
-                            {/* omitted for brevity */}
+                            <form
+                                onSubmit={handleDeposit}
+                                className="py-4 space-y-4"
+                            >
+                                <Select
+                                    label="Select Account"
+                                    placeholder="Choose an account"
+                                    selectedKeys={
+                                        depositAccountId
+                                            ? [depositAccountId]
+                                            : []
+                                    }
+                                    onChange={(e) =>
+                                        setDepositAccountId(e.target.value)
+                                    }
+                                    isRequired
+                                >
+                                    {accounts.map((account) => (
+                                        <SelectItem
+                                            key={account.accountID.toString()}
+                                            value={account.accountID}
+                                        >
+                                            {account.accountType} (ID:{" "}
+                                            {account.accountID})
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+
+                                <Input
+                                    type="number"
+                                    label="Amount"
+                                    placeholder="Enter amount"
+                                    value={depositAmount}
+                                    onValueChange={setDepositAmount}
+                                    startContent={
+                                        <span className="text-default-400">
+                                            $
+                                        </span>
+                                    }
+                                    min="0.01"
+                                    step="0.01"
+                                    isRequired
+                                />
+
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    isLoading={isDepositLoading}
+                                    startContent={
+                                        <Icon icon="lucide:arrow-down-circle" />
+                                    }
+                                >
+                                    Deposit Funds
+                                </Button>
+                            </form>
                         </Tab>
 
                         <Tab
@@ -199,7 +262,62 @@ const TransactionsPage: React.FC = () => {
                                 </div>
                             }
                         >
-                            {/* Withdraw form here */}
+                            <form
+                                onSubmit={handleWithdraw}
+                                className="py-4 space-y-4"
+                            >
+                                <Select
+                                    label="Select Account"
+                                    placeholder="Choose an account"
+                                    selectedKeys={
+                                        withdrawAccountId
+                                            ? [withdrawAccountId]
+                                            : []
+                                    }
+                                    onChange={(e) =>
+                                        setWithdrawAccountId(e.target.value)
+                                    }
+                                    isRequired
+                                >
+                                    {accounts.map((account) => (
+                                        <SelectItem
+                                            key={account.accountID.toString()}
+                                            value={account.accountID}
+                                        >
+                                            {account.accountType} (ID:{" "}
+                                            {account.accountID}) - Balance: $
+                                            {account.balance}
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+
+                                <Input
+                                    type="number"
+                                    label="Amount"
+                                    placeholder="Enter amount"
+                                    value={withdrawAmount}
+                                    onValueChange={setWithdrawAmount}
+                                    startContent={
+                                        <span className="text-default-400">
+                                            $
+                                        </span>
+                                    }
+                                    min="0.01"
+                                    step="0.01"
+                                    isRequired
+                                />
+
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    isLoading={isWithdrawLoading}
+                                    startContent={
+                                        <Icon icon="lucide:arrow-up-circle" />
+                                    }
+                                >
+                                    Withdraw Funds
+                                </Button>
+                            </form>
                         </Tab>
 
                         <Tab
@@ -211,7 +329,80 @@ const TransactionsPage: React.FC = () => {
                                 </div>
                             }
                         >
-                            {/* Transfer form here */}
+                            <form
+                                onSubmit={handleTransfer}
+                                className="py-4 space-y-4"
+                            >
+                                <Select
+                                    label="From Account"
+                                    placeholder="Choose source account"
+                                    selectedKeys={
+                                        fromAccountId ? [fromAccountId] : []
+                                    }
+                                    onChange={(e) =>
+                                        setFromAccountId(e.target.value)
+                                    }
+                                    isRequired
+                                >
+                                    {accounts.map((account) => (
+                                        <SelectItem
+                                            key={account.accountID.toString()}
+                                            value={account.accountID}
+                                        >
+                                            {account.accountType} (ID:{" "}
+                                            {account.accountID}) - Balance: $
+                                            {account.balance}
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+
+                                <Select
+                                    label="To Account"
+                                    placeholder="Choose destination account"
+                                    selectedKeys={
+                                        toAccountId ? [toAccountId] : []
+                                    }
+                                    onChange={(e) =>
+                                        setToAccountId(e.target.value)
+                                    }
+                                    isRequired
+                                >
+                                    {accounts.map((account) => (
+                                        <SelectItem
+                                            key={account.accountID.toString()}
+                                            value={account.accountID}
+                                        >
+                                            {account.accountType} (ID:{" "}
+                                            {account.accountID})
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+
+                                <Input
+                                    type="number"
+                                    label="Amount"
+                                    placeholder="Enter amount"
+                                    value={transferAmount}
+                                    onValueChange={setTransferAmount}
+                                    startContent={
+                                        <span className="text-default-400">
+                                            $
+                                        </span>
+                                    }
+                                    min="0.01"
+                                    step="0.01"
+                                    isRequired
+                                />
+
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    isLoading={isTransferLoading}
+                                    startContent={<Icon icon="lucide:repeat" />}
+                                >
+                                    Transfer Funds
+                                </Button>
+                            </form>
                         </Tab>
                     </Tabs>
                 </CardBody>
@@ -224,7 +415,10 @@ const TransactionsPage: React.FC = () => {
                         label="Filter by"
                         selectedKeys={[historyTab]}
                         onSelectionChange={(keys) => {
-                            const newTab = Array.from(keys)[0] as string;
+                            const newTab = Array.from(keys)[0] as
+                                | "all"
+                                | "deposits"
+                                | "withdrawals";
                             setHistoryTab(newTab);
                             fetchHistory(newTab);
                         }}
@@ -298,7 +492,7 @@ const TransactionsPage: React.FC = () => {
                                             {txn.account_id}
                                         </td>
                                         <td className="py-2 pr-4">
-                                            {formatCurrency(txn.amount)}
+                                            ${txn.amount.toFixed(2)}
                                         </td>
                                         <td className="py-2 pr-4">
                                             {txn.deposit_date ||
