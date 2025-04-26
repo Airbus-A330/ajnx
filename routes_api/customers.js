@@ -4,7 +4,7 @@ const router = express.Router();
 const requireAuth = require("../functions/requireAuth.js");
 
 /*
-    Path: /api/customer-profile
+    Path: /api/customers
     Method: POST
     Description: Create a new customer profile
     Request Body: { first_name: string, last_name: string, address: string, phone: string, email: string }
@@ -51,7 +51,7 @@ router.post("/", requireAuth, async (req, res) => {
 });
 
 /*
-    Path: /api/customer-profile
+    Path: /api/customers
     Method: GET
     Description: Fetch customer profile
     Request Body: N/A
@@ -85,7 +85,7 @@ router.get("/", requireAuth, async (req, res) => {
 });
 
 /*
-    Path: /api/customer-profile
+    Path: /api/customers
     Method: PUT
     Description: Update customer profile
     Request Body: { first_name: string, last_name: string, address: string, phone: string, email: string }
