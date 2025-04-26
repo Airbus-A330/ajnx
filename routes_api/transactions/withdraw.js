@@ -15,24 +15,24 @@ const requireAuth = require("../../functions/requireAuth.js");
     Notes: Only the account owner or admin can withdraw money.
 */
 router.post("/", requireAuth, async (req, res) => {
-    // Check if user is authenticated
+    // Destructure request body
     const { accountID, amount, description } = req.body;
 
-    // Validate input
+    // Validate required fields
     if (!accountID || amount <= 0)
         return res.status(400).json({ error: "Invalid withdrawal data" });
 
-    // Check if the user is authenticated
-    // Ensure user owns the account
     try {
-        // Check if the account exists
+        // Check if the account exists and belongs to the user or if the user is an admin
         const [accounts] = await db.query(
             "SELECT * FROM Accounts WHERE accountID = ?",
             [accountID],
         );
+
+        // If no account found, return 404 Not Found
         const account = accounts[0];
 
-        // Check if the account belongs to the user or if the user is an admin
+        // If account not found, return 404 Not Found
         if (
             !account ||
             (account.userID !== req.user.userID && req.user.role !== "admin")
@@ -40,21 +40,29 @@ router.post("/", requireAuth, async (req, res) => {
             return res.status(403).json({ error: "Unauthorized withdrawal" });
         }
 
-        // Check if the account is active
+        // Check if the account has sufficient balance
         if (account.balance < amount)
             return res.status(400).json({ error: "Insufficient funds" });
 
-        // Update the account balance and log the transaction
+        // Update the account balance
         await db.query(
             "UPDATE Accounts SET balance = balance - ? WHERE accountID = ?",
             [amount, accountID],
         );
+
+        // Insert the transaction into the Transactions table
         await db.query(
             "INSERT INTO Transactions (accountID, amount, transactionType, description) VALUES (?, ?, ?, ?)",
             [accountID, amount, "withdrawal", description || "Withdrawal"],
         );
 
-        // Send success response
+        // Insert the withdrawal into the Withdrawals table
+        await db.query(
+            "INSERT INTO Withdrawals (account_id, amount, withdrawal_date) VALUES (?, ?, CURDATE())",
+            [accountID, amount],
+        );
+
+        // Withdrawal successful
         res.status(201).json({ message: "Withdrawal successful" });
     } catch (err) {
         // Handle errors

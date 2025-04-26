@@ -31,7 +31,8 @@ interface CustomerProfile {
 
 const DashboardPage: React.FC = () => {
     const [userData, setUserData] = React.useState<UserData | null>(null);
-    const [customerProfile, setCustomerProfile] = React.useState<CustomerProfile | null>(null);
+    const [customerProfile, setCustomerProfile] =
+        React.useState<CustomerProfile | null>(null);
     const [formData, setFormData] = React.useState<CustomerProfile>({
         first_name: "",
         last_name: "",
@@ -52,7 +53,7 @@ const DashboardPage: React.FC = () => {
                     role: user.role,
                     lastLogin: user?.lastLogin || "Now",
                 });
-    
+
                 try {
                     const profile = await getCustomerProfile();
                     if (profile) {
@@ -62,7 +63,6 @@ const DashboardPage: React.FC = () => {
                 } catch (profileError: any) {
                     setCustomerProfile(null);
                 }
-    
             } catch (err) {
                 console.error("Error loading dashboard data:", err);
                 setError("Failed to load user data");
@@ -70,10 +70,10 @@ const DashboardPage: React.FC = () => {
                 setIsLoading(false);
             }
         };
-    
+
         fetchData();
     }, []);
-    
+
     const handleChange = (field: keyof CustomerProfile, value: string) => {
         setFormData({ ...formData, [field]: value });
     };
@@ -128,8 +128,12 @@ const DashboardPage: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <p className="text-default-500 text-sm">Welcome</p>
-                                <p className="font-bold text-xl">{userData?.username}</p>
+                                <p className="text-default-500 text-sm">
+                                    Welcome
+                                </p>
+                                <p className="font-bold text-xl">
+                                    {userData?.username}
+                                </p>
                             </div>
                         </div>
                     </CardBody>
@@ -148,7 +152,9 @@ const DashboardPage: React.FC = () => {
                             </div>
                             <div>
                                 <p className="text-default-500 text-sm">Role</p>
-                                <p className="font-bold text-xl">{userData?.role || "Customer"}</p>
+                                <p className="font-bold text-xl">
+                                    {userData?.role || "Customer"}
+                                </p>
                             </div>
                         </div>
                     </CardBody>
@@ -166,8 +172,12 @@ const DashboardPage: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <p className="text-default-500 text-sm">Last Login</p>
-                                <p className="font-bold text-xl">{userData?.lastLogin || "Now"}</p>
+                                <p className="text-default-500 text-sm">
+                                    Last Login
+                                </p>
+                                <p className="font-bold text-xl">
+                                    {userData?.lastLogin || "Now"}
+                                </p>
                             </div>
                         </div>
                     </CardBody>
@@ -191,49 +201,76 @@ const DashboardPage: React.FC = () => {
                             <Input
                                 label="First Name"
                                 value={formData.first_name}
-                                onChange={(e) => handleChange("first_name", e.target.value)}
+                                onChange={(e) =>
+                                    handleChange("first_name", e.target.value)
+                                }
                                 required
                             />
                             <Input
                                 label="Last Name"
                                 value={formData.last_name}
-                                onChange={(e) => handleChange("last_name", e.target.value)}
+                                onChange={(e) =>
+                                    handleChange("last_name", e.target.value)
+                                }
                                 required
                             />
                             <Input
                                 label="Address"
                                 value={formData.address}
-                                onChange={(e) => handleChange("address", e.target.value)}
+                                onChange={(e) =>
+                                    handleChange("address", e.target.value)
+                                }
                                 required
                             />
                             <Input
                                 label="Phone"
                                 value={formData.phone}
-                                onChange={(e) => handleChange("phone", e.target.value)}
+                                onChange={(e) =>
+                                    handleChange("phone", e.target.value)
+                                }
                                 required
                             />
                             <Input
                                 label="Email"
                                 value={formData.email}
-                                onChange={(e) => handleChange("email", e.target.value)}
+                                onChange={(e) =>
+                                    handleChange("email", e.target.value)
+                                }
                                 required
                             />
                             <div className="flex gap-4">
                                 <Button color="primary" onClick={handleSubmit}>
                                     Save
                                 </Button>
-                                <Button variant="light" onClick={() => setEditing(false)}>
+                                <Button
+                                    variant="light"
+                                    onClick={() => setEditing(false)}
+                                >
                                     Cancel
                                 </Button>
                             </div>
                         </form>
                     ) : (
                         <div className="space-y-2">
-                            <p><strong>Name:</strong> {customerProfile.first_name} {customerProfile.last_name}</p>
-                            <p><strong>Address:</strong> {customerProfile.address}</p>
-                            <p><strong>Phone:</strong> {customerProfile.phone}</p>
-                            <p><strong>Email:</strong> {customerProfile.email}</p>
-                            <Button className="mt-4" onClick={() => setEditing(true)}>
+                            <p>
+                                <strong>Name:</strong>{" "}
+                                {customerProfile.first_name}{" "}
+                                {customerProfile.last_name}
+                            </p>
+                            <p>
+                                <strong>Address:</strong>{" "}
+                                {customerProfile.address}
+                            </p>
+                            <p>
+                                <strong>Phone:</strong> {customerProfile.phone}
+                            </p>
+                            <p>
+                                <strong>Email:</strong> {customerProfile.email}
+                            </p>
+                            <Button
+                                className="mt-4"
+                                onClick={() => setEditing(true)}
+                            >
                                 Edit Profile
                             </Button>
                         </div>
@@ -260,7 +297,8 @@ const DashboardPage: React.FC = () => {
                                 className="text-primary mt-1"
                             />
                             <span>
-                                View your accounts and balances on the Accounts page
+                                View your accounts and balances on the Accounts
+                                page
                             </span>
                         </li>
                         <li className="flex items-start gap-2">
@@ -269,7 +307,8 @@ const DashboardPage: React.FC = () => {
                                 className="text-primary mt-1"
                             />
                             <span>
-                                Make deposits, withdrawals, and transfers on the Transactions page
+                                Make deposits, withdrawals, and transfers on the
+                                Transactions page
                             </span>
                         </li>
                         <li className="flex items-start gap-2">
@@ -278,7 +317,8 @@ const DashboardPage: React.FC = () => {
                                 className="text-primary mt-1"
                             />
                             <span>
-                                Access admin features through the Account dropdown in the navigation bar
+                                Access admin features through the Account
+                                dropdown in the navigation bar
                             </span>
                         </li>
                     </ul>
