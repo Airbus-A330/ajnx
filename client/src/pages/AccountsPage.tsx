@@ -333,7 +333,7 @@ const AccountsPage: React.FC = () => {
                                         <TableCell>
                                             {"first_name" in account && "last_name" in account
                                                 ? `${account.first_name} ${account.last_name}`
-                                                : "N/A"}
+                                                : "AJNX Card Services"}
                                         </TableCell>
                                     </TableRow>
                                 ))}
