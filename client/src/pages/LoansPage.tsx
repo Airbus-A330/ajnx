@@ -218,8 +218,8 @@ const LoansPage: React.FC = () => {
                                     <TableRow key={loan.loan_id}>
                                         <TableCell>{loan.loan_id}</TableCell>
                                         <TableCell>{loan.account_id}</TableCell>
-                                        <TableCell>${loan.loan_amount.toFixed(2)}</TableCell>
-                                        <TableCell>{loan.interest_rate.toFixed(2)}</TableCell>
+                                        <TableCell>${Number(loan.loan_amount).toFixed(2)}</TableCell>
+                                        <TableCell>{Number(loan.interest_rate).toFixed(2)}</TableCell>
                                         <TableCell>{loan.start_date}</TableCell>
                                         <TableCell>{loan.due_date}</TableCell>
                                         <TableCell>{loan.status}</TableCell>
@@ -304,7 +304,7 @@ const LoansPage: React.FC = () => {
                                     {payments.map((payment) => (
                                         <TableRow key={payment.payment_id}>
                                             <TableCell>{payment.payment_id}</TableCell>
-                                            <TableCell>${payment.amount.toFixed(2)}</TableCell>
+                                            <TableCell>${Number(payment.amount).toFixed(2)}</TableCell>
                                             <TableCell>{payment.payment_date}</TableCell>
                                         </TableRow>
                                     ))}
