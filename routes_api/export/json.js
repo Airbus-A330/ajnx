@@ -27,10 +27,8 @@ router.get("/", requireAuth, requireAdmin, async (req, res) => {
         // Filter out the tables we want to export
         const exportData = {};
 
-        console.log("Tables to export:", tables);
-
         // Loop through each table and fetch its data
-        for (const { table_name } of tables) {
+        for (const { TABLE_NAME: table_name } of tables) {
             const [rows] = await db.query(`SELECT * FROM \`${table_name}\``);
             exportData[table_name] = rows;
         }
