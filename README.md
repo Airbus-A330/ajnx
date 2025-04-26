@@ -28,14 +28,14 @@ Follow these steps carefully to set up and run the project locally or in product
 - Locate the `.env.example` file at the project root.
 - Fill out all required fields:
 
-  | Field | Description |
-  |:--|:--|
-  | `DB_HOST` | Your MySQL database host (e.g., `localhost`, or a remote IP) |
-  | `DB_USER` | Your MySQL username |
-  | `DB_PASSWORD` | Your MySQL password |
-  | `DB_NAME` | Your database name (e.g., `AJNXBanking`) |
-  | `PORT` | Port to run the backend server (e.g., `3306`) |
-  | `JWT_SECRET` | Secret key used for signing JWT tokens |
+    | Field         | Description                                                  |
+    | :------------ | :----------------------------------------------------------- |
+    | `DB_HOST`     | Your MySQL database host (e.g., `localhost`, or a remote IP) |
+    | `DB_USER`     | Your MySQL username                                          |
+    | `DB_PASSWORD` | Your MySQL password                                          |
+    | `DB_NAME`     | Your database name (e.g., `AJNXBanking`)                     |
+    | `PORT`        | Port to run the backend server (e.g., `3306`)                |
+    | `JWT_SECRET`  | Secret key used for signing JWT tokens                       |
 
 - **Rename** the file from `.env.example` to `.env` (remove `.example`!)
 
@@ -73,6 +73,7 @@ npm run start:prod
 ```
 
 Notes:
+
 - Minimal logs are printed.
 - Fast and optimized, but harder to debug.
 
@@ -86,6 +87,7 @@ npm run start:dev
 ```
 
 Notes:
+
 - Slower startup since the project is recompiled.
 - Much easier for debugging errors.
 

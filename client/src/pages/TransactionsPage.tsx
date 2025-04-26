@@ -209,16 +209,9 @@ const TransactionsPage: React.FC = () => {
                             >
                                 <Select
                                     label="Select Account"
-                                    selectedKeys={
-                                        depositAccountId
-                                            ? [depositAccountId]
-                                            : []
-                                    }
-                                    onSelectionChange={(keys) => {
-                                        const selectedKey = Array.from(
-                                            keys,
-                                        )[0] as string;
-                                        setDepositAccountId(selectedKey);
+                                    selectedKey={depositAccountId || ""}
+                                    onSelectionChange={(key) => {
+                                        setDepositAccountId(key as string);
                                     }}
                                     placeholder="Choose an account"
                                     className="min-w-[10rem]"
@@ -229,8 +222,7 @@ const TransactionsPage: React.FC = () => {
                                             key={account.accountID.toString()}
                                             value={account.accountID.toString()}
                                         >
-                                            {account.accountType} (ID:{" "}
-                                            {account.accountID})
+                                            {account.accountType} (ID: {account.accountID})
                                         </SelectItem>
                                     ))}
                                 </Select>
