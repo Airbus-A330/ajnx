@@ -17,19 +17,26 @@ const requireAdmin = require("../../functions/requireAdmin.js");
 router.get("/", requireAuth, requireAdmin, async (req, res) => {
     // Check if user is authenticated
     try {
-        // Retrieve userID from the request object
-        const [users] = await db.query(
-            "SELECT userID, username, role FROM Users",
-        );
-        const [accounts] = await db.query("SELECT * FROM Accounts");
-        const [transactions] = await db.query("SELECT * FROM Transactions");
+        // Get all table names from the current DB
+        const [tables] = await db.query(`
+            SELECT table_name 
+            FROM information_schema.tables 
+            WHERE table_schema = DATABASE()
+        `);
 
-        // Return the exported data
+        // Filter out the tables we want to export
+        const exportData = {};
+
+        // Loop through each table and fetch its data
+        for (const { table_name } of tables) {
+            const [rows] = await db.query(`SELECT * FROM \`${table_name}\``);
+            exportData[table_name] = rows;
+        }
+
+        // Return everything with timestamp
         res.json({
             exportedAt: new Date().toISOString(),
-            users,
-            accounts,
-            transactions,
+            ...exportData,
         });
     } catch (err) {
         // Handle errors
