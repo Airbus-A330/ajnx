@@ -60,11 +60,7 @@ const DashboardPage: React.FC = () => {
                         setFormData(profile);
                     }
                 } catch (profileError: any) {
-                    if (profileError.message.includes("404")) {
-                        setCustomerProfile(null);
-                    } else {
-                        throw profileError; // If it's a different error
-                    }
+                    setCustomerProfile(null);
                 }
     
             } catch (err) {
