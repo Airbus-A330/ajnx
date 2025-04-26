@@ -27,16 +27,16 @@ const request = async <T = any>(
             ? (await res.json())?.error || "API error"
             : res.statusText;
 
-            if (res.status === 401) {
-                // Clear token and redirect after a short delay
-                localStorage.removeItem("token");
-            
-                setTimeout(() => {
-                    window.location.href = "/login";
-                }, 1000); // give the toast time to show (1 sec)
-                
-                throw new Error("Unauthorized, redirecting to login...");
-            }
+        if (res.status === 401) {
+            // Clear token and redirect after a short delay
+            localStorage.removeItem("token");
+
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 1000); // give the toast time to show (1 sec)
+
+            throw new Error("Unauthorized, redirecting to login...");
+        }
 
         throw new Error(errorMessage);
     }

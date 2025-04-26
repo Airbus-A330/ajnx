@@ -488,27 +488,27 @@ const TransactionsPage: React.FC = () => {
                                     <tr key={idx} className="border-b text-sm">
                                         <td className="py-2 pr-4">
                                             <div className="flex items-center gap-2">
-                                            <Icon
-                                                icon={`lucide:${txn.type === "Deposit" ? "banknote-arrow-up" : "banknote-arrow-down"}`}
-                                                className={`text-${
-                                                    txn.type === "Deposit"
-                                                        ? "primary"
-                                                        : "warning"
-                                                }`}
-                                            />
-                                            <Chip
-                                                size="sm"
-                                                color={
-                                                    txn.type === "Deposit"
-                                                        ? "primary"
-                                                        : "warning"
-                                                }
-                                                variant="flat"
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <span>{txn.type}</span>
-                                                </div>
-                                            </Chip>
+                                                <Icon
+                                                    icon={`lucide:${txn.type === "Deposit" ? "banknote-arrow-up" : "banknote-arrow-down"}`}
+                                                    className={`text-${
+                                                        txn.type === "Deposit"
+                                                            ? "primary"
+                                                            : "warning"
+                                                    }`}
+                                                />
+                                                <Chip
+                                                    size="sm"
+                                                    color={
+                                                        txn.type === "Deposit"
+                                                            ? "primary"
+                                                            : "warning"
+                                                    }
+                                                    variant="flat"
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <span>{txn.type}</span>
+                                                    </div>
+                                                </Chip>
                                             </div>
                                         </td>
                                         <td className="py-2 pr-4">

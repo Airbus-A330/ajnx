@@ -67,7 +67,7 @@ const AccountsPage: React.FC = () => {
                     branch_name: account.branch_name,
                     first_name: account.first_name,
                     last_name: account.last_name,
-                }))
+                })),
             );
         } catch (err) {
             setError("Failed to load accounts");
@@ -190,12 +190,8 @@ const AccountsPage: React.FC = () => {
                                 }
                                 className="min-w-[10rem]"
                             >
-                                <SelectItem key="checking">
-                                    Checking
-                                </SelectItem>
-                                <SelectItem key="savings">
-                                    Savings
-                                </SelectItem>
+                                <SelectItem key="checking">Checking</SelectItem>
+                                <SelectItem key="savings">Savings</SelectItem>
                             </Select>
 
                             <Select
@@ -208,9 +204,7 @@ const AccountsPage: React.FC = () => {
                                 className="min-w-[10rem]"
                             >
                                 {branches.map((branch) => (
-                                    <SelectItem
-                                        key={branch.branch_id}
-                                    >
+                                    <SelectItem key={branch.branch_id}>
                                         {branch.branch_name}
                                     </SelectItem>
                                 ))}
@@ -341,18 +335,23 @@ const AccountsPage: React.FC = () => {
                                         </TableCell>
                                         <TableCell>
                                             {"first_name" in account &&
-                                            "last_name" in account
-                                                ? `${account.first_name} ${account.last_name}`
-                                                : <Chip
-                                                color="primary"
-                                                variant="flat"
-                                                size="sm"
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                <Icon icon="lucide:shield-check" className="text-primary" />
-                                                AJNX Card Services
-                                                </div>
-                                            </Chip>}
+                                            "last_name" in account ? (
+                                                `${account.first_name} ${account.last_name}`
+                                            ) : (
+                                                <Chip
+                                                    color="primary"
+                                                    variant="flat"
+                                                    size="sm"
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <Icon
+                                                            icon="lucide:shield-check"
+                                                            className="text-primary"
+                                                        />
+                                                        AJNX Card Services
+                                                    </div>
+                                                </Chip>
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 ))}
