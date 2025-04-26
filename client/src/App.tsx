@@ -13,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import AccountsPage from "./pages/AccountsPage";
 import TransactionsPage from "./pages/TransactionsPage";
+import CardsPage from "./pages/CardsPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminExportPage from "./pages/AdminExportPage";
 
@@ -55,6 +56,7 @@ const App: React.FC = () => {
                             path="/transactions"
                             component={TransactionsPage}
                         />
+                        <PrivateRoute path="/card" component={CardsPage} />
                         <PrivateRoute
                             path="/admin/users"
                             component={AdminUsersPage}

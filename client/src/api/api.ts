@@ -21,7 +21,7 @@ const request = async <T = any>(
         ...(token && { Authorization: `Bearer ${token}` }),
     };
 
-    const res = await fetch(`https://db.aerex.tk/api${endpoint}`, {
+    const res = await fetch(`${API_URL}${endpoint}`, {
         method: options.method || "GET",
         headers,
         body: options.body ? JSON.stringify(options.body) : undefined,
@@ -115,6 +115,19 @@ export const transfer = (
     request("/transactions/transfer", {
         method: "POST",
         body: { fromAccountID, toAccountID, amount, description: "Transfer" },
+    });
+
+// Fetch credit cards
+export const getCreditCards = (): Promise<CreditCard[]> =>
+    request("/credit-cards", {
+        method: "GET",
+    });
+
+// Create credit card
+export const createCreditCard = (): Promise<void> =>
+    request("/credit-cards", {
+        method: "POST",
+        body: {}, // no body needed
     });
 
 // Admin API calls

@@ -16,13 +16,26 @@ import {
     Button,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getAccounts, getBranches, createAccount } from "../api/api";
+import {
+    getAccounts,
+    getBranches,
+    createAccount,
+    getCreditCards,
+} from "../api/api";
 
 interface Account {
     accountID: number;
     accountType: string;
     balance: number;
     branch_name: string;
+}
+
+interface CreditCardAccount {
+    account_id: number;
+    card_type: string;
+    balance: number;
+    credit_limit: number;
+    card_number: string;
 }
 
 interface Branch {
@@ -32,6 +45,8 @@ interface Branch {
 
 const AccountsPage: React.FC = () => {
     const [accounts, setAccounts] = React.useState<Account[]>([]);
+    const [creditCard, setCreditCard] =
+        React.useState<CreditCardAccount | null>(null);
     const [branches, setBranches] = React.useState<Branch[]>([]);
     const [accountType, setAccountType] = React.useState<string>("checking");
     const [branch_id, setBranchId] = React.useState<string | null>(null);
@@ -63,9 +78,19 @@ const AccountsPage: React.FC = () => {
         }
     };
 
+    const fetchCreditCards = async () => {
+        try {
+            const response = await getCreditCards();
+            setCreditCard(response.length > 0 ? response[0] : null);
+        } catch (err) {
+            console.error("Error fetching credit card:", err);
+        }
+    };
+
     React.useEffect(() => {
         fetchBranches();
         fetchAccounts();
+        fetchCreditCards();
     }, []);
 
     const handleCreateAccount = async () => {
@@ -126,7 +151,7 @@ const AccountsPage: React.FC = () => {
 
     const totalBalance = accounts.reduce(
         (sum, account) => sum + Number(account.balance || 0),
-        0,
+        creditCard ? creditCard.balance : 0,
     );
 
     return (
@@ -205,7 +230,19 @@ const AccountsPage: React.FC = () => {
                 </CardHeader>
                 <Divider />
                 <CardBody>
-                    {accounts.length === 0 ? (
+                    {[
+                        ...accounts,
+                        ...(creditCard
+                            ? [
+                                  {
+                                      accountID: creditCard.account_id,
+                                      accountType: "credit",
+                                      balance: creditCard.balance,
+                                      branch_name: "N/A",
+                                  },
+                              ]
+                            : []),
+                    ].length === 0 ? (
                         <div className="text-center py-6">
                             <p className="text-default-500">
                                 No accounts found.
@@ -220,22 +257,46 @@ const AccountsPage: React.FC = () => {
                                 <TableColumn>BRANCH</TableColumn>
                             </TableHeader>
                             <TableBody>
-                                {accounts.map((account) => (
+                                {[
+                                    ...accounts,
+                                    ...(creditCard
+                                        ? [
+                                              {
+                                                  accountID:
+                                                      creditCard.account_id,
+                                                  accountType: "credit",
+                                                  balance: creditCard.balance,
+                                                  branch_name: "N/A",
+                                              },
+                                          ]
+                                        : []),
+                                ].map((account) => (
                                     <TableRow key={account.accountID}>
                                         <TableCell>
                                             {account.accountID}
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
-                                                {getAccountTypeIcon(
-                                                    account.accountType,
+                                                {account.accountType ===
+                                                "credit" ? (
+                                                    <Icon
+                                                        icon="lucide:credit-card"
+                                                        className="text-warning"
+                                                    />
+                                                ) : (
+                                                    getAccountTypeIcon(
+                                                        account.accountType,
+                                                    )
                                                 )}
                                                 <Chip
                                                     color={
                                                         account.accountType.toLowerCase() ===
                                                         "checking"
                                                             ? "primary"
-                                                            : "secondary"
+                                                            : account.accountType.toLowerCase() ===
+                                                                "savings"
+                                                              ? "secondary"
+                                                              : "warning"
                                                     }
                                                     variant="flat"
                                                     size="sm"
