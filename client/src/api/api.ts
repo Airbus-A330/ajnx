@@ -1,10 +1,6 @@
-const API_URL = "https://db.aerex.tk/api";
+import { toast } from "@heroui/react";
 
-type RequestOptions = {
-    method?: "GET" | "POST" | "PUT" | "DELETE";
-    body?: any;
-    token?: string;
-};
+const API_URL = "https://db.aerex.tk/api";
 
 const request = async <T = any>(
     endpoint: string,
@@ -32,6 +28,25 @@ const request = async <T = any>(
         const errorMessage = contentType?.includes("application/json")
             ? (await res.json())?.error || "API error"
             : res.statusText;
+
+            if (res.status === 401) {
+                // Show a toast
+                toast({
+                    title: "Session Expired",
+                    description: "Please log in again.",
+                    status: "error",
+                    duration: 3000,
+                });
+            
+                // Clear token and redirect after a short delay
+                localStorage.removeItem("token");
+            
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 1000); // give the toast time to show (1 sec)
+                
+                throw new Error("Unauthorized, redirecting to login...");
+            }
 
         throw new Error(errorMessage);
     }
