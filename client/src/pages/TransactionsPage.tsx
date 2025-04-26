@@ -226,7 +226,7 @@ const TransactionsPage: React.FC = () => {
                                         )[0] as string;
                                         const account = accounts.find(
                                             (acc) =>
-                                                acc.accountID.toString() ===
+                                                acc.accountID.toString() ==
                                                 selectedKey,
                                         );
                                         return account
