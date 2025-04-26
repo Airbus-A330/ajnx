@@ -23,7 +23,7 @@ router.post("/", requireAuth, async (req, res) => {
     try {
         // Check if customer profile already exists
         const [existing] = await db.query(
-            "SELECT customer_id FROM Customer WHERE customer_id = ?",
+            "SELECT customer_id FROM Customers WHERE customer_id = ?",
             [req.user.userID],
         );
 
@@ -34,7 +34,7 @@ router.post("/", requireAuth, async (req, res) => {
 
         // Insert new customer profile into the database
         await db.query(
-            `INSERT INTO Customer (customer_id, first_name, last_name, address, phone, email)
+            `INSERT INTO Customers (customer_id, first_name, last_name, address, phone, email)
              VALUES (?, ?, ?, ?, ?, ?)`,
             [req.user.userID, first_name, last_name, address, phone, email],
         );
@@ -62,7 +62,7 @@ router.get("/", requireAuth, async (req, res) => {
     try {
         // Select customer profile from the database
         const [rows] = await db.query(
-            "SELECT customer_id, first_name, last_name, address, phone, email FROM Customer WHERE customer_id = ?",
+            "SELECT customer_id, first_name, last_name, address, phone, email FROM Customers WHERE customer_id = ?",
             [req.user.userID],
         );
 
@@ -70,7 +70,7 @@ router.get("/", requireAuth, async (req, res) => {
         if (rows.length === 0) {
             return res
                 .status(404)
-                .json({ error: "Customer profile not found." });
+                .json({ error: "Customers profile not found." });
         }
 
         // Return the customer profile
@@ -104,7 +104,7 @@ router.put("/", requireAuth, async (req, res) => {
     try {
         // Check if customer profile exists
         const [existing] = await db.query(
-            "SELECT customer_id FROM Customer WHERE customer_id = ?",
+            "SELECT customer_id FROM Customers WHERE customer_id = ?",
             [req.user.userID],
         );
 
@@ -112,12 +112,12 @@ router.put("/", requireAuth, async (req, res) => {
         if (existing.length === 0) {
             return res
                 .status(404)
-                .json({ error: "Customer profile not found." });
+                .json({ error: "Customers profile not found." });
         }
 
         // Update customer profile in the database
         await db.query(
-            `UPDATE Customer SET first_name = ?, last_name = ?, address = ?, phone = ?, email = ? WHERE customer_id = ?`,
+            `UPDATE Customers SET first_name = ?, last_name = ?, address = ?, phone = ?, email = ? WHERE customer_id = ?`,
             [first_name, last_name, address, phone, email, req.user.userID],
         );
 
