@@ -7,6 +7,7 @@ const express = require("express");
 const cors = require("cors");
 const pc = require("picocolors");
 const bodyParser = require("body-parser");
+const sqlinjection = require('sql-injection');
 
 global.hD = require("humanize-duration");
 global.fetch = (...args) =>
@@ -29,6 +30,7 @@ app.use(
         extended: true,
     }),
 );
+app.use(sqlinjection);
 
 app.use(express.static(path.join(__dirname, "client/dist")));
 
