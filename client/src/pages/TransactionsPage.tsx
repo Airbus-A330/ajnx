@@ -212,6 +212,14 @@ const TransactionsPage: React.FC = () => {
                                     onChange={(e) =>
                                         setDepositAccountId(e.target.value)
                                     }
+                                    renderValue={(selected) => {
+                                        const selectedAccount = accounts.find(
+                                            (acc) => acc.accountID.toString() === selected
+                                        );
+                                        return selectedAccount
+                                            ? `${selectedAccount.accountType} (ID: ${selectedAccount.accountID})`
+                                            : "Choose an account";
+                                    }}
                                     isRequired
                                 >
                                     {accounts.map((account) => (
