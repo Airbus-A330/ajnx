@@ -21,14 +21,6 @@ const generateCVC = () => Math.floor(100 + Math.random() * 900).toString();
 */
 
 router.post("/", requireAuth, async (req, res) => {
-    // Destructure the request body
-    const { account_id } = req.body;
-
-    // Validate input
-    if (!account_id) {
-        return res.status(400).json({ error: "account_id is required" });
-    }
-
     try {
         // Generate new credit card details
         const card_number = generateCardNumber();
@@ -44,13 +36,12 @@ router.post("/", requireAuth, async (req, res) => {
         // Inser data into database
         await db.query(
             `INSERT INTO Credit_Cards (
-        card_number, customer_id, account_id, cvc, card_type, 
+        card_number, customer_id, cvc, card_type, 
         credit_limit, balance, issue_date, expiration_date
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 card_number,
                 req.user.userID,
-                account_id,
                 cvc,
                 card_type,
                 credit_limit,
