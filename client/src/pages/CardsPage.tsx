@@ -74,7 +74,7 @@ const CreditCardsPage: React.FC = () => {
 
     return (
         <div className="container mx-auto max-w-5xl">
-            <h1 className="text-3xl font-bold mb-6">Your Credit Cards</h1>
+            <h1 className="text-3xl font-bold mb-6">Your Credit Card</h1>
 
             {/* Promo / apply card */}
             <Card className="mb-6 bg-primary-50">
