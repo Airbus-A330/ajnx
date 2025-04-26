@@ -101,7 +101,6 @@ export const getBranches = (): Promise<
 > => request("/branches", { method: "GET" });
 
 // Customer Profile API
-
 export const getCustomerProfile = async (): Promise<CustomerProfile> =>
     request("/customers");
 
@@ -119,6 +118,14 @@ export const updateCustomerProfile = async (
     request("/customers", {
         method: "PUT",
         body: data,
+    });
+
+// Fetch deposit/withdrawal history for the current user
+export const getTransactionHistory = (
+    type: "all" | "deposits" | "withdrawals" = "all",
+): Promise<{ deposits: any[]; withdrawals: any[] }> =>
+    request(`/transactions/history/${type}`, {
+        method: "GET",
     });
 
 // Transactions API calls
