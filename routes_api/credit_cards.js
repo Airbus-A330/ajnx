@@ -29,6 +29,7 @@ router.post("/", requireAuth, async (req, res) => {
         const expirationDate = new Date();
         expirationDate.setFullYear(issueDate.getFullYear() + 3);
 
+        console.log("User ID:", req.user.userID);
         // Insert the new credit card
         await db.query(
             `INSERT INTO Credit_Cards (card_number, account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
