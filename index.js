@@ -4,11 +4,9 @@ const cluster = require("node:cluster");
 const path = require("node:path");
 
 const express = require("express");
-const cors = require("cors");
 const pc = require("picocolors");
 const bodyParser = require("body-parser");
 
-global.hD = require("humanize-duration");
 global.fetch = (...args) =>
     import("node-fetch").then(({ default: fetch }) => fetch(...args));
 require("dotenv").config();
@@ -31,27 +29,6 @@ app.use(
 );
 
 app.use(express.static(path.join(__dirname, "client/dist")));
-
-const allowedOrigins = [
-    "http://localhost:3000", // React dev server
-    "http://127.0.0.1:3000",
-    "https://db.aerex.tk", // Your actual frontend domain
-];
-
-app.use(
-    cors({
-        origin: (origin, callback) => {
-            // Allow localhost requests for debugging
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
-        credentials: true,
-    }),
-);
-app.options("*", cors());
 
 process.on("unhandledRejection", (err) => {
     logger.logErr(err.stack);

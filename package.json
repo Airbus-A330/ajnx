@@ -23,17 +23,12 @@
     "dependencies": {
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.2",
-        "cors": "^2.8.5",
         "dotenv": "^16.4.5",
-        "ejs": "^3.1.10",
         "express": "^4.19.2",
-        "humanize-duration": "^3.32.0",
         "jsonwebtoken": "^9.0.2",
-        "mime": "^3.0.0",
         "mysql2": "^3.14.0",
         "node-fetch": "^3.3.2",
-        "picocolors": "^1.0.1",
-        "xss": "^1.0.15"
+        "picocolors": "^1.0.1"
     },
     "devDependencies": {
         "prettier": "^3.2.5"
