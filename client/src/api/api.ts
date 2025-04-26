@@ -1,5 +1,3 @@
-import { toast } from "@heroui/react";
-
 const API_URL = "https://db.aerex.tk/api";
 
 const request = async <T = any>(
@@ -30,14 +28,6 @@ const request = async <T = any>(
             : res.statusText;
 
             if (res.status === 401) {
-                // Show a toast
-                toast({
-                    title: "Session Expired",
-                    description: "Please log in again.",
-                    status: "error",
-                    duration: 3000,
-                });
-            
                 // Clear token and redirect after a short delay
                 localStorage.removeItem("token");
             
