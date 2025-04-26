@@ -178,7 +178,10 @@ const CreditCardsPage: React.FC = () => {
                                         </TableCell>
                                         <TableCell>
                                             {showNumber
-                                                ? card.card_number.toString().match(/.{4}/g)?.join(" ")
+                                                ? card.card_number
+                                                      .toString()
+                                                      .match(/.{4}/g)
+                                                      ?.join(" ")
                                                 : `•••• ${card.card_number.toString().slice(-4)}`}
                                             <Button
                                                 size="sm"

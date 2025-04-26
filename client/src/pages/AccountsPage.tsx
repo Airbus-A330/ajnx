@@ -110,9 +110,7 @@ const AccountsPage: React.FC = () => {
     const getAccountTypeIcon = (type: string) => {
         switch (type.toLowerCase()) {
             case "checking":
-                return (
-                    <Icon icon="lucide:coins" className="text-primary" />
-                );
+                return <Icon icon="lucide:coins" className="text-primary" />;
             case "savings":
                 return (
                     <Icon icon="lucide:piggy-bank" className="text-secondary" />
@@ -238,7 +236,15 @@ const AccountsPage: React.FC = () => {
                                       accountID: creditCard.account_id,
                                       accountType: "credit",
                                       balance: creditCard.balance,
-                                      branch_name: "N/A",
+                                      branch_name: (
+                                          <Chip
+                                              color={"primary"}
+                                              variant="flat"
+                                              size="sm"
+                                          >
+                                              <strong>Not Applicable</strong>
+                                          </Chip>
+                                      ),
                                   },
                               ]
                             : []),
@@ -266,13 +272,17 @@ const AccountsPage: React.FC = () => {
                                                       creditCard.account_id,
                                                   accountType: "credit",
                                                   balance: creditCard.balance,
-                                                  branch_name: <Chip
-                                                  color={"primary"}
-                                                  variant="flat"
-                                                  size="sm"
-                                              >
-                                                  <strong>N/A</strong>
-                                              </Chip>,
+                                                  branch_name: (
+                                                      <Chip
+                                                          color={"primary"}
+                                                          variant="flat"
+                                                          size="sm"
+                                                      >
+                                                          <strong>
+                                                              Not Applicable
+                                                          </strong>
+                                                      </Chip>
+                                                  ),
                                               },
                                           ]
                                         : []),
