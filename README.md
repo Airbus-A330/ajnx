@@ -34,7 +34,7 @@ Follow these steps carefully to set up and run the project locally or in product
   | `DB_USER` | Your MySQL username |
   | `DB_PASSWORD` | Your MySQL password |
   | `DB_NAME` | Your database name (e.g., `AJNXBanking`) |
-  | `PORT` | Port to run the backend server (e.g., `3000`) |
+  | `PORT` | Port to run the backend server (e.g., `3306`) |
   | `JWT_SECRET` | Secret key used for signing JWT tokens |
 
 - **Rename** the file from `.env.example` to `.env` (remove `.example`!)
@@ -100,7 +100,7 @@ Notes:
 
 - Minimal logs are available in production.
 - Development mode shows detailed errors and auto-reloads.
-- Database setup (schema, tables, procedures) must be completed separately (refer to `/database` scripts if provided).
+- Database setup (schema, tables, procedures) must be completed separately.
 
 ---
 
