@@ -348,7 +348,7 @@ const AccountsPage: React.FC = () => {
                                                             icon="lucide:shield-check"
                                                             className="text-primary"
                                                         />
-                                                        AJNX Card Services
+                                                       <strong>AJNX Card Services</strong>
                                                     </div>
                                                 </Chip>
                                             )}
