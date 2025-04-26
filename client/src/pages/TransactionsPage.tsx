@@ -496,7 +496,7 @@ const TransactionsPage: React.FC = () => {
                                             ${Number(txn.amount).toFixed(2)}
                                         </td>
                                         <td className="py-2 pr-4">
-                                            {txn.deposit_date ||
+                                            {new Date(txn.deposit_date).toLocaleDateString() ||
                                                 new Date(txn.withdrawal_date).toLocaleDateString() ||
                                                 "-"}
                                         </td>
