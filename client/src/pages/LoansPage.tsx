@@ -220,8 +220,8 @@ const LoansPage: React.FC = () => {
                                         <TableCell>{loan.account_id}</TableCell>
                                         <TableCell>${Number(loan.loan_amount).toFixed(2)}</TableCell>
                                         <TableCell>{Number(loan.interest_rate).toFixed(2)}</TableCell>
-                                        <TableCell>{loan.start_date}</TableCell>
-                                        <TableCell>{loan.due_date}</TableCell>
+                                        <TableCell>{new Date(loan.start_date).toLocaleDateString()}</TableCell>
+                                        <TableCell>{new Date(loan.due_date).toLocaleDateString()}</TableCell>
                                         <TableCell>{loan.status}</TableCell>
                                     </TableRow>
                                 ))}
@@ -305,7 +305,7 @@ const LoansPage: React.FC = () => {
                                         <TableRow key={payment.payment_id}>
                                             <TableCell>{payment.payment_id}</TableCell>
                                             <TableCell>${Number(payment.amount).toFixed(2)}</TableCell>
-                                            <TableCell>{payment.payment_date}</TableCell>
+                                            <TableCell>{new Date(payment.payment_date).toLocaleDateString()}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
