@@ -28,6 +28,8 @@ interface Account {
     accountType: string;
     balance: number;
     branch_name: string;
+    first_name: string;
+    last_name: string;
 }
 
 interface CreditCardAccount {
@@ -261,6 +263,7 @@ const AccountsPage: React.FC = () => {
                                 <TableColumn>TYPE</TableColumn>
                                 <TableColumn>BALANCE</TableColumn>
                                 <TableColumn>BRANCH</TableColumn>
+                                <TableColumn>BANKER</TableColumn>
                             </TableHeader>
                             <TableBody>
                                 {[
@@ -326,6 +329,11 @@ const AccountsPage: React.FC = () => {
                                         </TableCell>
                                         <TableCell>
                                             {account.branch_name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {"first_name" in account && "last_name" in account
+                                                ? `${account.first_name} ${account.last_name}`
+                                                : "N/A"}
                                         </TableCell>
                                     </TableRow>
                                 ))}
