@@ -33,7 +33,6 @@
         "mysql2": "^3.14.0",
         "node-fetch": "^3.3.2",
         "picocolors": "^1.0.1",
-        "sql-injection": "^0.0.7",
         "xss": "^1.0.15"
     },
     "devDependencies": {
