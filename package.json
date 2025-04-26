@@ -7,7 +7,8 @@
         "build": "cd client && npm run format && npm run build",
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier . --write",
-        "start": "npm run build && node index.js"
+        "start:dev": "NODE_ENV=development npm run build && node index.js",
+        "start:prod": "NODE_ENV=production node index.js"
     },
     "repository": {
         "type": "git",
