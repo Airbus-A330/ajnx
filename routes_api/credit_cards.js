@@ -3,13 +3,6 @@ const router = express.Router();
 
 const requireAuth = require("../functions/requireAuth.js");
 
-// Generate a random 16-digit card number
-const generateCardNumber = () =>
-    Math.floor(1000000000000000 + Math.random() * 9000000000000000).toString();
-
-// Generate a random 3-digit CVC
-const generateCVC = () => Math.floor(100 + Math.random() * 900).toString();
-
 /*
     Path: /api/credit_cards
     Method: POST
@@ -21,33 +14,39 @@ const generateCVC = () => Math.floor(100 + Math.random() * 900).toString();
 */
 
 router.post("/", requireAuth, async (req, res) => {
+    // Destructure the request body
+    const { account_id } = req.body;
+
+    // Validate input
+    if (!account_id) {
+        return res.status(400).json({ error: "account_id is required" });
+    }
+
     try {
-        // Generate new credit card details
-        const card_number = generateCardNumber();
-        const cvc = generateCVC();
-        const card_type = "MasterCard";
-        const credit_limit = 5000.0;
-        const balance = 0.0;
+        // Create a new credit card account
+        const [accountResult] = await db.query(
+            "INSERT INTO Accounts (userID, accountType, balance, branch_id) VALUES (?, 'credit', 0.00, 999)",
+            [req.user.userID],
+        );
 
-        const issue_date = new Date();
-        const expiration_date = new Date();
-        expiration_date.setFullYear(issue_date.getFullYear() + 3);
+        // Check if the account was created successfully
+        const accountID = accountResult.insertId;
 
-        // Inser data into database
+        // Generate issue and expiration dates
+        const issueDate = new Date();
+        const expirationDate = new Date();
+        expirationDate.setFullYear(issueDate.getFullYear() + 3);
+
+        // Insert the new credit card
         await db.query(
-            `INSERT INTO Credit_Cards (
-        card_number, customer_id, cvc, card_type, 
-        credit_limit, balance, issue_date, expiration_date
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO Credit_Card (account_id, customer_id, cvc, card_type, credit_limit, balance, issue_date, expiration_date)
+             VALUES (?, ?, ?, 'MasterCard', 5000.00, 0.00, ?, ?)`,
             [
-                card_number,
+                accountID,
                 req.user.userID,
-                cvc,
-                card_type,
-                credit_limit,
-                balance,
-                issue_date,
-                expiration_date,
+                Math.floor(100 + Math.random() * 900), // Random 3-digit CVC
+                issueDate.toISOString().split("T")[0],
+                expirationDate.toISOString().split("T")[0],
             ],
         );
 
@@ -79,7 +78,7 @@ router.get("/", requireAuth, async (req, res) => {
             `SELECT 
            card_number, card_type, credit_limit, balance, 
            issue_date, expiration_date, account_id 
-         FROM Credit_Cards 
+         FROM Credit_Card 
          WHERE customer_id = ?`,
             [req.user.userID],
         );
@@ -111,7 +110,7 @@ router.delete("/:card_number", requireAuth, async (req, res) => {
     try {
         // Validate input
         const [result] = await db.query(
-            "DELETE FROM Credit_Cards WHERE card_number = ? AND customer_id = ?",
+            "DELETE FROM Credit_Card WHERE card_number = ? AND customer_id = ?",
             [card_number, req.user.userID],
         );
 
@@ -153,7 +152,7 @@ router.put("/:card_number", requireAuth, async (req, res) => {
     try {
         // Check if the card exists and belongs to the user
         const [result] = await db.query(
-            "UPDATE Credit_Cards SET balance = balance - ? WHERE card_number = ? AND customer_id = ?",
+            "UPDATE Credit_Card SET balance = balance - ? WHERE card_number = ? AND customer_id = ?",
             [amount, card_number, req.user.userID],
         );
 
