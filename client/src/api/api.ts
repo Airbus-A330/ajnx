@@ -41,7 +41,6 @@ const request = async <T = any>(
         res.status === 204 ||
         res.status === 201
     ) {
-        // ✅ Don't try to parse JSON if it's a 204/201 or caller says no JSON expected
         return undefined as T;
     }
 
@@ -52,6 +51,13 @@ const request = async <T = any>(
 type AuthResponse = { token: string };
 type User = { userID: number; username: string; role: string };
 type Account = { accountID: number; accountType: string; balance: number };
+type CustomerProfile = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    address: string;
+};
 
 // Auth API calls
 export const login = (
@@ -86,13 +92,34 @@ export const createAccount = (
     request("/accounts", {
         method: "POST",
         body: { accountType, branch_id },
-        expectJson: false, // ✅ optional hint to request()
+        expectJson: false,
     });
 
 // Branch API calls
 export const getBranches = (): Promise<
     { branch_id: number; branch_name: string; location: string }[]
 > => request("/branches", { method: "GET" });
+
+// Customer Profile API
+
+export const getCustomerProfile = async (): Promise<CustomerProfile> =>
+    request("/customers");
+
+export const createCustomerProfile = async (
+    data: CustomerProfile,
+): Promise<void> =>
+    request("/customers", {
+        method: "POST",
+        body: data,
+    });
+
+export const updateCustomerProfile = async (
+    data: CustomerProfile,
+): Promise<void> =>
+    request("/customers", {
+        method: "PUT",
+        body: data,
+    });
 
 // Transactions API calls
 export const deposit = (accountID: number, amount: number): Promise<void> =>
