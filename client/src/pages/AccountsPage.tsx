@@ -343,7 +343,16 @@ const AccountsPage: React.FC = () => {
                                             {"first_name" in account &&
                                             "last_name" in account
                                                 ? `${account.first_name} ${account.last_name}`
-                                                : "AJNX Card Services"}
+                                                : <Chip
+                                                color="primary"
+                                                variant="flat"
+                                                size="sm"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                <Icon icon="lucide:shield-check" className="text-primary" />
+                                                AJNX Card Services
+                                                </div>
+                                            </Chip>}
                                         </TableCell>
                                     </TableRow>
                                 ))}
