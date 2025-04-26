@@ -496,7 +496,10 @@ const TransactionsPage: React.FC = () => {
                                                 }
                                                 variant="flat"
                                             >
-                                                {txn.type}
+                                                <div className="flex items-center gap-2">
+                                                    <Icon icon={`lucide:${txn.type === "Deposit" ? "banknote-arrow-up" : "banknote-arrow-down"}`} />
+                                                    <span>{txn.type}</span>
+                                                </div>
                                             </Chip>
                                         </td>
                                         <td className="py-2 pr-4">
