@@ -29,6 +29,7 @@ const CreditCardsPage: React.FC = () => {
     const [cards, setCards] = React.useState<CreditCard[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [creating, setCreating] = React.useState(false);
+    const [showNumber, setShowNumber] = React.useState(false);
     const [error, setError] = React.useState("");
 
     const fetchCards = async () => {
@@ -158,8 +159,21 @@ const CreditCardsPage: React.FC = () => {
                                 {cards.map((card) => (
                                     <TableRow key={card.card_number}>
                                         <TableCell>
-                                            {"•••• " +
-                                                card.card_number.toString().slice(-4)}
+                                            {showNumber
+                                                ? card.card_number.toString()
+                                                : `•••• ${card.card_number.toString().slice(-4)}`}
+                                            <Button
+                                                size="sm"
+                                                variant="light"
+                                                className="ml-2 text-xs"
+                                                onClick={() =>
+                                                    setShowNumber(
+                                                        (prev) => !prev,
+                                                    )
+                                                }
+                                            >
+                                                {showNumber ? "Hide" : "Show"}
+                                            </Button>
                                         </TableCell>
                                         <TableCell>{card.card_type}</TableCell>
                                         <TableCell>
@@ -168,9 +182,15 @@ const CreditCardsPage: React.FC = () => {
                                         <TableCell>
                                             {formatCurrency(card.balance)}
                                         </TableCell>
-                                        <TableCell>{card.issue_date}</TableCell>
                                         <TableCell>
-                                            {card.expiration_date}
+                                            {new Date(
+                                                card.issue_date,
+                                            ).toLocaleDateString()}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(
+                                                card.expiration_date,
+                                            ).toLocaleDateString()}
                                         </TableCell>
                                         <TableCell>{card.account_id}</TableCell>
                                     </TableRow>
