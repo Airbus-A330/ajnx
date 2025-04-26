@@ -493,7 +493,7 @@ const TransactionsPage: React.FC = () => {
                                             {txn.account_id}
                                         </td>
                                         <td className="py-2 pr-4">
-                                            ${txn.amount.toFixed(2)}
+                                            ${Number(txn.amount.toFixed(2))}
                                         </td>
                                         <td className="py-2 pr-4">
                                             {txn.deposit_date ||
