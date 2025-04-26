@@ -12,7 +12,7 @@ import {
     Divider,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getAccounts, deposit, withdraw, transfer } from "../api/api";
+import { getAccounts, deposit, withdraw, transfer, getTransactionHistory } from "../api/api";
 
 interface Account {
     accountID: number;
