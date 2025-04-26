@@ -215,10 +215,16 @@ const TransactionsPage: React.FC = () => {
                                             ? [depositAccountId]
                                             : []
                                     }
-                                    onChange={(e) =>
-                                        setDepositAccountId(e.target.value)
-                                    }
-                                    renderValue={(selected) => {
+                                    onSelectionChange={(keys) => {
+                                        const selected = Array.from(
+                                            keys,
+                                        )[0] as string;
+                                        setDepositAccountId(selected);
+                                    }}
+                                    renderValue={(keys) => {
+                                        const selected = Array.from(
+                                            keys,
+                                        )[0] as string;
                                         const selectedAccount = accounts.find(
                                             (acc) =>
                                                 acc.accountID.toString() ===
@@ -233,7 +239,7 @@ const TransactionsPage: React.FC = () => {
                                     {accounts.map((account) => (
                                         <SelectItem
                                             key={account.accountID.toString()}
-                                            value={account.accountID}
+                                            value={account.accountID.toString()}
                                         >
                                             {account.accountType} (ID:{" "}
                                             {account.accountID})
