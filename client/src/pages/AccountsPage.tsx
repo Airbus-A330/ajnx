@@ -111,7 +111,7 @@ const AccountsPage: React.FC = () => {
         switch (type.toLowerCase()) {
             case "checking":
                 return (
-                    <Icon icon="lucide:credit-card" className="text-primary" />
+                    <Icon icon="lucide:vault" className="text-primary" />
                 );
             case "savings":
                 return (
@@ -266,7 +266,13 @@ const AccountsPage: React.FC = () => {
                                                       creditCard.account_id,
                                                   accountType: "credit",
                                                   balance: creditCard.balance,
-                                                  branch_name: "N/A",
+                                                  branch_name: <Chip
+                                                  color={"primary"}
+                                                  variant="flat"
+                                                  size="sm"
+                                              >
+                                                  N/A
+                                              </Chip>,
                                               },
                                           ]
                                         : []),
