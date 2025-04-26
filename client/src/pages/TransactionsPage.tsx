@@ -220,19 +220,6 @@ const TransactionsPage: React.FC = () => {
                                         )[0] as string;
                                         setDepositAccountId(selectedKey);
                                     }}
-                                    renderValue={(selected) => {
-                                        const selectedKey = Array.from(
-                                            selected,
-                                        )[0] as string;
-                                        const account = accounts.find(
-                                            (acc) =>
-                                                acc.accountID.toString() ==
-                                                selectedKey,
-                                        );
-                                        return account
-                                            ? `${account.accountType} (ID: ${account.accountID})`
-                                            : "Choose an account";
-                                    }}
                                     placeholder="Choose an account"
                                     className="min-w-[10rem]"
                                     isRequired
