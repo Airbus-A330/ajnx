@@ -132,14 +132,6 @@ const TransactionsPage: React.FC = () => {
         }
     };
 
-    if (isLoading) {
-        return (
-            <div className="container mx-auto max-w-5xl flex justify-center items-center h-64">
-                <p>Loading...</p>
-            </div>
-        );
-    }
-
     const [historyTab, setHistoryTab] = React.useState<
         "all" | "deposits" | "withdrawals"
     >("all");
@@ -163,6 +155,14 @@ const TransactionsPage: React.FC = () => {
     React.useEffect(() => {
         fetchHistory("all");
     }, []);
+
+    if (isLoading) {
+        return (
+            <div className="container mx-auto max-w-5xl flex justify-center items-center h-64">
+                <p>Loading...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto max-w-5xl">
