@@ -3,6 +3,7 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Chip,
     Table,
     TableHeader,
     TableColumn,
@@ -15,7 +16,6 @@ import {
     Button,
     Divider,
 } from "@heroui/react";
-import { Icon } from "@iconify/react";
 import {
     getAccounts,
     getLoans,
@@ -52,7 +52,8 @@ const LoansPage: React.FC = () => {
     const [loans, setLoans] = React.useState<Loan[]>([]);
     const [payments, setPayments] = React.useState<Payment[]>([]);
 
-    const [selectedAccountId, setSelectedAccountId] = React.useState<string>("");
+    const [selectedAccountId, setSelectedAccountId] =
+        React.useState<string>("");
     const [loanAmount, setLoanAmount] = React.useState<string>("");
     const [selectedLoanId, setSelectedLoanId] = React.useState<string>("");
     const [paymentAmount, setPaymentAmount] = React.useState<string>("");
@@ -151,8 +152,12 @@ const LoansPage: React.FC = () => {
                         <div className="flex items-center gap-4">
                             <Select
                                 label="Select Account"
-                                selectedKeys={selectedAccountId ? [selectedAccountId] : []}
-                                onChange={(e) => setSelectedAccountId(e.target.value)}
+                                selectedKeys={
+                                    selectedAccountId ? [selectedAccountId] : []
+                                }
+                                onChange={(e) =>
+                                    setSelectedAccountId(e.target.value)
+                                }
                                 className="min-w-[10rem]"
                             >
                                 {accounts.map((account) => (
@@ -160,7 +165,8 @@ const LoansPage: React.FC = () => {
                                         key={account.accountID}
                                         value={account.accountID.toString()}
                                     >
-                                        {account.accountType} (ID: {account.accountID})
+                                        {account.accountType} (ID:{" "}
+                                        {account.accountID})
                                     </SelectItem>
                                 ))}
                             </Select>
@@ -171,7 +177,9 @@ const LoansPage: React.FC = () => {
                                 value={loanAmount}
                                 onChange={(e) => setLoanAmount(e.target.value)}
                                 className="min-w-[10rem]"
-                                startContent={<span className="text-default-400">$</span>}
+                                startContent={
+                                    <span className="text-default-400">$</span>
+                                }
                             />
 
                             <Button
@@ -218,11 +226,40 @@ const LoansPage: React.FC = () => {
                                     <TableRow key={loan.loan_id}>
                                         <TableCell>{loan.loan_id}</TableCell>
                                         <TableCell>{loan.account_id}</TableCell>
-                                        <TableCell>${Number(loan.loan_amount).toFixed(2)}</TableCell>
-                                        <TableCell>{Number(loan.interest_rate).toFixed(2)}</TableCell>
-                                        <TableCell>{new Date(loan.start_date).toLocaleDateString()}</TableCell>
-                                        <TableCell>{new Date(loan.due_date).toLocaleDateString()}</TableCell>
-                                        <TableCell>{loan.status}</TableCell>
+                                        <TableCell>
+                                            $
+                                            {Number(loan.loan_amount).toFixed(
+                                                2,
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {Number(loan.interest_rate).toFixed(
+                                                2,
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(
+                                                loan.start_date,
+                                            ).toLocaleDateString()}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(
+                                                loan.due_date,
+                                            ).toLocaleDateString()}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Chip
+                                                color={
+                                                    loan.status === "Paid"
+                                                        ? "success"
+                                                        : "danger"
+                                                }
+                                                variant="flat"
+                                                size="sm"
+                                            >
+                                                {loan.status}
+                                            </Chip>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -238,7 +275,9 @@ const LoansPage: React.FC = () => {
                         <div className="flex items-center gap-4">
                             <Select
                                 label="Select Loan"
-                                selectedKeys={selectedLoanId ? [selectedLoanId] : []}
+                                selectedKeys={
+                                    selectedLoanId ? [selectedLoanId] : []
+                                }
                                 onChange={(e) => {
                                     setSelectedLoanId(e.target.value);
                                     fetchPayments(Number(e.target.value));
@@ -259,9 +298,13 @@ const LoansPage: React.FC = () => {
                                 label="Payment Amount"
                                 type="number"
                                 value={paymentAmount}
-                                onChange={(e) => setPaymentAmount(e.target.value)}
+                                onChange={(e) =>
+                                    setPaymentAmount(e.target.value)
+                                }
                                 className="min-w-[10rem]"
-                                startContent={<span className="text-default-400">$</span>}
+                                startContent={
+                                    <span className="text-default-400">$</span>
+                                }
                             />
 
                             <Button
@@ -283,7 +326,8 @@ const LoansPage: React.FC = () => {
                         <div className="flex flex-col">
                             <p className="text-md font-bold">Payment History</p>
                             <p className="text-small text-default-500">
-                                All payments made towards Loan ID: {selectedLoanId}
+                                All payments made towards Loan ID:{" "}
+                                {selectedLoanId}
                             </p>
                         </div>
                     </CardHeader>
@@ -291,7 +335,9 @@ const LoansPage: React.FC = () => {
                     <CardBody>
                         {payments.length === 0 ? (
                             <div className="text-center py-6">
-                                <p className="text-default-500">No payments found.</p>
+                                <p className="text-default-500">
+                                    No payments found.
+                                </p>
                             </div>
                         ) : (
                             <Table>
@@ -303,9 +349,20 @@ const LoansPage: React.FC = () => {
                                 <TableBody>
                                     {payments.map((payment) => (
                                         <TableRow key={payment.payment_id}>
-                                            <TableCell>{payment.payment_id}</TableCell>
-                                            <TableCell>${Number(payment.amount).toFixed(2)}</TableCell>
-                                            <TableCell>{new Date(payment.payment_date).toLocaleDateString()}</TableCell>
+                                            <TableCell>
+                                                {payment.payment_id}
+                                            </TableCell>
+                                            <TableCell>
+                                                $
+                                                {Number(payment.amount).toFixed(
+                                                    2,
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                {new Date(
+                                                    payment.payment_date,
+                                                ).toLocaleDateString()}
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
