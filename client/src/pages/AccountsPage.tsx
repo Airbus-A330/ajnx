@@ -111,7 +111,7 @@ const AccountsPage: React.FC = () => {
         switch (type.toLowerCase()) {
             case "checking":
                 return (
-                    <Icon icon="lucide:vault" className="text-primary" />
+                    <Icon icon="lucide:coins" className="text-primary" />
                 );
             case "savings":
                 return (
@@ -271,7 +271,7 @@ const AccountsPage: React.FC = () => {
                                                   variant="flat"
                                                   size="sm"
                                               >
-                                                  N/A
+                                                  <strong>N/A</strong>
                                               </Chip>,
                                               },
                                           ]
