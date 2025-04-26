@@ -159,7 +159,7 @@ const CreditCardsPage: React.FC = () => {
                                     <TableRow key={card.card_number}>
                                         <TableCell>
                                             {"•••• " +
-                                                card.card_number.slice(-4)}
+                                                card.card_number.toString().slice(-4)}
                                         </TableCell>
                                         <TableCell>{card.card_type}</TableCell>
                                         <TableCell>
