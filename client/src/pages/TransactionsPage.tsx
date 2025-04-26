@@ -209,31 +209,32 @@ const TransactionsPage: React.FC = () => {
                             >
                                 <Select
                                     label="Select Account"
-                                    placeholder="Choose an account"
                                     selectedKeys={
                                         depositAccountId
                                             ? [depositAccountId]
                                             : []
                                     }
                                     onSelectionChange={(keys) => {
-                                        const selected = Array.from(
+                                        const selectedKey = Array.from(
                                             keys,
                                         )[0] as string;
-                                        setDepositAccountId(selected);
+                                        setDepositAccountId(selectedKey);
                                     }}
-                                    renderValue={(keys) => {
-                                        const selected = Array.from(
-                                            keys,
+                                    renderValue={(selected) => {
+                                        const selectedKey = Array.from(
+                                            selected,
                                         )[0] as string;
-                                        const selectedAccount = accounts.find(
+                                        const account = accounts.find(
                                             (acc) =>
                                                 acc.accountID.toString() ===
-                                                selected,
+                                                selectedKey,
                                         );
-                                        return selectedAccount
-                                            ? `${selectedAccount.accountType} (ID: ${selectedAccount.accountID})`
+                                        return account
+                                            ? `${account.accountType} (ID: ${account.accountID})`
                                             : "Choose an account";
                                     }}
+                                    placeholder="Choose an account"
+                                    className="min-w-[10rem]"
                                     isRequired
                                 >
                                     {accounts.map((account) => (
@@ -518,13 +519,15 @@ const TransactionsPage: React.FC = () => {
                                             ${Number(txn.amount).toFixed(2)}
                                         </td>
                                         <td className="py-2 pr-4">
-                                            {new Date(
-                                                txn.deposit_date,
-                                            ).toLocaleDateString() ||
-                                                new Date(
-                                                    txn.withdrawal_date,
-                                                ).toLocaleDateString() ||
-                                                "-"}
+                                            {txn.deposit_date
+                                                ? new Date(
+                                                      txn.deposit_date,
+                                                  ).toLocaleDateString()
+                                                : txn.withdrawal_date
+                                                  ? new Date(
+                                                        txn.withdrawal_date,
+                                                    ).toLocaleDateString()
+                                                  : "-"}
                                         </td>
                                     </tr>
                                 ))}
