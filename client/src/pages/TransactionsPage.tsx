@@ -487,6 +487,14 @@ const TransactionsPage: React.FC = () => {
                                 ).map((txn, idx) => (
                                     <tr key={idx} className="border-b text-sm">
                                         <td className="py-2 pr-4">
+                                            <Icon
+                                                icon={`lucide:${txn.type === "Deposit" ? "banknote-arrow-up" : "banknote-arrow-down"}`}
+                                                className={`text-${
+                                                    txn.type === "Deposit"
+                                                        ? "primary"
+                                                        : "warning"
+                                                }`}
+                                            />
                                             <Chip
                                                 size="sm"
                                                 color={
@@ -497,7 +505,9 @@ const TransactionsPage: React.FC = () => {
                                                 variant="flat"
                                             >
                                                 <div className="flex items-center gap-2">
-                                                    <Icon icon={`lucide:${txn.type === "Deposit" ? "banknote-arrow-up" : "banknote-arrow-down"}`} />
+                                                    <Icon
+                                                        icon={`lucide:${txn.type === "Deposit" ? "banknote-arrow-up" : "banknote-arrow-down"}`}
+                                                    />
                                                     <span>{txn.type}</span>
                                                 </div>
                                             </Chip>

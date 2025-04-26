@@ -146,15 +146,16 @@ const LoansPage: React.FC = () => {
             <h1 className="text-3xl font-bold mb-6">Loans</h1>
 
             {/* Promo / apply card */}
-                        <Card className="mb-6 bg-primary-50">
-                            <CardBody className="flex flex-col md:flex-row items-center justify-between gap-4">
-                                <div>
-                                    <p className="text-default-600">
-                                        Enjoy low-interest, hassle free loans with AJNXBanking. Apply now and get the funds you need.
-                                    </p>
-                                </div>
-                            </CardBody>
-                        </Card>
+            <Card className="mb-6 bg-primary-50">
+                <CardBody className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <p className="text-default-600">
+                            Enjoy low-interest, hassle free loans with
+                            AJNXBanking. Apply now and get the funds you need.
+                        </p>
+                    </div>
+                </CardBody>
+            </Card>
 
             {/* Apply for Loan Card */}
             <Card className="mb-6">
@@ -251,7 +252,8 @@ const LoansPage: React.FC = () => {
                                             >
                                                 {Number(
                                                     loan.interest_rate,
-                                                ).toFixed(2)}%
+                                                ).toFixed(2)}
+                                                %
                                             </Chip>
                                         </TableCell>
                                         <TableCell>
