@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const requireAuth = require("../../functions/requireAuth.js");
+const requireAuth = require("../functions/requireAuth.js");
 
 /*
     Path: /api/customer-profile
