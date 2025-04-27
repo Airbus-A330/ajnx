@@ -134,6 +134,10 @@ if (cluster.isMaster) {
 
     require("./functions/loadAPIRoutes.js")(app);
 
+    app.get("/favicon.ico", (req, res) => {
+        res.sendFile(path.join(__dirname, "static", "favicon.ico"));
+    });
+
     app.all("*", async (req, res, next) => {
         if (req.path.startsWith("/api/")) {
             return next();
