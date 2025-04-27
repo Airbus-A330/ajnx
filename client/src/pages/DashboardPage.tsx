@@ -278,7 +278,7 @@ const DashboardPage: React.FC = () => {
                                     !formData.email.trim()
                                 }
                             >
-                                Save
+                                Edit Profile
                             </Button>
                         </div>
                     )}
