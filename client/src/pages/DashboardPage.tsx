@@ -278,7 +278,7 @@ const DashboardPage: React.FC = () => {
                             </p>
                             <Button
                                 color="primary"
-                                onClick={handleSubmit}
+                                onClick={() => setEditing(true)}
                                 disabled={
                                     !formData.first_name.trim() ||
                                     !formData.last_name.trim() ||
