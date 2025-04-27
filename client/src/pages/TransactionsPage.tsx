@@ -32,6 +32,7 @@ const TransactionsPage: React.FC = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
     const [success, setSuccess] = React.useState("");
+    const [selectedItem, setSelectedItem] = React.useState<string>("");
 
     // Deposit state
     const [depositAccountId, setDepositAccountId] = React.useState("");
@@ -209,11 +210,21 @@ const TransactionsPage: React.FC = () => {
                             >
                                 <Select
                                     label="Select Account"
-                                    selectedKey={depositAccountId || ""}
+                                    placeholder={
+                                        selectedItem || "Choose an account"
+                                    }
                                     onSelectionChange={(key) => {
-                                        setDepositAccountId(key as string);
+                                        const account = accounts.find(
+                                            (acc) =>
+                                                acc.accountID.toString() ===
+                                                (key as string),
+                                        );
+                                        if (account) {
+                                            setSelectedItem(
+                                                `${account.accountType} (ID: ${account.accountID})`,
+                                            );
+                                        }
                                     }}
-                                    placeholder="Choose an account"
                                     className="min-w-[10rem]"
                                     isRequired
                                 >
@@ -222,7 +233,8 @@ const TransactionsPage: React.FC = () => {
                                             key={account.accountID.toString()}
                                             value={account.accountID.toString()}
                                         >
-                                            {account.accountType} (ID: {account.accountID})
+                                            {account.accountType} (ID:{" "}
+                                            {account.accountID})
                                         </SelectItem>
                                     ))}
                                 </Select>
