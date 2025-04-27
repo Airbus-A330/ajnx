@@ -140,17 +140,22 @@ const TransactionsPage: React.FC = () => {
     };
 
     const [historyTab, setHistoryTab] = React.useState<
-        "all" | "deposits" | "withdrawals"
+        "all" | "deposits" | "withdrawals" | "transfers"
     >("all");
+
     const [transactionHistory, setTransactionHistory] = React.useState<{
         deposits: any[];
         withdrawals: any[];
+        transfers: any[];
     }>({
         deposits: [],
         withdrawals: [],
+        transfers: [],
     });
 
-    const fetchHistory = async (type: "all" | "deposits" | "withdrawals") => {
+    const fetchHistory = async (
+        type: "all" | "deposits" | "withdrawals" | "transfers",
+    ) => {
         try {
             const response = await getTransactionHistory(type);
             setTransactionHistory(response);
@@ -429,7 +434,8 @@ const TransactionsPage: React.FC = () => {
                             const newTab = Array.from(keys)[0] as
                                 | "all"
                                 | "deposits"
-                                | "withdrawals";
+                                | "withdrawals"
+                                | "transfers";
                             setHistoryTab(newTab);
                             fetchHistory(newTab);
                         }}
@@ -443,6 +449,9 @@ const TransactionsPage: React.FC = () => {
                         </SelectItem>
                         <SelectItem key="withdrawals" value="withdrawals">
                             Withdrawals
+                        </SelectItem>
+                        <SelectItem key="transfers" value="transfers">
+                            Transfers
                         </SelectItem>
                     </Select>
                 </CardHeader>
@@ -474,60 +483,71 @@ const TransactionsPage: React.FC = () => {
                                                   type: "Withdrawal",
                                               }),
                                           ),
+                                          ...transactionHistory.transfers.map(
+                                              (t) => ({
+                                                  ...t,
+                                                  type: "Transfer",
+                                              }),
+                                          ),
                                       ]
                                     : historyTab === "deposits"
                                       ? transactionHistory.deposits.map(
                                             (d) => ({ ...d, type: "Deposit" }),
                                         )
-                                      : transactionHistory.withdrawals.map(
-                                            (w) => ({
-                                                ...w,
-                                                type: "Withdrawal",
-                                            }),
-                                        )
+                                      : historyTab === "withdrawals"
+                                        ? transactionHistory.withdrawals.map(
+                                              (w) => ({
+                                                  ...w,
+                                                  type: "Withdrawal",
+                                              }),
+                                          )
+                                        : transactionHistory.transfers.map(
+                                              (t) => ({
+                                                  ...t,
+                                                  type: "Transfer",
+                                              }),
+                                          )
                                 ).map((txn, idx) => (
                                     <tr key={idx} className="border-b text-sm">
                                         <td className="py-2 pr-4">
                                             <div className="flex items-center gap-2">
                                                 <Icon
-                                                    icon={`lucide:${txn.type === "Deposit" ? "banknote-arrow-up" : "banknote-arrow-down"}`}
-                                                    className={`text-${
+                                                    icon={
                                                         txn.type === "Deposit"
-                                                            ? "primary"
-                                                            : "warning"
-                                                    }`}
+                                                            ? "lucide:banknote-arrow-up"
+                                                            : txn.type ===
+                                                                "Withdrawal"
+                                                              ? "lucide:banknote-arrow-down"
+                                                              : "lucide:repeat" // for Transfer
+                                                    }
                                                 />
+
                                                 <Chip
                                                     size="sm"
                                                     color={
                                                         txn.type === "Deposit"
                                                             ? "primary"
-                                                            : "warning"
+                                                            : txn.type ===
+                                                                "Withdrawal"
+                                                              ? "warning"
+                                                              : "secondary" // Transfer
                                                     }
                                                     variant="flat"
                                                 >
-                                                    <div className="flex items-center gap-2">
-                                                        <span>{txn.type}</span>
-                                                    </div>
+                                                    {txn.type}
                                                 </Chip>
                                             </div>
                                         </td>
                                         <td className="py-2 pr-4">
-                                            {txn.account_id}
+                                            {txn.accountID}
                                         </td>
                                         <td className="py-2 pr-4">
                                             ${Number(txn.amount).toFixed(2)}
                                         </td>
                                         <td className="py-2 pr-4">
-                                            {txn.deposit_date
-                                                ? new Date(
-                                                      txn.deposit_date,
-                                                  ).toLocaleDateString()
-                                                : txn.withdrawal_date
-                                                  ? new Date(
-                                                        txn.withdrawal_date,
-                                                    ).toLocaleDateString()
-                                                  : "-"}
+                                            {new Date(
+                                                txn.timestamp,
+                                            ).toLocaleDateString()}
                                         </td>
                                         <td className="py-2 pr-4">
                                             {txn.description}

@@ -7,8 +7,8 @@ const requireAuth = require("../../../functions/requireAuth.js");
     Method: GET
     Description: Returns deposits, withdrawals, or both for the authenticated user.
     Headers: { Authorization }
-    Params: :type = "deposits", "withdrawals", or "all"
-    Response: { deposits: [...], withdrawals: [...] }
+    Params: :type = "deposits", "withdrawals", "transfers", or "all"
+    Response: { deposits: [...], withdrawals: [...], transfers: [...] }
 */
 
 router.get("/:type", requireAuth, async (req, res) => {
@@ -16,7 +16,7 @@ router.get("/:type", requireAuth, async (req, res) => {
     const { type } = req.params;
 
     // Validate type parameter
-    const validTypes = ["deposits", "withdrawals", "all"];
+    const validTypes = ["deposits", "withdrawals", "all", "transfers"];
 
     if (!validTypes.includes(type)) {
         return res.status(400).json({ error: "Invalid transaction type" });
@@ -39,6 +39,7 @@ router.get("/:type", requireAuth, async (req, res) => {
                 message: "No accounts found",
                 deposits: [],
                 withdrawals: [],
+                transfers: [],
             });
         }
 
@@ -67,11 +68,20 @@ router.get("/:type", requireAuth, async (req, res) => {
             );
         }
 
+        if (type === "transfers" || type === "all") {
+            [transfers] = await db.query(
+                `SELECT * 
+                 FROM Transactions WHERE transactionType = 'transfer' AND accountID IN (${placeholders})`,
+                accountIDs,
+            );
+        }
+
         deposits = deposits.reverse();
         withdrawals = withdrawals.reverse();
+        transfers = transfers.reverse();
 
         // Return the results
-        res.json({ deposits, withdrawals });
+        res.json({ deposits, withdrawals, transfers });
     } catch (err) {
         // Handle errors
         // Log the error for debugging
