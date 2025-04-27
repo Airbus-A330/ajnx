@@ -182,13 +182,16 @@ const AdminUsersPage: React.FC = () => {
                                         <TableCell>{user.userID}</TableCell>
                                         <TableCell>{user.username}</TableCell>
                                         <TableCell>
-                                            <Chip
-                                                color={getRoleColor(user.role)}
-                                                variant="flat"
-                                                size="sm"
-                                            >
-                                                {user.role}
-                                            </Chip>
+                                            <div className="flex items-center gap-4">
+                                                <Icon icon={`lucide:${user.role == "admin" ? "shield-user" : "user"}`}/>
+                                                <Chip
+                                                    color={getRoleColor(user.role)}
+                                                    variant="flat"
+                                                    size="sm"
+                                                >
+                                                    {user.role}
+                                                </Chip>
+                                            </div>
                                         </TableCell>
                                         <TableCell>
                                             {user.accountCount ?? 0}
