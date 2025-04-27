@@ -226,9 +226,9 @@ export const deleteUser = async (userID: number): Promise<void> => {
 
 // Admin - update user
 export const updateUser = (userID: number, form: any): Promise<void> =>
-    request(`/admin/customers/update`, {
+    request(`/admin/customers/update/${userID}`, {
         method: "PUT",
-        body: { customer_id: userID, ...form },
+        body: { ...form },
     });
 
 export const getCustomerProfileById = async (userID: number) => {

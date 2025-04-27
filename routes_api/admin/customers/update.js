@@ -5,20 +5,25 @@ const requireAuth = require("../../../functions/requireAuth.js");
 const requireAdmin = require("../../../functions/requireAdmin.js");
 
 /*
-    Path: /api/admin/customers/update
+    Path: /api/admin/customers/update/:id
     Method: PUT
     Description: Allows admin to update a customer's profile and their role
-    Body: { customer_id, first_name, last_name, address, phone, email, role }
+    Body: { first_name, last_name, address, phone, email, role }
     Response: { message: string }
     Notes: Admin only
 */
 
-router.put("/", requireAuth, requireAdmin, async (req, res) => {
-    const { customer_id, first_name, last_name, address, phone, email, role } = req.body;
+router.put("/:id", requireAuth, requireAdmin, async (req, res) => {
+    const { first_name, last_name, address, phone, email, role } = req.body;
+    const { id: customer_id } = req.params;
 
     // Validate input
-    if (!customer_id || !first_name || !last_name || !address || !phone || !email || !role) {
+    if (!first_name || !last_name || !address || !phone || !email || !role) {
         return res.status(400).json({ error: "All fields are required" });
+    }
+
+    if (!customer_id) {
+        return res.status(400).json({ error: "Customer ID is required" });
     }
 
     try {
