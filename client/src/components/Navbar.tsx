@@ -13,7 +13,7 @@ import {
     DropdownItem,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const NavbarComponent: React.FC = () => {
     const history = useHistory();
@@ -30,7 +30,7 @@ const NavbarComponent: React.FC = () => {
 
     if (token) {
         try {
-            const decoded: any = jwt_decode(token);
+            const decoded: any = jwtDecode(token);
             userRole = decoded.role || null;
         } catch (err) {
             console.error("Failed to decode token:", err);
