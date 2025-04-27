@@ -214,9 +214,6 @@ const TransactionsPage: React.FC = () => {
                                         selectedItem || "Choose an account"
                                     }
                                     onSelectionChange={(key) => {
-                                        console.log("Selected key:", key);
-                                        console.log("Key as string:", key as string);
-                                        console.log("Accounts:", accounts);
                                         const account = accounts.find(
                                             (acc) =>
                                                 acc.accountID.toString() === Array.from(key)[0].toString(),
@@ -227,6 +224,7 @@ const TransactionsPage: React.FC = () => {
                                             setSelectedItem(
                                                 `${account.accountType} (ID: ${account.accountID})`,
                                             );
+                                            console.log("Selected Item:", selectedItem)
                                         }
                                     }}
                                     className="min-w-[10rem]"
