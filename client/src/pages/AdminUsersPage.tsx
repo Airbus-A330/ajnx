@@ -13,21 +13,41 @@ import {
     Divider,
     Button,
     Tooltip,
+    Input,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getUsers, deleteUser } from "../api/api";
+import { getUsers, deleteUser, updateCustomerProfile } from "../api/api";
 
 interface User {
     userID: number;
     username: string;
     role: string;
-    accountCount: number; // ✅ new
+    accountCount: number;
+}
+
+interface CustomerProfile {
+    first_name: string;
+    last_name: string;
+    address: string;
+    phone: string;
+    email: string;
+    role: string;
 }
 
 const AdminUsersPage: React.FC = () => {
     const [users, setUsers] = React.useState<User[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+    const [editForm, setEditForm] = React.useState<CustomerProfile>({
+        first_name: "",
+        last_name: "",
+        address: "",
+        phone: "",
+        email: "",
+        role: "customer",
+    });
 
     const fetchUsers = async () => {
         try {
@@ -46,10 +66,10 @@ const AdminUsersPage: React.FC = () => {
     }, []);
 
     const handleDeleteUser = async (userID: number) => {
-        const confirm = window.confirm(
+        const confirmDelete = window.confirm(
             "Are you sure you want to delete this user?",
         );
-        if (!confirm) return;
+        if (!confirmDelete) return;
 
         try {
             await deleteUser(userID);
@@ -58,6 +78,19 @@ const AdminUsersPage: React.FC = () => {
             alert("Failed to delete user");
             console.error(err);
         }
+    };
+
+    const handleEditUser = (user: User) => {
+        setSelectedUser(user);
+        setEditForm({
+            first_name: "",
+            last_name: "",
+            address: "",
+            phone: "",
+            email: "",
+            role: user.role,
+        });
+        setIsEditing(true);
     };
 
     const getRoleColor = (role: string) => {
@@ -139,7 +172,20 @@ const AdminUsersPage: React.FC = () => {
                                         <TableCell>
                                             {user.accountCount ?? 0}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell className="flex gap-2">
+                                            <Tooltip content="Edit user">
+                                                <Button
+                                                    isIconOnly
+                                                    color="primary"
+                                                    variant="light"
+                                                    size="sm"
+                                                    onClick={() =>
+                                                        handleEditUser(user)
+                                                    }
+                                                >
+                                                    <Icon icon="lucide:pencil" />
+                                                </Button>
+                                            </Tooltip>
                                             <Tooltip content="Delete user">
                                                 <Button
                                                     isIconOnly
@@ -163,6 +209,125 @@ const AdminUsersPage: React.FC = () => {
                     )}
                 </CardBody>
             </Card>
+
+            {/* Edit Modal */}
+            {isEditing && selectedUser && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md space-y-4">
+                        <h2 className="text-xl font-bold mb-4">
+                            Edit User: {selectedUser.username}
+                        </h2>
+                        <Input
+                            label="First Name"
+                            value={editForm.first_name}
+                            onChange={(e) =>
+                                setEditForm({
+                                    ...editForm,
+                                    first_name: e.target.value,
+                                })
+                            }
+                        />
+                        <Input
+                            label="Last Name"
+                            value={editForm.last_name}
+                            onChange={(e) =>
+                                setEditForm({
+                                    ...editForm,
+                                    last_name: e.target.value,
+                                })
+                            }
+                        />
+                        <Input
+                            label="Address"
+                            value={editForm.address}
+                            onChange={(e) =>
+                                setEditForm({
+                                    ...editForm,
+                                    address: e.target.value,
+                                })
+                            }
+                        />
+                        <Input
+                            label="Phone"
+                            value={editForm.phone}
+                            onChange={(e) =>
+                                setEditForm({
+                                    ...editForm,
+                                    phone: e.target.value,
+                                })
+                            }
+                        />
+                        <Input
+                            label="Email"
+                            value={editForm.email}
+                            onChange={(e) =>
+                                setEditForm({
+                                    ...editForm,
+                                    email: e.target.value,
+                                })
+                            }
+                        />
+
+                        <div className="flex items-center justify-between mt-4">
+                            <label className="text-sm font-medium">
+                                Admin Access
+                            </label>
+                            <Button
+                                color={
+                                    editForm.role === "admin"
+                                        ? "danger"
+                                        : "secondary"
+                                }
+                                variant="flat"
+                                size="sm"
+                                onClick={() =>
+                                    setEditForm({
+                                        ...editForm,
+                                        role:
+                                            editForm.role === "admin"
+                                                ? "customer"
+                                                : "admin",
+                                    })
+                                }
+                            >
+                                {editForm.role === "admin"
+                                    ? "Admin"
+                                    : "Customer"}
+                            </Button>
+                        </div>
+
+                        <div className="flex justify-end gap-2 mt-6">
+                            <Button
+                                variant="light"
+                                onClick={() => setIsEditing(false)}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                color="primary"
+                                onClick={async () => {
+                                    try {
+                                        await updateCustomerProfile(
+                                            selectedUser.userID,
+                                            editForm,
+                                        );
+                                        await fetchUsers();
+                                        setIsEditing(false);
+                                    } catch (err) {
+                                        console.error(
+                                            "Error updating user:",
+                                            err,
+                                        );
+                                        alert("Failed to update user.");
+                                    }
+                                }}
+                            >
+                                Save Changes
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
