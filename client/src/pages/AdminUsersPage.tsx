@@ -49,6 +49,25 @@ const AdminUsersPage: React.FC = () => {
         role: "customer",
     });
 
+    const fetchAndPopulateCustomerProfile = async (userID: number) => {
+        try {
+            const profile = await getCustomerProfileById(userID); // <- API call
+            if (profile) {
+                setEditForm({
+                    first_name: profile.first_name || "",
+                    last_name: profile.last_name || "",
+                    address: profile.address || "",
+                    phone: profile.phone || "",
+                    email: profile.email || "",
+                    role: profile.role || "customer", // If role not included, default
+                });
+            }
+        } catch (error) {
+            console.error("Failed to load customer profile:", error);
+            alert("Failed to load customer details.");
+        }
+    };
+
     const fetchUsers = async () => {
         try {
             const response = await getUsers();
@@ -81,15 +100,8 @@ const AdminUsersPage: React.FC = () => {
     };
 
     const handleEditUser = (user: User) => {
-        setSelectedUser(user);
-        setEditForm({
-            first_name: "",
-            last_name: "",
-            address: "",
-            phone: "",
-            email: "",
-            role: user.role,
-        });
+        fetchAndPopulateCustomerProfile(user.userID);
+        setSelectedUser(user.userID);
         setIsEditing(true);
     };
 

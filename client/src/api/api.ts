@@ -221,7 +221,6 @@ export const deleteUser = async (userID: number): Promise<void> => {
         throw new Error(errorMessage);
     }
 
-    // ✅ no res.json() if 204
     return;
 };
 
@@ -231,3 +230,9 @@ export const updateUser = (userID: number, form: any): Promise<void> =>
         method: "PUT",
         body: { customer_id: userID, ...form },
     });
+
+export const getCustomerProfileById = async (userID: number) => {
+    return request(`/customers/${userID}`, {
+        method: "GET",
+    });
+};
