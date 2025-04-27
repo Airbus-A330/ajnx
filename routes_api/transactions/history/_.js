@@ -53,7 +53,7 @@ router.get("/:type", requireAuth, async (req, res) => {
         if (type === "deposits" || type === "all") {
             [deposits] = await db.query(
                 `SELECT * 
-                 FROM Transactions WHERE transactionType = 'deposit' AND account_id IN (${placeholders})`,
+                 FROM Transactions WHERE transactionType = 'deposit' AND accountID IN (${placeholders})`,
                 accountIDs,
             );
         }
@@ -62,7 +62,7 @@ router.get("/:type", requireAuth, async (req, res) => {
         if (type === "withdrawals" || type === "all") {
             [withdrawals] = await db.query(
                 `SELECT * 
-                 FROM TRANSACTIONS WHERE transactionType = 'withdrawal' AND account_id IN (${placeholders})`,
+                 FROM TRANSACTIONS WHERE transactionType = 'withdrawal' AND accountID IN (${placeholders})`,
                 accountIDs,
             );
         }
