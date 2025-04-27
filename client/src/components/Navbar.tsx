@@ -13,6 +13,7 @@ import {
     DropdownItem,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import jwt_decode from "jwt-decode";
 
 const NavbarComponent: React.FC = () => {
     const history = useHistory();
@@ -23,6 +24,19 @@ const NavbarComponent: React.FC = () => {
         localStorage.removeItem("token");
         history.push("/login");
     };
+
+    const token = localStorage.getItem("token");
+    let userRole: string | null = null;
+
+    if (token) {
+        try {
+            const decoded: any = jwt_decode(token);
+            userRole = decoded.role || null;
+        } catch (err) {
+            console.error("Failed to decode token:", err);
+            userRole = null;
+        }
+    }
 
     return (
         <Navbar maxWidth="xl">
@@ -128,20 +142,25 @@ const NavbarComponent: React.FC = () => {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Account actions">
-                            <DropdownItem
-                                key="admin-users"
-                                as={RouterLink}
-                                to="/admin/users"
-                            >
-                                Admin: Users
-                            </DropdownItem>
-                            <DropdownItem
-                                key="admin-export"
-                                as={RouterLink}
-                                to="/admin/export"
-                            >
-                                Admin: Export
-                            </DropdownItem>
+                            {userRole === "admin" && (
+                                <>
+                                    <DropdownItem
+                                        key="admin-users"
+                                        as={RouterLink}
+                                        to="/admin/users"
+                                    >
+                                        Admin: Users
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        key="admin-export"
+                                        as={RouterLink}
+                                        to="/admin/export"
+                                    >
+                                        Admin: Export
+                                    </DropdownItem>
+                                </>
+                            )}
+
                             <DropdownItem
                                 key="logout"
                                 onPress={handleLogout}
