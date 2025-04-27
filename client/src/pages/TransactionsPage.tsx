@@ -219,8 +219,7 @@ const TransactionsPage: React.FC = () => {
                                         console.log("Accounts:", accounts);
                                         const account = accounts.find(
                                             (acc) =>
-                                                acc.accountID.toString() ===
-                                                (key as string),
+                                                acc.accountID.toString() === Array.from(key)[0].toString(),
                                         );
                                         console.log("Account found:", account);
                                         if (account) {
