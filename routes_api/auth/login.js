@@ -30,10 +30,10 @@ router.post("/", async (req, res) => {
         // Check if user exists
         const user = users[0];
 
-        // If user does not exist, return 401 Unauthorized
+        // If user does not exist, return 403 Forbidden
         if (!user)
             return res
-                .status(401)
+                .status(403)
                 .json({ error: "Invalid username or password" });
 
         // Check if password is correct
