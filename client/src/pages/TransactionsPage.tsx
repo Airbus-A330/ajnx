@@ -32,7 +32,8 @@ const TransactionsPage: React.FC = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
     const [success, setSuccess] = React.useState("");
-    const [selectedItem, setSelectedItem] = React.useState<string>("");
+    const [selectedAccountKey, setSelectedAccountKey] =
+        React.useState<string>("");
 
     // Deposit state
     const [depositAccountId, setDepositAccountId] = React.useState("");
@@ -65,10 +66,6 @@ const TransactionsPage: React.FC = () => {
 
         fetchAccounts();
     }, []);
-
-    React.useEffect(() => {
-        console.log("Updated selectedItem:", selectedItem);
-    }, [selectedItem]);
 
     const handleDeposit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -214,30 +211,18 @@ const TransactionsPage: React.FC = () => {
                             >
                                 <Select
                                     label="Select Account"
-                                    placeholder={
-                                        selectedItem || "Choose an account"
+                                    selectedKeys={
+                                        selectedAccountKey
+                                            ? [selectedAccountKey]
+                                            : []
                                     }
-                                    onSelectionChange={(key) => {
-                                        const account = accounts.find(
-                                            (acc) =>
-                                                acc.accountID.toString() ===
-                                                Array.from(key)[0].toString(),
-                                        );
-                                        console.log("Account found:", account);
-                                        if (account) {
-                                            console.log(
-                                                "Setting selected item:",
-                                                account,
-                                            );
-                                            setSelectedItem(
-                                                `${account.accountType} (ID: ${account.accountID})`,
-                                            );
-                                            console.log(
-                                                "Selected Item:",
-                                                selectedItem,
-                                            );
-                                        }
+                                    onSelectionChange={(keys) => {
+                                        const selectedKey = Array.from(
+                                            keys,
+                                        )[0] as string;
+                                        setSelectedAccountKey(selectedKey);
                                     }}
+                                    placeholder="Choose an account"
                                     className="min-w-[10rem]"
                                     isRequired
                                 >
