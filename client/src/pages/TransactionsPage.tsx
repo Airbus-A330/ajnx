@@ -32,7 +32,7 @@ const TransactionsPage: React.FC = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
     const [success, setSuccess] = React.useState("");
-    const [selectedItem, setSelectedItem] = React.useState<string>("");
+    const [selectedItem, setSelectedItem] = React.useState([]);
 
     // Deposit state
     const [depositAccountId, setDepositAccountId] = React.useState("");
