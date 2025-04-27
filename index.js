@@ -138,6 +138,10 @@ if (cluster.isMaster) {
         res.sendFile(path.join(__dirname, "static", "favicon.ico"));
     });
 
+    app.get("/icon.png", (req, res) => {
+        res.sendFile(path.join(__dirname, "static", "icon.png"));
+    });
+
     app.all("*", async (req, res, next) => {
         if (req.path.startsWith("/api/")) {
             return next();
