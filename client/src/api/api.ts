@@ -224,3 +224,10 @@ export const deleteUser = async (userID: number): Promise<void> => {
     // ✅ no res.json() if 204
     return;
 };
+
+// Admin - update user
+export const updateUser = (userID: number, form: any): Promise<void> =>
+    request(`/admin/customers/update`, {
+        method: "PUT",
+        body: { customer_id: userID, ...form },
+    });

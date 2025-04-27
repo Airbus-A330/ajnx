@@ -16,7 +16,7 @@ import {
     Input,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getUsers, deleteUser, updateCustomerProfile } from "../api/api";
+import { getUsers, deleteUser, updateUser } from "../api/api";
 
 interface User {
     userID: number;
@@ -307,7 +307,7 @@ const AdminUsersPage: React.FC = () => {
                                 color="primary"
                                 onClick={async () => {
                                     try {
-                                        await updateCustomerProfile(
+                                        await updateUser(
                                             selectedUser.userID,
                                             editForm,
                                         );
