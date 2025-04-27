@@ -65,8 +65,8 @@ Choose your preferred mode:
 
 #### a) Production Mode
 
--   Use this for fast startup.
--   **Important:** You must complete the `npm run build` step first!
+-   Use this for full deploy.
+-   **Important:** You must ensure all your packages are installed first!
 
 ```bash
 npm run start:prod
