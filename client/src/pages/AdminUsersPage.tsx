@@ -16,7 +16,7 @@ import {
     Input,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getUsers, deleteUser, updateUser } from "../api/api";
+import { getUsers, deleteUser, updateUser, getCustomerProfileById } from "../api/api";
 
 interface User {
     userID: number;
