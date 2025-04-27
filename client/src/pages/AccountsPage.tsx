@@ -201,7 +201,7 @@ const AccountsPage: React.FC = () => {
                                 onSelectionChange={(keys) =>
                                     setBranchId(Array.from(keys)[0] as string)
                                 }
-                                className="min-w-[10rem]"
+                                className="min-w-[16rem]"
                             >
                                 {branches.map((branch) => (
                                     <SelectItem key={branch.branch_id}>
