@@ -32,7 +32,7 @@ const TransactionsPage: React.FC = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
     const [success, setSuccess] = React.useState("");
-    const [selectedItem, setSelectedItem] = React.useState([]);
+    const [selectedItem, setSelectedItem] = React.useState<string>("");
 
     // Deposit state
     const [depositAccountId, setDepositAccountId] = React.useState("");
@@ -65,6 +65,10 @@ const TransactionsPage: React.FC = () => {
 
         fetchAccounts();
     }, []);
+
+    React.useEffect(() => {
+        console.log("Updated selectedItem:", selectedItem);
+    }, [selectedItem]);
 
     const handleDeposit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -216,15 +220,22 @@ const TransactionsPage: React.FC = () => {
                                     onSelectionChange={(key) => {
                                         const account = accounts.find(
                                             (acc) =>
-                                                acc.accountID.toString() === Array.from(key)[0].toString(),
+                                                acc.accountID.toString() ===
+                                                Array.from(key)[0].toString(),
                                         );
                                         console.log("Account found:", account);
                                         if (account) {
-                                            console.log("Setting selected item:", account);
+                                            console.log(
+                                                "Setting selected item:",
+                                                account,
+                                            );
                                             setSelectedItem(
                                                 `${account.accountType} (ID: ${account.accountID})`,
                                             );
-                                            console.log("Selected Item:", selectedItem)
+                                            console.log(
+                                                "Selected Item:",
+                                                selectedItem,
+                                            );
                                         }
                                     }}
                                     className="min-w-[10rem]"

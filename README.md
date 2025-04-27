@@ -6,16 +6,16 @@ Welcome to the **AJNX Banking** project! This is a full-stack banking web applic
 
 ## Features Supported
 
-- **User Authentication** (Login / Register)
-- **Accounts Management** (Checking / Savings / Credit Cards)
-- **Branch Management**
-- **Transactions** (Deposits, Withdrawals, Transfers)
-- **Loans** (Apply for Loans, Pay Loans, Track Loan History)
-- **Payments** (History tracking, Balance validation)
-- **Credit Cards** (Apply, View, and Manage Credit Cards)
-- **Customer Profile Management**
-- **Admin Panel** (Manage Users, Export Data)
-- **Privacy Policy** and **Terms of Service** pages
+-   **User Authentication** (Login / Register)
+-   **Accounts Management** (Checking / Savings / Credit Cards)
+-   **Branch Management**
+-   **Transactions** (Deposits, Withdrawals, Transfers)
+-   **Loans** (Apply for Loans, Pay Loans, Track Loan History)
+-   **Payments** (History tracking, Balance validation)
+-   **Credit Cards** (Apply, View, and Manage Credit Cards)
+-   **Customer Profile Management**
+-   **Admin Panel** (Manage Users, Export Data)
+-   **Privacy Policy** and **Terms of Service** pages
 
 ---
 
@@ -25,8 +25,8 @@ Follow these steps carefully to set up and run the project locally or in product
 
 ### 1. Configure Environment Variables
 
-- Locate the `.env.example` file at the project root.
-- Fill out all required fields:
+-   Locate the `.env.example` file at the project root.
+-   Fill out all required fields:
 
     | Field         | Description                                                  |
     | :------------ | :----------------------------------------------------------- |
@@ -37,7 +37,7 @@ Follow these steps carefully to set up and run the project locally or in product
     | `PORT`        | Port to run the backend server (e.g., `3306`)                |
     | `JWT_SECRET`  | Secret key used for signing JWT tokens                       |
 
-- **Rename** the file from `.env.example` to `.env` (remove `.example`!)
+-   **Rename** the file from `.env.example` to `.env` (remove `.example`!)
 
 ### 2. Install Required Packages
 
@@ -65,8 +65,8 @@ Choose your preferred mode:
 
 #### a) Production Mode
 
-- Use this for fast startup.
-- **Important:** You must complete the `npm run build` step first!
+-   Use this for fast startup.
+-   **Important:** You must complete the `npm run build` step first!
 
 ```bash
 npm run start:prod
@@ -74,13 +74,13 @@ npm run start:prod
 
 Notes:
 
-- Minimal logs are printed.
-- Fast and optimized, but harder to debug.
+-   Minimal logs are printed.
+-   Fast and optimized, but harder to debug.
 
 #### b) Development Mode
 
-- Good for testing and active development.
-- Automatically rebuilds when files are changed.
+-   Good for testing and active development.
+-   Automatically rebuilds when files are changed.
 
 ```bash
 npm run start:dev
@@ -88,21 +88,21 @@ npm run start:dev
 
 Notes:
 
-- Slower startup since the project is recompiled.
-- Much easier for debugging errors.
+-   Slower startup since the project is recompiled.
+-   Much easier for debugging errors.
 
 ### Recommendations
 
-- Always test your changes in **development mode** first.
-- Switch to **production mode** only when you're ready to deploy or demo.
+-   Always test your changes in **development mode** first.
+-   Switch to **production mode** only when you're ready to deploy or demo.
 
 ---
 
 ## Notes
 
-- Minimal logs are available in production.
-- Development mode shows detailed errors and auto-reloads.
-- Database setup (schema, tables, procedures) must be completed separately.
+-   Minimal logs are available in production.
+-   Development mode shows detailed errors and auto-reloads.
+-   Database setup (schema, tables, procedures) must be completed separately.
 
 ---
 
