@@ -62,11 +62,32 @@ router.post("/", requireAuth, async (req, res) => {
         // Calculate interest rate
         const interestRate = calculateInterestRate(loanAmount, totalBalance);
 
+        // Before inserting, we need to fetch the customer_id that matches the userID
+        const [customers] = await db.query(
+            "SELECT customer_id FROM Customers WHERE customer_id = ?",
+            [req.user.userID],
+        );
+
+        // If customer not found, reject
+        if (customers.length === 0) {
+            return res
+                .status(400)
+                .json({
+                    error: "No customer profile found. Please complete your profile first.",
+                });
+        }
+
         // Insert the new loan
         await db.query(
             `INSERT INTO Loans (customer_id, account_id, loan_amount, interest_rate, start_date, due_date, status)
-             VALUES (?, ?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 YEAR), ?)`,
-            [req.user.userID, accountID, loanAmount, interestRate, "Unpaid"],
+     VALUES (?, ?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 YEAR), ?)`,
+            [
+                customers[0].customer_id,
+                accountID,
+                loanAmount,
+                interestRate,
+                "Unpaid",
+            ],
         );
 
         // Update the account balance
