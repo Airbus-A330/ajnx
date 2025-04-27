@@ -96,6 +96,11 @@ router.post("/", requireAuth, async (req, res) => {
     // Destructure the request body
     const { accountType, branch_id } = req.body;
 
+    // Validate input
+    if (!["checking", "savings", "credit"].includes(accountType)) {
+        return res.status(400).json({ error: "Invalid account type" });
+    }
+
     try {
         // Check if the user is authenticated
         // Validate input
