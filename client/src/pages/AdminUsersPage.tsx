@@ -65,7 +65,7 @@ const AdminUsersPage: React.FC = () => {
 
     const fetchAndPopulateCustomerProfile = async (userID: number) => {
         try {
-            const profile = await getCustomerProfileById(userID); // <- API call
+            const profile = await getCustomerProfileById(userID); 
             if (profile) {
                 setEditForm({
                     first_name: profile.first_name || "",
@@ -73,12 +73,19 @@ const AdminUsersPage: React.FC = () => {
                     address: profile.address || "",
                     phone: profile.phone || "",
                     email: profile.email || "",
-                    role: profile.role || "customer", // If role not included, default
+                    role: profile.role || "customer", 
                 });
             }
         } catch (error) {
             console.error("Failed to load customer profile:", error);
-            alert("Failed to load customer details.");
+            setEditForm({
+                first_name: "",
+                last_name: "",
+                address: "",
+                phone: "",
+                email: "",
+                role: "customer",
+            });
         }
     };
 
