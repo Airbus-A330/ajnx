@@ -24,6 +24,12 @@ router.post("/", async (req, res) => {
             .json({ error: "Missing username, password, or role" });
     }
 
+    if (role !== "customer") {
+        return res
+            .status(400)
+            .json({ error: "Invalid role. Only 'customer' is allowed" });
+    }
+
     try {
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
         await db.query(

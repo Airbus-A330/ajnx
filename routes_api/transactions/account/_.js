@@ -17,11 +17,17 @@ router.get("/:id", requireAuth, async (req, res) => {
     // Check if user is authenticated
     try {
         // Validate accountID
+        if (!req.params.id) {
+            return res.status(400).json({ error: "Account ID is required" });
+        }
+
+        // Fetch account details
         const accountID = req.params.id;
         const [accounts] = await db.query(
             "SELECT * FROM Accounts WHERE accountID = ?",
             [accountID],
         );
+        
         const account = accounts[0];
 
         // Check if the account exists

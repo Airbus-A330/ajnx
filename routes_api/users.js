@@ -43,6 +43,11 @@ router.delete("/:userID", requireAuth, requireAdmin, async (req, res) => {
     // Destructure userID from request parameters
     const { userID } = req.params;
 
+    // Validate input
+    if (!userID) {
+        return res.status(400).json({ error: "User ID is required" });
+    }
+
     // Validate userID
     try {
         // Prevent deleting self or admin accounts

@@ -21,6 +21,10 @@ router.post("/", requireAuth, async (req, res) => {
     if (!fromAccountID || !toAccountID || amount <= 0)
         return res.status(400).json({ error: "Invalid transfer data" });
 
+    if (!description) {
+        return res.status(400).json({ error: "Description is required" });
+    }
+
     // Check if the user is authenticated
     const conn = await db.getConnection();
 

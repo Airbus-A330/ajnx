@@ -19,6 +19,13 @@ router.post("/", async (req, res) => {
     // Destructure username and password from request body
     const { username, password } = req.body;
 
+    // Validate input
+    if (!username || !password) {
+        return res
+            .status(400)
+            .json({ error: "Missing username or password" });
+    }
+
     // Check if username and password are provided
     try {
         // Check if username and password in database

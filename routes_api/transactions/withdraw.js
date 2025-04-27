@@ -22,6 +22,10 @@ router.post("/", requireAuth, async (req, res) => {
     if (!accountID || amount <= 0)
         return res.status(400).json({ error: "Invalid withdrawal data" });
 
+    if (!description) {
+        return res.status(400).json({ error: "Description is required" });
+    }
+
     try {
         // Check if the account exists and belongs to the user or if the user is an admin
         const [accounts] = await db.query(
