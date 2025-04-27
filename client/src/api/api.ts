@@ -232,7 +232,7 @@ export const updateUser = (userID: number, form: any): Promise<void> =>
     });
 
 export const getCustomerProfileById = async (userID: number) => {
-    return request(`/customers/${userID}`, {
+    return request(`/admin/customers/${userID}`, {
         method: "GET",
     });
 };
