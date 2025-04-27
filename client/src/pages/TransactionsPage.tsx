@@ -32,8 +32,6 @@ const TransactionsPage: React.FC = () => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState("");
     const [success, setSuccess] = React.useState("");
-    const [selectedAccountKey, setSelectedAccountKey] =
-        React.useState<string>("");
 
     // Deposit state
     const [depositAccountId, setDepositAccountId] = React.useState("");
@@ -212,15 +210,15 @@ const TransactionsPage: React.FC = () => {
                                 <Select
                                     label="Select Account"
                                     selectedKeys={
-                                        selectedAccountKey
-                                            ? [selectedAccountKey]
+                                        depositAccountId
+                                            ? [depositAccountId]
                                             : []
                                     }
                                     onSelectionChange={(keys) => {
                                         const selectedKey = Array.from(
                                             keys,
                                         )[0] as string;
-                                        setSelectedAccountKey(selectedKey);
+                                        setDepositAccountId(selectedKey);
                                     }}
                                     placeholder="Choose an account"
                                     className="min-w-[10rem]"
