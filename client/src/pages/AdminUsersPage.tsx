@@ -16,7 +16,12 @@ import {
     Input,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { getUsers, deleteUser, updateUser, getCustomerProfileById } from "../api/api";
+import {
+    getUsers,
+    deleteUser,
+    updateUser,
+    getCustomerProfileById,
+} from "../api/api";
 
 interface User {
     userID: number;
@@ -183,9 +188,14 @@ const AdminUsersPage: React.FC = () => {
                                         <TableCell>{user.username}</TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
-                                                <Icon className={`text-${getRoleColor(user.role)}`} icon={`lucide:${user.role == "admin" ? "shield-user" : "user"}`}/>
+                                                <Icon
+                                                    className={`text-${getRoleColor(user.role)}`}
+                                                    icon={`lucide:${user.role == "admin" ? "shield-user" : "user"}`}
+                                                />
                                                 <Chip
-                                                    color={getRoleColor(user.role)}
+                                                    color={getRoleColor(
+                                                        user.role,
+                                                    )}
                                                     variant="flat"
                                                     size="sm"
                                                 >
@@ -250,6 +260,7 @@ const AdminUsersPage: React.FC = () => {
                                     first_name: e.target.value,
                                 })
                             }
+                            required
                         />
                         <Input
                             label="Last Name"
@@ -260,6 +271,7 @@ const AdminUsersPage: React.FC = () => {
                                     last_name: e.target.value,
                                 })
                             }
+                            required
                         />
                         <Input
                             label="Address"
@@ -270,6 +282,7 @@ const AdminUsersPage: React.FC = () => {
                                     address: e.target.value,
                                 })
                             }
+                            required
                         />
                         <Input
                             label="Phone"
@@ -280,6 +293,7 @@ const AdminUsersPage: React.FC = () => {
                                     phone: e.target.value,
                                 })
                             }
+                            required
                         />
                         <Input
                             label="Email"
@@ -290,6 +304,7 @@ const AdminUsersPage: React.FC = () => {
                                     email: e.target.value,
                                 })
                             }
+                            required
                         />
 
                         <div className="flex items-center justify-between mt-4">
