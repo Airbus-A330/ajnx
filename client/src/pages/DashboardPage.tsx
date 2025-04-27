@@ -268,10 +268,17 @@ const DashboardPage: React.FC = () => {
                                 <strong>Email:</strong> {customerProfile.email}
                             </p>
                             <Button
-                                className="mt-4"
-                                onClick={() => setEditing(true)}
+                                color="primary"
+                                onClick={handleSubmit}
+                                disabled={
+                                    !formData.first_name.trim() ||
+                                    !formData.last_name.trim() ||
+                                    !formData.address.trim() ||
+                                    !formData.phone.trim() ||
+                                    !formData.email.trim()
+                                }
                             >
-                                Edit Profile
+                                Save
                             </Button>
                         </div>
                     )}
