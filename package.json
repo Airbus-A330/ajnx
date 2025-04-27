@@ -5,10 +5,11 @@
     "main": "index.js",
     "scripts": {
         "build": "cd client && npm run format && npm run build",
+        "preview": "cd client && npm run preview",
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier . --write",
-        "start:dev": "NODE_ENV=development npm run build && node index.js",
-        "start:prod": "NODE_ENV=production node index.js"
+        "start:dev": "NODE_ENV=development npm run preview && node index.js",
+        "start:prod": "NODE_ENV=production npm run build && node index.js"
     },
     "repository": {
         "type": "git",
