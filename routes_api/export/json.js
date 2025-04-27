@@ -43,7 +43,7 @@ router.get("/", requireAuth, requireAdmin, async (req, res) => {
         // Log the error for debugging
         // Return 500 Internal Server Error
         console.error("Full export error:", err);
-        res.status(500).json({ error: "Export failed", details: err.message });
+        res.status(500).json({ error: "Export failed" });
     }
 });
 

@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
         // Log the error for debugging
         // Return 500 Internal Server Error
         console.error("Login error:", err);
-        res.status(500).json({ error: "Login failed", details: err.message });
+        res.status(500).json({ error: "Login failed" });
     }
 });
 
