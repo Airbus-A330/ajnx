@@ -29,6 +29,15 @@ interface CustomerProfile {
     email: string;
 }
 
+const formatPhoneNumber = (phoneNumberString: string) => {
+    var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+        return "(" + match[1] + ") " + match[2] + "-" + match[3];
+    }
+    return null;
+};
+
 const DashboardPage: React.FC = () => {
     const [userData, setUserData] = React.useState<UserData | null>(null);
     const [customerProfile, setCustomerProfile] =
@@ -224,7 +233,7 @@ const DashboardPage: React.FC = () => {
                             />
                             <Input
                                 label="Phone"
-                                value={formData.phone}
+                                value={formatPhoneNumber(formData.phone)}
                                 onChange={(e) =>
                                     handleChange("phone", e.target.value)
                                 }
