@@ -27,7 +27,7 @@ router.get("/:id", requireAuth, async (req, res) => {
             "SELECT * FROM Accounts WHERE accountID = ?",
             [accountID],
         );
-        
+
         const account = accounts[0];
 
         // Check if the account exists

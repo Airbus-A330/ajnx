@@ -71,7 +71,7 @@ router.get("/:loanId", requireAuth, async (req, res) => {
     // Destructure loanId from request parameters
     const { loanId } = req.params;
 
-    // Validate input   
+    // Validate input
     if (!loanId) {
         return res.status(400).json({ error: "Invalid loan ID" });
     }

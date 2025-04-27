@@ -100,7 +100,7 @@ router.post("/", requireAuth, async (req, res) => {
         await conn.rollback();
         console.error("Transfer error:", err);
         res.status(500).json({
-            error: "Transfer failed"
+            error: "Transfer failed",
         });
     } finally {
         // Release the connection back to the pool

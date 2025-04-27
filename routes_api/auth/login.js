@@ -21,9 +21,7 @@ router.post("/", async (req, res) => {
 
     // Validate input
     if (!username || !password) {
-        return res
-            .status(400)
-            .json({ error: "Missing username or password" });
+        return res.status(400).json({ error: "Missing username or password" });
     }
 
     // Check if username and password are provided
