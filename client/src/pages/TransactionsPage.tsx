@@ -456,6 +456,7 @@ const TransactionsPage: React.FC = () => {
                                     <th className="py-2 pr-4">Account ID</th>
                                     <th className="py-2 pr-4">Amount</th>
                                     <th className="py-2 pr-4">Date</th>
+                                    <th className="py-2 pr-4">Description</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -527,6 +528,9 @@ const TransactionsPage: React.FC = () => {
                                                         txn.withdrawal_date,
                                                     ).toLocaleDateString()
                                                   : "-"}
+                                        </td>
+                                        <td className="py-2 pr-4">
+                                            {txn.description}
                                         </td>
                                     </tr>
                                 ))}
