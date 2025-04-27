@@ -67,6 +67,9 @@ router.get("/:type", requireAuth, async (req, res) => {
             );
         }
 
+        deposits = deposits.reverse();
+        withdrawals = withdrawals.reverse();
+
         // Return the results
         res.json({ deposits, withdrawals });
     } catch (err) {
