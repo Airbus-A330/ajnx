@@ -214,12 +214,14 @@ const TransactionsPage: React.FC = () => {
                                         selectedItem || "Choose an account"
                                     }
                                     onSelectionChange={(key) => {
+                                        console.log("Selected key:", key);
                                         const account = accounts.find(
                                             (acc) =>
                                                 acc.accountID.toString() ===
                                                 (key as string),
                                         );
                                         if (account) {
+                                            console.log("Setting selected item:", account);
                                             setSelectedItem(
                                                 `${account.accountType} (ID: ${account.accountID})`,
                                             );
