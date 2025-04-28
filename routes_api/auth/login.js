@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
         const valid = await bcrypt.compare(password, user.passwordHash);
         if (!valid)
             return res
-                .status(401)
+                .status(400)
                 .json({ error: "Invalid username or password" });
 
         // Generate JWT token
