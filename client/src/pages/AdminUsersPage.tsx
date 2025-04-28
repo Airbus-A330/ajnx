@@ -65,7 +65,7 @@ const AdminUsersPage: React.FC = () => {
 
     const fetchAndPopulateCustomerProfile = async (userID: number) => {
         try {
-            const profile = await getCustomerProfileById(userID); 
+            const profile = await getCustomerProfileById(userID);
             if (profile) {
                 setEditForm({
                     first_name: profile.first_name || "",
@@ -73,7 +73,7 @@ const AdminUsersPage: React.FC = () => {
                     address: profile.address || "",
                     phone: profile.phone || "",
                     email: profile.email || "",
-                    role: profile.role || "customer", 
+                    role: profile.role || "customer",
                 });
             }
         } catch (error) {
