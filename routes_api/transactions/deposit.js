@@ -44,12 +44,6 @@ router.post("/", requireAuth, async (req, res) => {
             return res.status(403).json({ error: "Unauthorized deposit" });
         }
 
-        // Update the account balance
-        await db.query(
-            "UPDATE Accounts SET balance = balance + ? WHERE accountID = ?",
-            [amount, accountID],
-        );
-
         // Insert the transaction into the Transactions table
         await db.query(
             "INSERT INTO Transactions (accountID, amount, transactionType, description) VALUES (?, ?, ?, ?)",
