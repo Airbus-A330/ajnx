@@ -518,7 +518,7 @@ const TransactionsPage: React.FC = () => {
                                                             : txn.type ===
                                                                 "Withdrawal"
                                                               ? "lucide:banknote-arrow-down"
-                                                              : "lucide:repeat" // for Transfer
+                                                              : "lucide:repeat"
                                                     }
                                                 />
 
@@ -530,7 +530,7 @@ const TransactionsPage: React.FC = () => {
                                                             : txn.type ===
                                                                 "Withdrawal"
                                                               ? "warning"
-                                                              : "secondary" // Transfer
+                                                              : "secondary"
                                                     }
                                                     variant="flat"
                                                 >

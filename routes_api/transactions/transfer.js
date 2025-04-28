@@ -26,7 +26,9 @@ router.post("/", requireAuth, async (req, res) => {
     }
 
     if (fromAccountID === toAccountID) {
-        return res.status(400).json({ error: "Cannot transfer to the same account" });
+        return res
+            .status(400)
+            .json({ error: "Cannot transfer to the same account" });
     }
 
     // Check if the user is authenticated

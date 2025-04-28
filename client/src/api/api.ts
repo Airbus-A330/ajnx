@@ -166,7 +166,7 @@ export const getCreditCards = (): Promise<CreditCard[]> =>
 export const createCreditCard = (): Promise<void> =>
     request("/credit-cards", {
         method: "POST",
-        body: {}, // no body needed
+        body: {},
     });
 
 // LOANS API
