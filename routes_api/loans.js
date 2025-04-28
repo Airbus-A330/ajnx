@@ -70,11 +70,9 @@ router.post("/", requireAuth, async (req, res) => {
 
         // If customer not found, reject
         if (customers.length === 0) {
-            return res
-                .status(400)
-                .json({
-                    error: "No customer profile found. Please complete your profile first.",
-                });
+            return res.status(400).json({
+                error: "No customer profile found. Please complete your profile first.",
+            });
         }
 
         // Insert the new loan

@@ -25,6 +25,10 @@ router.post("/", requireAuth, async (req, res) => {
         return res.status(400).json({ error: "Description is required" });
     }
 
+    if (fromAccountID === toAccountID) {
+        return res.status(400).json({ error: "Cannot transfer to the same account" });
+    }
+
     // Check if the user is authenticated
     const conn = await db.getConnection();
 

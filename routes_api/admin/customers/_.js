@@ -21,7 +21,7 @@ router.get("/:id", requireAuth, requireAdmin, async (req, res) => {
         if (!id) {
             return res.status(400).json({ error: "Customer ID is required." });
         }
-        
+
         // Select customer profile from the database
         const [rows] = await db.query(
             "SELECT customer_id, first_name, last_name, address, phone, email FROM Customers WHERE customer_id = ?",

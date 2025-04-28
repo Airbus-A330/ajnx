@@ -32,7 +32,7 @@ router.put("/:id", requireAuth, requireAdmin, async (req, res) => {
             `UPDATE Customers
              SET first_name = ?, last_name = ?, address = ?, phone = ?, email = ?
              WHERE customer_id = ?`,
-            [first_name, last_name, address, phone, email, customer_id]
+            [first_name, last_name, address, phone, email, customer_id],
         );
 
         // Update the Users table (role)
@@ -40,7 +40,7 @@ router.put("/:id", requireAuth, requireAdmin, async (req, res) => {
             `UPDATE Users
              SET role = ?
              WHERE userID = ?`,
-            [role, customer_id]
+            [role, customer_id],
         );
 
         // Check if the update was successful
