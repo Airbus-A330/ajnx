@@ -122,7 +122,7 @@ const AdminUsersPage: React.FC = () => {
 
     const handleEditUser = (user: User) => {
         fetchAndPopulateCustomerProfile(user.userID);
-        setSelectedUser(user.userID);
+        setSelectedUser(user);
         setIsEditing(true);
     };
 
